@@ -84,7 +84,7 @@ class _BookCreatorState extends State<BookCreator> {
             child: Row(
               children: [
                 Expanded(child: AuthorTextFormFields(i)),
-                SizedBox(width: 16,),
+                SizedBox(width: 16),
                 _addRemoveButton(i == authorsList.length-1, i),
               ],
             ),
@@ -110,7 +110,7 @@ class _BookCreatorState extends State<BookCreator> {
           color: (add) ? Colors.green : Colors.red,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Icon((add) ? Icons.add_box_rounded : Icons.highlight_remove_outlined, color: Colors.white,),
+        child: Icon((add) ? Icons.add_box_rounded : Icons.highlight_remove_outlined),
       ),
     );
   }
@@ -139,9 +139,7 @@ class _BookCreatorState extends State<BookCreator> {
     scaleWidthApp = MediaQuery.of(context).size.width / 20;
 
     return Scaffold(
-      backgroundColor: const Color(0xff6b1a0a),
       appBar: AppBar(
-        backgroundColor: const Color(0xff471005),
         leading: GestureDetector(
           onTap: () {},
           child: Icon(
@@ -161,12 +159,12 @@ class _BookCreatorState extends State<BookCreator> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith((states) {
                     if (states.contains(MaterialState.pressed)) {
-                      return Colors.green;
+                      return Theme.of(context).colorScheme.error;
                     }
-                    return const Color(0xff451f14);
+                    return Theme.of(context).colorScheme.primary;
                   }),
                 ),
-                child: Text("Upload image", style: TextStyle(color: Colors.white),),
+                child: Text("Upload image", style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
                 onPressed: () {
                   getMultipleImages();
                   setState(() {
@@ -192,7 +190,7 @@ class _BookCreatorState extends State<BookCreator> {
                 child: Container(
                   child: FittedBox(
                     child: Text(
-                      "No images found, please add images!", style: TextStyle( fontSize: 18, color: Colors.white ),
+                      "No images found, please add images!", style: TextStyle( fontSize: 18 ),
                     ),
                   ),
                 ),
@@ -201,9 +199,8 @@ class _BookCreatorState extends State<BookCreator> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.04,
-                child: Center(child: Text('Authors', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
+                child: Center(child: Text('Authors', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
@@ -211,9 +208,8 @@ class _BookCreatorState extends State<BookCreator> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.04,
-                child: Center(child: Text('Book details', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
+                child: Center(child: Text('Book details', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
@@ -243,19 +239,16 @@ class _BookCreatorState extends State<BookCreator> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.04,
-                child: Center(child: Text('Description', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
+                child: Center(child: Text('Description', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
               space(),
               TextFormField(
-                style: TextStyle( color: Colors.white ),
                 controller: description,
                 enableSuggestions: true,
                 autocorrect: true,
-                cursorColor: Colors.white,
                 validator: (value) {
                   if ( value == null || value.isEmpty ) {
                     return "This field can't be empty";
@@ -265,16 +258,14 @@ class _BookCreatorState extends State<BookCreator> {
                   }
                 },
                 decoration: InputDecoration(
-                  icon: Icon( Icons.description, color: Colors.white,),
+                  icon: Icon( Icons.description),
                   hintText: "Enter description",
-                  hintStyle: TextStyle( color:Colors.white70 ),
                   labelText: "Description",
-                  labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide( color: Colors.white, width: 3 ),
+                    borderSide: BorderSide(width: 3 ),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide( color: Colors.blue, width: 5 ),
+                    borderSide: BorderSide( width: 5 ),
                   ),
                 ),
                 keyboardType: TextInputType.multiline,
@@ -310,14 +301,14 @@ class _BookCreatorState extends State<BookCreator> {
                 },
                 child: Text(
                   "Add book",
-                  style: TextStyle( color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18 ),
+                  style: TextStyle( fontWeight: FontWeight.bold, fontSize: 18 ),
                 ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith((states) {
                     if (states.contains(MaterialState.pressed)) {
-                      return Colors.green;
+                      return Theme.of(context).colorScheme.error;
                     }
-                    return const Color(0xff451f14);
+                    return Theme.of(context).colorScheme.primary;
                   }),
                 ),
               ),
@@ -349,7 +340,6 @@ class _GridElementState extends State<GridElement> {
           Expanded(
             child: InkWell(
               onTap: widget.onTap,
-              splashColor: Colors.white60,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
@@ -399,11 +389,9 @@ class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
     });
 
     return TextFormField(
-      style: TextStyle( color: Colors.white ),
       controller: nameController,
       enableSuggestions: true,
       autocorrect: true,
-      cursorColor: Colors.white,
       validator: (value) {
         if ( value == null || value.isEmpty ) {
           return "This field can't be empty";
@@ -414,16 +402,14 @@ class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
       },
       onChanged: (v) => _BookCreatorState.authorsList[widget.index] = v,
       decoration: InputDecoration(
-        icon: Icon(Icons.person_add_alt_1, color: Colors.white,),
+        icon: Icon(Icons.person_add_alt_1),
         hintText: "Enter author",
-        hintStyle: TextStyle( color:Colors.white70 ),
         labelText: "Author",
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide( color: Colors.white, width: 3 ),
+          borderSide: BorderSide( width: 3 ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide( color: Colors.blue, width: 5 ),
+          borderSide: BorderSide( width: 5 ),
         ),
       ),
     );
@@ -433,11 +419,9 @@ class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
 
 TextFormField reusableTextFormField( String label, IconData icon, TextEditingController controller, String hintText  ){
   return TextFormField(
-    style: TextStyle( color: Colors.white ),
     controller: controller,
     enableSuggestions: true,
     autocorrect: true,
-    cursorColor: Colors.white,
     validator: (value) {
       if ( value == null || value.isEmpty ) {
         return "This field can't be empty";
@@ -447,16 +431,14 @@ TextFormField reusableTextFormField( String label, IconData icon, TextEditingCon
       }
     },
     decoration: InputDecoration(
-      icon: Icon(icon, color: Colors.white,),
+      icon: Icon(icon),
       hintText: hintText,
-      hintStyle: TextStyle( color:Colors.white70 ),
       labelText: label,
-      labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide( color: Colors.white, width: 3 ),
+        borderSide: BorderSide( width: 3 ),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide( color: Colors.blue, width: 5 ),
+        borderSide: BorderSide( width: 5 ),
       ),
     ),
   );

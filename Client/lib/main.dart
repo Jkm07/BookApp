@@ -26,7 +26,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          scaffoldBackgroundColor: const Color(0xff6b1a0a),
+          textTheme: Typography.blackRedwoodCity,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.lightGreen,
+            errorColor: Colors.red,
+            backgroundColor: Colors.white,
+            accentColor: Colors.black,
+            cardColor: Colors.lightGreen,
+          ),
       ),
       debugShowCheckedModeBanner: false,
       title: 'BookAPP',

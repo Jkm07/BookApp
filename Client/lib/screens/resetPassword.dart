@@ -18,7 +18,6 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff6b1a0a),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
@@ -35,7 +34,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                   child: Text(
                     "Szacun Rispekt Library",
                     style: TextStyle(
-                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                     ),

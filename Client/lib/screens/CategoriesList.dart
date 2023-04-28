@@ -65,19 +65,17 @@ class _CategoriesListState extends State<CategoriesList> {
         height: scaleHeight * 3,
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.white,
             width: 2,
           ),
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Colors.black,
         ),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.person_outline_outlined, color: Colors.white,),
+              Icon(Icons.person_outline_outlined),
               spaceWidth(10),
-              Text(author.authorName, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+              Text(author.authorName, textAlign: TextAlign.center,),
             ],
           ),
         ),
@@ -119,19 +117,17 @@ class _CategoriesListState extends State<CategoriesList> {
         height: scaleHeight * 3,
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.white,
             width: 2,
           ),
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Colors.black,
         ),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.menu_book_outlined, color: Colors.white,),
+              Icon(Icons.menu_book_outlined),
               spaceWidth(10),
-              Text(text, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+              Text(text, textAlign: TextAlign.center,),
             ],
           ),
         ),
@@ -152,7 +148,7 @@ class _CategoriesListState extends State<CategoriesList> {
           width: kIsWeb ? scaleWidthWeb * 2 : double.infinity,
           height: kIsWeb ? scaleHeight * 25 : scaleHeight * 17,
           decoration: BoxDecoration(
-            color: Color(0xffA20000),
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(10),
           ),
           child: SingleChildScrollView(
@@ -162,24 +158,21 @@ class _CategoriesListState extends State<CategoriesList> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.black,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(5)),
-                    color: Colors.black,
                   ),
                   height: scaleHeight * 3,
                   padding: EdgeInsets.all(5),
                   child: DropdownButton<String>(
                     isExpanded: true,
                     iconSize: 35,
-                    icon: Icon(Icons.arrow_drop_down_circle_outlined, color: Colors.white,),
-                    dropdownColor: Colors.black,
+                    icon: Icon(Icons.arrow_drop_down_circle_outlined),
                     value: widget.selectedItem,
                     items: items
                         .map((String item) => DropdownMenuItem<String>(
                       value: item,
-                      child: Center(child: FittedBox(child: Text(item, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),))),
+                      child: Center(child: FittedBox(child: Text(item, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),))),
                     ))
                         .toList(),
                     onChanged: (item) => setState(() {

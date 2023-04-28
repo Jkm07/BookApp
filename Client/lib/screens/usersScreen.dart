@@ -17,9 +17,7 @@ class _UsersScreenState extends State<UsersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff6b1a0a),
       appBar: AppBar(
-        backgroundColor: const Color(0xff471005),
         leading: GestureDetector(
           onTap: () {},
           child: Icon(

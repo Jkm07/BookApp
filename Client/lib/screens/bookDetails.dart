@@ -32,13 +32,12 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           ),
           border: Border.all(
             width: 2,
-            color: Colors.black,
           )
       ),
       child: Center(
         child: Text(
           text,
-          style: TextStyle( color: Colors.white, fontWeight: FontWeight.bold ),
+          style: TextStyle( fontWeight: FontWeight.bold ),
         ),
       ),
     );
@@ -65,7 +64,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             child: Center(
               child: Text(
                 parameterName,
-                style: TextStyle( color: Colors.white ),
               ),
             ),
           ),
@@ -81,13 +79,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 ),
                 border: Border.all(
                   width: 2,
-                  color: Colors.black,
                 )
             ),
             child: Center(
               child: Text(
                 text,
-                style: TextStyle( color: Colors.white ),
               ),
             ),
           ),
@@ -118,9 +114,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     scaleWidthApp =  WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 20;
 
     return Scaffold(
-      backgroundColor: const Color(0xff6b1a0a),
       appBar: AppBar(
-        backgroundColor: const Color(0xff471005),
         leading: Icon(
           Icons.menu_book_outlined,
         ),
@@ -164,7 +158,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         Center(
                           child: Text(
                             widget.book.title,
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -172,7 +166,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         Center(
                           child: Text(
                             "by  ${widget.authors[0].authorName}",
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -180,7 +174,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         Center(
                           child: Text(
                               widget.book.category,
-                            style: TextStyle(color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -209,7 +202,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               child: Padding(
                 padding: EdgeInsets.all(scaleHeight),
                 child: Text(
-                  widget.book.description, style: TextStyle( color: Colors.white ),
+                  widget.book.description,
                 ),
               ),
               decoration: BoxDecoration(
@@ -217,7 +210,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   border: Border.all(
                     width: 2,
-                    color: Colors.black,
                   )
               ),
             ),

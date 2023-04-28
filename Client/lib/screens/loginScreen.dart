@@ -21,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff6b1a0a),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
@@ -38,7 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     "Szacun Rispekt Library",
                     style: TextStyle(
-                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                     ),
@@ -95,7 +93,6 @@ TextFormField reusableTextFormField(String text, IconData icon, String fieldType
     obscureText: fieldType == "password",
     enableSuggestions: fieldType != "password",
     autocorrect: fieldType != "password",
-    cursorColor: Colors.white,
     validator: (value) {
       if ( value == null || value.isEmpty ) {
         return "This field can not be empty!";
@@ -115,14 +112,11 @@ TextFormField reusableTextFormField(String text, IconData icon, String fieldType
         } else return null;
       }
     },
-    style: TextStyle(color: Colors.white.withOpacity(0.9)),
     decoration: InputDecoration(
       prefixIcon: Icon(
         icon,
-        color: Colors.white,
       ),
       labelText: text,
-      labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
       filled: true,
       floatingLabelBehavior: FloatingLabelBehavior.never,
       fillColor: Colors.white.withOpacity(0.3),
@@ -145,7 +139,6 @@ Widget forgetPassword(BuildContext context) {
       child: FittedBox(
         child: Text(
           "Forgot Password?",
-          style: TextStyle(color: Colors.white70),
           textAlign: TextAlign.right,
         ),
       ),
@@ -162,7 +155,6 @@ Row signUpOption(BuildContext context) {
     children: [
       const Text(
         "Don't have account?",
-        style: TextStyle(color: Colors.white70),
       ),
       globals.spaceWidth(globals.scaleHeight),
       GestureDetector(
@@ -171,7 +163,6 @@ Row signUpOption(BuildContext context) {
         },
         child: const Text(
           " Sign Up",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       )
     ],
@@ -191,16 +182,15 @@ Container firebaseButton(BuildContext context, String title, Function onTap) {
       child: FittedBox(
         child: Text(
           title,
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
-              return Colors.red;
+              return Theme.of(context).colorScheme.error;
             }
-            return Colors.black;
+            return Theme.of(context).colorScheme.primary;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))),
@@ -214,15 +204,11 @@ Future<Future> dialogTrigger(BuildContext context, String titleText, String text
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color(0xffA20000),
-          title: Text(titleText, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),),
-          content: Text(text, style: TextStyle(color: Colors.white),),
+          title: Text(titleText, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+          content: Text(text),
           actions: <Widget>[
             ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-              ),
-              child: Text("OK", style: TextStyle(color: Colors.white),),
+              child: Text("OK"),
               onPressed: (){
                 Navigator.pop(context);
               },

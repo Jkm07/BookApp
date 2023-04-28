@@ -22,7 +22,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff6b1a0a),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
@@ -39,7 +38,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Text(
                     "Szacun Rispekt Library",
                     style: TextStyle(
-                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                     ),

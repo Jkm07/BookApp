@@ -46,7 +46,6 @@ class _AccountScreenState extends State<AccountScreen> {
               padding: EdgeInsets.all(globals.scaleHeight),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.black,
                   width: 2,
                 ),
                 borderRadius: BorderRadius.only(
@@ -62,7 +61,6 @@ class _AccountScreenState extends State<AccountScreen> {
               padding: EdgeInsets.all(globals.scaleHeight),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.black,
                   width: 2,
                 ),
                 borderRadius: BorderRadius.only(
@@ -75,19 +73,19 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: [
                   FittedBox(
                     child: Text(
-                    "Username: " + user.userName, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    "Username: " + user.userName, style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   globals.space(),
                   FittedBox(
                     child: Text(
-                      "Email: " + user.userMail, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      "Email: " + user.userMail, style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   globals.space(),
                   FittedBox(
                     child: Text(
-                      "Account type: " + user.userType, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      "Account type: " + user.userType, style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -102,9 +100,7 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff6b1a0a),
       appBar: AppBar(
-        backgroundColor: const Color(0xff471005),
         leading: GestureDetector(
           onTap: () {},
           child: Icon(
@@ -126,7 +122,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 if( user.userType == "admin" )... [
                   adminList(context),
                 ],
-                textIconButton("Logout", Icons.logout_outlined, () {
+                textIconButton(context, "Logout", Icons.logout_outlined, () {
                   FirebaseAuth.instance.signOut().then((value) {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                   });
@@ -144,21 +140,18 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 }
 
-Widget textIconButton( String text, IconData icon, Function() onTap ){
+Widget textIconButton( BuildContext context, String text, IconData icon, Function() onTap ){
   return Container(
     width: double.infinity,
     height: globals.scaleHeight * 2.5,
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
     child: ElevatedButton.icon(
-      icon: Icon(
-        icon, color: Colors.white,
-      ),
+      icon: Icon(icon),
       onPressed: onTap,
       label: SizedBox(
         child: Text(
           text,
           style: const TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.w500,
               fontSize: 16),
         ),
@@ -166,9 +159,9 @@ Widget textIconButton( String text, IconData icon, Function() onTap ){
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
-              return Colors.red;
+              return Theme.of(context).colorScheme.error;
             }
-            return Colors.black;
+            return Theme.of(context).colorScheme.primary;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
@@ -180,7 +173,7 @@ Widget textIconButton( String text, IconData icon, Function() onTap ){
 Widget adminList(BuildContext context){
   return Column(
     children: [
-      textIconButton("Manage users", Icons.person_outline_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen() ))), ),
+      textIconButton(context, "Manage users", Icons.person_outline_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen() ))), ),
       globals.space(),
 
     ],
