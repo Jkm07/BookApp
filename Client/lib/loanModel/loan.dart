@@ -12,7 +12,6 @@ class Loan with _$Loan {
     required String loanID,
     required String bookID,
     required String customerID,
-    required String librarianID,
     required String loanDate,
     required String endDate,
 

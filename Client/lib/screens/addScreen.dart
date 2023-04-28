@@ -14,6 +14,7 @@ class BookCreator extends StatefulWidget {
 
 class _BookCreatorState extends State<BookCreator> {
 
+  final formKey = GlobalKey<FormState>();
   late String bookID;
   late TextEditingController authorsController;
   late TextEditingController title;
@@ -82,7 +83,7 @@ class _BookCreatorState extends State<BookCreator> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Row(
               children: [
-                Expanded(child: AuthorTextFields(i)),
+                Expanded(child: AuthorTextFormFields(i)),
                 SizedBox(width: 16,),
                 _addRemoveButton(i == authorsList.length-1, i),
               ],
@@ -149,157 +150,179 @@ class _BookCreatorState extends State<BookCreator> {
         ),
         title: Text("Add book"),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only( top: MediaQuery.of(context).size.height * 0.05 , bottom: MediaQuery.of(context).size.height * 0.05, left: kIsWeb ? scaleWidthWeb : scaleWidthApp, right: kIsWeb ? scaleWidthWeb : scaleWidthApp ),
-        child: Column(
-          children: [
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith((states) {
-                  if (states.contains(MaterialState.pressed)) {
-                    return Colors.green;
-                  }
-                  return const Color(0xff451f14);
-                }),
-              ),
-              child: Text("Upload image", style: TextStyle(color: Colors.white),),
-              onPressed: () {
-                getMultipleImages();
-                setState(() {
+      body: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formKey,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only( top: MediaQuery.of(context).size.height * 0.05 , bottom: MediaQuery.of(context).size.height * 0.05, left: kIsWeb ? scaleWidthWeb : scaleWidthApp, right: kIsWeb ? scaleWidthWeb : scaleWidthApp ),
+          child: Column(
+            children: [
+              TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith((states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Colors.green;
+                    }
+                    return const Color(0xff451f14);
+                  }),
+                ),
+                child: Text("Upload image", style: TextStyle(color: Colors.white),),
+                onPressed: () {
+                  getMultipleImages();
+                  setState(() {
 
-                });
-              },
-            ),
-            space(),
-            imagesWeb.length > 0 ? Container(
-              width: MediaQuery.of(context).size.width / 3,
-              child: GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: imagesWeb.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: MediaQuery.of(context).size.width * 0.02,
-                    // mainAxisSpacing: 11,
-                    childAspectRatio: 1,
+                  });
+                },
+              ),
+              space(),
+              imagesWeb.length > 0 ? Container(
+                width: MediaQuery.of(context).size.width / 3,
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: imagesWeb.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: MediaQuery.of(context).size.width * 0.02,
+                      // mainAxisSpacing: 11,
+                      childAspectRatio: 1,
+                    ),
+                    itemBuilder: (context, index) => GridElement( image: imagesWeb[index])
+                ),
+              ) : Center(
+                child: Container(
+                  child: FittedBox(
+                    child: Text(
+                      "No images found, please add images!", style: TextStyle( fontSize: 18, color: Colors.white ),
+                    ),
                   ),
-                  itemBuilder: (context, index) => GridElement( image: imagesWeb[index])
+                ),
               ),
-            ) : Center(
-              child: Container(
-                child: FittedBox(
-                  child: Text(
-                    "No images found, please add images!", style: TextStyle( fontSize: 18, color: Colors.white ),
+              space(),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.04,
+                child: Center(child: Text('Authors', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              ...getAuthors(),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.04,
+                child: Center(child: Text('Book details', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              space(),
+              reusableTextFormField("Title", Icons.title, title, "Enter title"),
+              space(),
+              reusableTextFormField("Category", Icons.type_specimen_outlined, category, "Enter category"),
+              space(),
+              reusableTextFormField("ISBN", Icons.text_fields, ISBN, "Enter ISBN"),
+              space(),
+              reusableTextFormField("Language", Icons.language_outlined, language, "Enter language"),
+              space(),
+              reusableTextFormField("Quantity", Icons.shopping_cart_outlined, quantity, "Enter quantity"),
+              space(),
+              reusableTextFormField("Cover type", Icons.book, coverType, "Enter cover type"),
+              space(),
+              reusableTextFormField("Number of pages", Icons.bookmarks_rounded, numberOfPages, "Enter number of pages"),
+              space(),
+              reusableTextFormField("Publisher", Icons.person_outline_outlined, publisherName, "Enter publisher name"),
+              space(),
+              reusableTextFormField("Published date", Icons.date_range_outlined, publishedDate, "Enter published date DD-MM-YYYY"),
+              space(),
+              reusableTextFormField("Publication year", Icons.calendar_today, yearPublication, "Enter publication year"),
+              space(),
+              reusableTextFormField("Issue number", Icons.title_outlined, issueNumber, "Enter issue number"),
+              space(),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.04,
+                child: Center(child: Text('Description', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              space(),
+              TextFormField(
+                style: TextStyle( color: Colors.white ),
+                controller: description,
+                enableSuggestions: true,
+                autocorrect: true,
+                cursorColor: Colors.white,
+                validator: (value) {
+                  if ( value == null || value.isEmpty ) {
+                    return "This field can't be empty";
+                  }
+                  else {
+                    return null;
+                  }
+                },
+                decoration: InputDecoration(
+                  icon: Icon( Icons.description, color: Colors.white,),
+                  hintText: "Enter description",
+                  hintStyle: TextStyle( color:Colors.white70 ),
+                  labelText: "Description",
+                  labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide( color: Colors.white, width: 3 ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide( color: Colors.blue, width: 5 ),
                   ),
                 ),
+                keyboardType: TextInputType.multiline,
+                maxLines: 8,
+                maxLength: 250,
               ),
-            ),
-            space(),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.04,
-              child: Center(child: Text('Authors', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(5),
-              ),
-            ),
-            ...getAuthors(),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.04,
-              child: Center(child: Text('Book details', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(5),
-              ),
-            ),
-            space(),
-            reusableTextField("Title", Icons.title, title, "Enter title"),
-            space(),
-            reusableTextField("Category", Icons.type_specimen_outlined, category, "Enter category"),
-            space(),
-            reusableTextField("ISBN", Icons.text_fields, ISBN, "Enter ISBN"),
-            space(),
-            reusableTextField("Language", Icons.language_outlined, language, "Enter language"),
-            space(),
-            reusableTextField("Quantity", Icons.shopping_cart_outlined, quantity, "Enter quantity"),
-            space(),
-            reusableTextField("Cover type", Icons.book, coverType, "Enter cover type"),
-            space(),
-            reusableTextField("Number of pages", Icons.bookmarks_rounded, numberOfPages, "Enter number of pages"),
-            space(),
-            reusableTextField("Publisher", Icons.person_outline_outlined, publisherName, "Enter publisher name"),
-            space(),
-            reusableTextField("Published date", Icons.date_range_outlined, publishedDate, "Enter published date DD-MM-YYYY"),
-            space(),
-            reusableTextField("Publication year", Icons.calendar_today, yearPublication, "Enter publication year"),
-            space(),
-            reusableTextField("Issue number", Icons.title_outlined, issueNumber, "Enter issue number"),
-            space(),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.04,
-              child: Center(child: Text('Description', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white),)),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(5),
-              ),
-            ),
-            space(),
-            TextField(
-              style: TextStyle( color: Colors.white ),
-              controller: description,
-              enableSuggestions: true,
-              autocorrect: true,
-              cursorColor: Colors.white,
-              decoration: InputDecoration(
-                icon: Icon( Icons.description, color: Colors.white,),
-                hintText: "Enter description",
-                hintStyle: TextStyle( color:Colors.white70 ),
-                labelText: "Description",
-                labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide( color: Colors.white, width: 3 ),
+              space(),
+              ElevatedButton(
+                onPressed: () async
+                {
+                    final isValidForm = formKey.currentState!.validate();
+
+                    if( imagesWeb.length == 0 ){
+
+                      return;
+                    }
+
+                    if( isValidForm ){
+                      //final uid = globals.userDatabase.getUserID();
+                      String publisherID = "";
+                      List<String> authorsID = [];
+
+                      for(int i = 0; i < authorsList.length; i++){
+                        authorsID.add( await globals.booksDatabase.checkAndAddAuthor(authorsList[i]) );
+                      }
+                      publisherID = await globals.booksDatabase.checkAndAddPublisher(publisherName.text);
+
+                      final book = Book.book(bookID: bookID, title: title.text, authorsID: authorsID, numberOfPages: numberOfPages.text, coverType: coverType.text, category: category.text, ISBN: ISBN.text, language: language.text, publishedDate: publishedDate.text, publisherID: publisherID, issueNumber: issueNumber.text, yearPublication: yearPublication.text, description: description.text, quantity: quantity.text, images: imageUrls);
+                      await globals.booksDatabase.addBook(book);
+                      //dialogTrigger(context);
+                    }
+
+                },
+                child: Text(
+                  "Add book",
+                  style: TextStyle( color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18 ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide( color: Colors.blue, width: 5 ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith((states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Colors.green;
+                    }
+                    return const Color(0xff451f14);
+                  }),
                 ),
               ),
-              keyboardType: TextInputType.multiline,
-              maxLines: 8,
-              maxLength: 250,
-            ),
-            space(),
-            ElevatedButton(
-              onPressed: () async
-              {
-                  //final uid = globals.userDatabase.getUserID();
-                  String publisherID = "";
-                  List<String> authorsID = [];
-
-                  for(int i = 0; i < authorsList.length; i++){
-                    authorsID.add( await globals.booksDatabase.checkAndAddAuthor(authorsList[i]) );
-                  }
-                  publisherID = await globals.booksDatabase.checkAndAddPublisher(publisherName.text);
-
-                  final book = Book.book(bookID: bookID, title: title.text, authorsID: authorsID, numberOfPages: numberOfPages.text, coverType: coverType.text, category: category.text, ISBN: ISBN.text, language: language.text, publishedDate: publishedDate.text, publisherID: publisherID, issueNumber: issueNumber.text, yearPublication: yearPublication.text, description: description.text, quantity: quantity.text, images: imageUrls);
-                  await globals.booksDatabase.addBook(book);
-                  //dialogTrigger(context);
-              },
-              child: Text(
-                "Add book",
-                style: TextStyle( color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18 ),
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith((states) {
-                  if (states.contains(MaterialState.pressed)) {
-                    return Colors.green;
-                  }
-                  return const Color(0xff451f14);
-                }),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -346,14 +369,14 @@ class _GridElementState extends State<GridElement> {
   }
 }
 
-class AuthorTextFields extends StatefulWidget {
+class AuthorTextFormFields extends StatefulWidget {
   final int index;
-  AuthorTextFields(this.index);
+  AuthorTextFormFields(this.index);
   @override
-  _AuthorTextFieldsState createState() => _AuthorTextFieldsState();
+  _AuthorTextFormFieldsState createState() => _AuthorTextFormFieldsState();
 }
 
-class _AuthorTextFieldsState extends State<AuthorTextFields> {
+class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
   late TextEditingController nameController;
 
   @override
@@ -375,12 +398,20 @@ class _AuthorTextFieldsState extends State<AuthorTextFields> {
       nameController.text = _BookCreatorState.authorsList[widget.index] ?? '';
     });
 
-    return TextField(
+    return TextFormField(
       style: TextStyle( color: Colors.white ),
       controller: nameController,
       enableSuggestions: true,
       autocorrect: true,
       cursorColor: Colors.white,
+      validator: (value) {
+        if ( value == null || value.isEmpty ) {
+          return "This field can't be empty";
+        }
+        else {
+          return null;
+        }
+      },
       onChanged: (v) => _BookCreatorState.authorsList[widget.index] = v,
       decoration: InputDecoration(
         icon: Icon(Icons.person_add_alt_1, color: Colors.white,),
@@ -400,13 +431,21 @@ class _AuthorTextFieldsState extends State<AuthorTextFields> {
   }
 }
 
-TextField reusableTextField( String label, IconData icon, TextEditingController controller, String hintText  ){
-  return TextField(
+TextFormField reusableTextFormField( String label, IconData icon, TextEditingController controller, String hintText  ){
+  return TextFormField(
     style: TextStyle( color: Colors.white ),
     controller: controller,
     enableSuggestions: true,
     autocorrect: true,
     cursorColor: Colors.white,
+    validator: (value) {
+      if ( value == null || value.isEmpty ) {
+        return "This field can't be empty";
+      }
+      else {
+        return null;
+      }
+    },
     decoration: InputDecoration(
       icon: Icon(icon, color: Colors.white,),
       hintText: hintText,

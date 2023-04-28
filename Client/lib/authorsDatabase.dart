@@ -9,9 +9,18 @@ import 'globals.dart' as globals;
 
 class AuthorsDatabase{
 
-  Future createLoan () async{
+  Future createLoanList () async{
     String userID = await globals.userDatabase.getUserID();
-    await FirebaseFirestore.instance.collection("loans").doc(Uuid().v4()).set( { "userID": userID, "products": [] } );
+    await FirebaseFirestore.instance.collection("loans").doc(Uuid().v4()).set( { "userID": userID, "booksID": [] } );
+  }
+
+  Future<List<Author>> getAllAuthors( ) async{
+    var querySnapshot = await FirebaseFirestore.instance.collection("authors").get();
+
+    final authors = querySnapshot.docs
+        .map((doc) => Author.fromJson(doc.data())).toList();
+
+    return authors;
   }
 
   Future<List<Author>> getAuthorsList( List<String> authorsID ) async{

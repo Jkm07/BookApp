@@ -24,27 +24,26 @@ mixin _$Loan {
   String get loanID => throw _privateConstructorUsedError;
   String get bookID => throw _privateConstructorUsedError;
   String get customerID => throw _privateConstructorUsedError;
-  String get librarianID => throw _privateConstructorUsedError;
   String get loanDate => throw _privateConstructorUsedError;
   String get endDate => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String loanID, String bookID, String customerID,
-            String librarianID, String loanDate, String endDate)
+            String loanDate, String endDate)
         loan,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String loanID, String bookID, String customerID,
-            String librarianID, String loanDate, String endDate)?
+            String loanDate, String endDate)?
         loan,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String loanID, String bookID, String customerID,
-            String librarianID, String loanDate, String endDate)?
+            String loanDate, String endDate)?
         loan,
     required TResult orElse(),
   }) =>
@@ -79,7 +78,6 @@ abstract class $LoanCopyWith<$Res> {
       {String loanID,
       String bookID,
       String customerID,
-      String librarianID,
       String loanDate,
       String endDate});
 }
@@ -100,7 +98,6 @@ class _$LoanCopyWithImpl<$Res, $Val extends Loan>
     Object? loanID = null,
     Object? bookID = null,
     Object? customerID = null,
-    Object? librarianID = null,
     Object? loanDate = null,
     Object? endDate = null,
   }) {
@@ -116,10 +113,6 @@ class _$LoanCopyWithImpl<$Res, $Val extends Loan>
       customerID: null == customerID
           ? _value.customerID
           : customerID // ignore: cast_nullable_to_non_nullable
-              as String,
-      librarianID: null == librarianID
-          ? _value.librarianID
-          : librarianID // ignore: cast_nullable_to_non_nullable
               as String,
       loanDate: null == loanDate
           ? _value.loanDate
@@ -143,7 +136,6 @@ abstract class _$$loanCopyWith<$Res> implements $LoanCopyWith<$Res> {
       {String loanID,
       String bookID,
       String customerID,
-      String librarianID,
       String loanDate,
       String endDate});
 }
@@ -160,7 +152,6 @@ class __$$loanCopyWithImpl<$Res> extends _$LoanCopyWithImpl<$Res, _$loan>
     Object? loanID = null,
     Object? bookID = null,
     Object? customerID = null,
-    Object? librarianID = null,
     Object? loanDate = null,
     Object? endDate = null,
   }) {
@@ -176,10 +167,6 @@ class __$$loanCopyWithImpl<$Res> extends _$LoanCopyWithImpl<$Res, _$loan>
       customerID: null == customerID
           ? _value.customerID
           : customerID // ignore: cast_nullable_to_non_nullable
-              as String,
-      librarianID: null == librarianID
-          ? _value.librarianID
-          : librarianID // ignore: cast_nullable_to_non_nullable
               as String,
       loanDate: null == loanDate
           ? _value.loanDate
@@ -200,7 +187,6 @@ class _$loan extends loan {
       {required this.loanID,
       required this.bookID,
       required this.customerID,
-      required this.librarianID,
       required this.loanDate,
       required this.endDate})
       : super._();
@@ -215,15 +201,13 @@ class _$loan extends loan {
   @override
   final String customerID;
   @override
-  final String librarianID;
-  @override
   final String loanDate;
   @override
   final String endDate;
 
   @override
   String toString() {
-    return 'Loan.loan(loanID: $loanID, bookID: $bookID, customerID: $customerID, librarianID: $librarianID, loanDate: $loanDate, endDate: $endDate)';
+    return 'Loan.loan(loanID: $loanID, bookID: $bookID, customerID: $customerID, loanDate: $loanDate, endDate: $endDate)';
   }
 
   @override
@@ -235,8 +219,6 @@ class _$loan extends loan {
             (identical(other.bookID, bookID) || other.bookID == bookID) &&
             (identical(other.customerID, customerID) ||
                 other.customerID == customerID) &&
-            (identical(other.librarianID, librarianID) ||
-                other.librarianID == librarianID) &&
             (identical(other.loanDate, loanDate) ||
                 other.loanDate == loanDate) &&
             (identical(other.endDate, endDate) || other.endDate == endDate));
@@ -244,8 +226,8 @@ class _$loan extends loan {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, loanID, bookID, customerID, librarianID, loanDate, endDate);
+  int get hashCode =>
+      Object.hash(runtimeType, loanID, bookID, customerID, loanDate, endDate);
 
   @JsonKey(ignore: true)
   @override
@@ -257,33 +239,32 @@ class _$loan extends loan {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String loanID, String bookID, String customerID,
-            String librarianID, String loanDate, String endDate)
+            String loanDate, String endDate)
         loan,
   }) {
-    return loan(loanID, bookID, customerID, librarianID, loanDate, endDate);
+    return loan(loanID, bookID, customerID, loanDate, endDate);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String loanID, String bookID, String customerID,
-            String librarianID, String loanDate, String endDate)?
+            String loanDate, String endDate)?
         loan,
   }) {
-    return loan?.call(
-        loanID, bookID, customerID, librarianID, loanDate, endDate);
+    return loan?.call(loanID, bookID, customerID, loanDate, endDate);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String loanID, String bookID, String customerID,
-            String librarianID, String loanDate, String endDate)?
+            String loanDate, String endDate)?
         loan,
     required TResult orElse(),
   }) {
     if (loan != null) {
-      return loan(loanID, bookID, customerID, librarianID, loanDate, endDate);
+      return loan(loanID, bookID, customerID, loanDate, endDate);
     }
     return orElse();
   }
@@ -329,7 +310,6 @@ abstract class loan extends Loan {
       {required final String loanID,
       required final String bookID,
       required final String customerID,
-      required final String librarianID,
       required final String loanDate,
       required final String endDate}) = _$loan;
   loan._() : super._();
@@ -342,8 +322,6 @@ abstract class loan extends Loan {
   String get bookID;
   @override
   String get customerID;
-  @override
-  String get librarianID;
   @override
   String get loanDate;
   @override

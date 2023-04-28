@@ -46,18 +46,29 @@ class BooksDatabase{
     return _firestore;
   }
 
-  Future <List<Book>> getBooksFromCategory(String categoryName, String search, String sort) async
+  Future <List<Book>> getBooksFromCategory(String filterType, String value, String search, String sort) async
   {
-    final database = FirebaseFirestore.instance.collection("books");
+    final database = getFirestore()!.collection("books");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 
-    if( categoryName == "all" )
+    if( filterType == "None" )
     {
       querySnapshot = await database.get();
     }
-    else
+    else if( filterType == "Categories" )
     {
-      querySnapshot = await database.where("category", isEqualTo: categoryName).get();
+      if( value == "All" )
+      {
+        querySnapshot = await database.get();
+      }
+      else
+      {
+        querySnapshot = await database.where("category", isEqualTo: value).get();
+      }
+    }
+    else if ( filterType == "Authors" )
+    {
+      querySnapshot = await database.where("authorsID", isEqualTo: value).get();
     }
 
     final books = querySnapshot!.docs
@@ -65,18 +76,32 @@ class BooksDatabase{
         .toList();
 
     //searching
-    //books.removeWhere((item) => !(item.title.toLowerCase() /*+ item.productCategory.toLowerCase()*/).contains(search.toLowerCase()));
+    if( search != "" ) books.removeWhere((item) => !(item.title.toLowerCase() + item.category.toLowerCase()).contains(search.toLowerCase()));
 
     //sort
-    // if( sort == "Price: ascending" )
-    // {
-    //   books.sort( (a, b) => a.productPrice.compareTo(b.productPrice));
-    // }
-    // else if ( sort == "Price: descending" )
-    // {
-    //   books.sort( (a, b) => b.productPrice.compareTo(a.productPrice));
-    // }
+    if( sort == "Title: alphabetically" )
+    {
+      books.sort( (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+    }
+    else if ( sort == "Author: alphabetically" )
+    {
+      //books.sort( (a, b) => b.productPrice.compareTo(a.productPrice));
+    }
+
     return books;
+  }
+
+  Future<List<String>> getCategories() async{
+    List<String> categories = ["All"];
+    var documentSnapshot = await getFirestore()!.collection("books").get();
+
+    for( int i = 0; i < documentSnapshot.docs.length; i++ )
+    {
+      categories.add( documentSnapshot.docs[i].data()!["category"] );
+    }
+
+    categories = categories.toSet().toList();
+    return categories;
   }
 
   Future<List<String>> uploadImages( List<Uint8List> imageFiles, String nameBookID ) async

@@ -7,11 +7,12 @@ import 'bookModel/book.dart';
 import 'globals.dart' as globals;
 
 class UniversalBooksList extends StatefulWidget {
-  const UniversalBooksList({Key? key, this.category, this.search, this.sort}) : super(key: key);
+  const UniversalBooksList({Key? key, required this.filterType, required this.value, required this.search, required this.sort}) : super(key: key);
 
-  final String? category;
-  final String? search;
-  final String? sort;
+  final String filterType;
+  final String value;
+  final String search;
+  final String sort;
 
   @override
   State<UniversalBooksList> createState() => _UniversalBooksListState();
@@ -22,10 +23,11 @@ class _UniversalBooksListState extends State<UniversalBooksList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Book>>(
-        future: globals.booksDatabase.getBooksFromCategory("all", "", ""),
+        future: globals.booksDatabase.getBooksFromCategory(widget.filterType, widget.value, widget.search, widget.sort),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: snapshot.data!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -109,7 +111,7 @@ class _BookElementState extends State<BookElement> {
       future: getParameters(),
       builder: (context, snapshot){
         if (snapshot.hasData){
-          return GestureDetector(
+          return InkWell(
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => BookDetailsScreen(book: widget.book, publisher: publisher, authors: authors) ))),
             child: Container(
               child: Column(

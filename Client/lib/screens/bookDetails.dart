@@ -3,6 +3,7 @@ import 'package:client/publisherModel/publisher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../authorModel/author.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   const BookDetailsScreen({Key? key, required this.book, required this.publisher, required this.authors}) : super(key: key);
@@ -49,7 +50,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
       children: [
         Expanded(
           child: Container(
-            height: height * 2,
+            height: height * 3,
             decoration: BoxDecoration(
                 color: const Color(0xffCCB18C),
                 borderRadius: BorderRadius.only(
@@ -71,7 +72,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         ),
         Expanded(
           child: Container(
-            height: height * 2,
+            height: height * 3,
             decoration: BoxDecoration(
                 color: const Color(0xffCCB18C),
                 borderRadius: BorderRadius.only(
@@ -136,25 +137,29 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    child: InkWell(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15),
-                          ),
-                          image: DecorationImage(
-                              image: NetworkImage(widget.book.images[0]),
-                              fit: BoxFit.contain
-                          ),
-                        ),
+                      child: CarouselSlider(
+                          items: widget.book.images.map((e) => GestureDetector(child: Image.network(e), onTap: () => print("123"),),).toList(),
+                          options: CarouselOptions(
+                            height: 400,
+                            aspectRatio: 16/9,
+                            viewportFraction: 1,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 5),
+                            autoPlayAnimationDuration: Duration(milliseconds: 1000),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: false,
+                            scrollDirection: Axis.horizontal,
+                          )
                       ),
-                    ),
                   ),
                   SizedBox(
                     width: scaleHeight,
                   ),
                   Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Center(
                           child: Text(
@@ -185,6 +190,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 ],
               ),
             ),
+            space(scaleHeight * 2),
             universalContainer("Authors", scaleHeight),
             ...displayAuthors(scaleHeight),
             universalContainer("Book details", scaleHeight),
@@ -196,6 +202,25 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             createRow("Publisher date", widget.book.publishedDate, scaleHeight),
             createRow("Publication year", widget.book.yearPublication, scaleHeight),
             createRow("Issue number", widget.book.issueNumber, scaleHeight),
+            space(scaleHeight * 2),
+            universalContainer("Description", scaleHeight),
+            Container(
+              width: double.infinity,
+              child: Padding(
+                padding: EdgeInsets.all(scaleHeight),
+                child: Text(
+                  widget.book.description, style: TextStyle( color: Colors.white ),
+                ),
+              ),
+              decoration: BoxDecoration(
+                  color: const Color(0xffCCB18C),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(
+                    width: 2,
+                    color: Colors.black,
+                  )
+              ),
+            ),
           ],
         ),
       ),
