@@ -1,6 +1,6 @@
 import 'package:client/screens/homeScreen.dart';
-import 'package:client/userModel/userLibrary.dart';
 import 'package:flutter/foundation.dart';
+import '../models/userModel/userLibrary.dart';
 import 'loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:client/globals.dart' as globals;

@@ -1,8 +1,8 @@
-import 'package:client/authorModel/author.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:uuid/uuid.dart';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
+import '../models/authorModel/author.dart';
 
 class AuthorsDatabase {
   Future createLoanList() async {

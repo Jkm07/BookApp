@@ -1,8 +1,8 @@
-import 'package:client/authorModel/author.dart';
 import 'package:client/screens/CategoriesList.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../universalBooksList.dart';
+import '../lists/universalBooksList.dart';
+import '../models/authorModel/author.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen(

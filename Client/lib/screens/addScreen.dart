@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:client/bookModel/book.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../globals.dart' as globals;
+import '../models/bookModel/book.dart';
 
 class BookCreator extends StatefulWidget {
   const BookCreator({super.key});
@@ -288,6 +288,7 @@ class _BookCreatorState extends State<BookCreator> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.04,
                 decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: const Center(

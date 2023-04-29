@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
 
 class LoansDatabase {
   // Future createLoan () async{

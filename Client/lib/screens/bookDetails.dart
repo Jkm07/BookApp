@@ -1,9 +1,9 @@
-import 'package:client/bookModel/book.dart';
-import 'package:client/publisherModel/publisher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../authorModel/author.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../models/authorModel/author.dart';
+import '../models/bookModel/book.dart';
+import '../models/publisherModel/publisher.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   const BookDetailsScreen(

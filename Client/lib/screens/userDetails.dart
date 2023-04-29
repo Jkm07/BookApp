@@ -1,7 +1,7 @@
-import 'package:client/userModel/userLibrary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/globals.dart' as globals;
+import '../models/userModel/userLibrary.dart';
 
 class UserDetails extends StatefulWidget {
   const UserDetails({Key? key, required this.user}) : super(key: key);

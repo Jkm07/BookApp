@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:client/userModel/userLibrary.dart';
 import 'dart:async';
-import 'userModel/userLibrary.dart';
-import 'globals.dart' as globals;
+import '../models/userModel/userLibrary.dart';
+import '../globals.dart' as globals;
 
 class UserDatabase {
   Future<String> getUserID() async {

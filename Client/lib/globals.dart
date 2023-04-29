@@ -1,9 +1,9 @@
-import 'package:client/authorsDatabase.dart';
-import 'package:client/loansDatabase.dart';
-import 'package:client/publishersDatabase.dart';
-import 'package:client/userDatabase.dart';
+import 'package:client/databases/authorsDatabase.dart';
+import 'package:client/databases/loansDatabase.dart';
+import 'package:client/databases/publishersDatabase.dart';
+import 'package:client/databases/userDatabase.dart';
 import 'package:flutter/material.dart';
-import 'booksDatabase.dart';
+import 'databases/booksDatabase.dart';
 
 BooksDatabase booksDatabase = BooksDatabase();
 UserDatabase userDatabase = UserDatabase();

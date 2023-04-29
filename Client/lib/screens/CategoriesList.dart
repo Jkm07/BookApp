@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../authorModel/author.dart';
 import 'package:client/globals.dart' as globals;
+
+import '../models/authorModel/author.dart';
 
 class CategoriesList extends StatefulWidget {
   CategoriesList({Key? key, required this.selectedItem}) : super(key: key);

@@ -1,11 +1,11 @@
 import 'package:client/screens/addLibrary.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:client/screens/usersScreen.dart';
-import 'package:client/userModel/userLibrary.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/globals.dart' as globals;
+import '../models/userModel/userLibrary.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:client/screens/userDetails.dart';
-import 'package:client/userModel/userLibrary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
+import '../models/userModel/userLibrary.dart';
 
 class UsersList extends StatefulWidget {
   const UsersList({Key? key}) : super(key: key);

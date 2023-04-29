@@ -1,10 +1,10 @@
-import 'package:client/authorModel/author.dart';
-import 'package:client/publisherModel/publisher.dart';
 import 'package:client/screens/bookDetails.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'bookModel/book.dart';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
+import '../models/authorModel/author.dart';
+import '../models/bookModel/book.dart';
+import '../models/publisherModel/publisher.dart';
 
 class UniversalBooksList extends StatefulWidget {
   const UniversalBooksList(

@@ -1,6 +1,6 @@
-import 'package:client/publisherModel/publisher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
+import '../models/publisherModel/publisher.dart';
 
 class PublisherDatabase {
   Future<Publisher> getPublisher(String publisherID) async {

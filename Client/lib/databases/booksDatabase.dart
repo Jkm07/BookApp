@@ -1,13 +1,14 @@
 import 'package:universal_io/io.dart';
-import 'package:client/authorModel/author.dart';
-import 'package:client/bookModel/book.dart';
-import 'package:client/publisherModel/publisher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
+
+import '../models/authorModel/author.dart';
+import '../models/bookModel/book.dart';
+import '../models/publisherModel/publisher.dart';
 
 class BooksDatabase{
 
