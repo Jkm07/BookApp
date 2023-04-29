@@ -13,7 +13,7 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
 
   final formKey = GlobalKey<FormState>();
-  TextEditingController _emailTextController = TextEditingController();
+  final _emailTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               globals.space(),
               logoWidget("assets/image/logo.png"),
               globals.space(),
-              Center(
+              const Center(
                 child: FittedBox(
                   child: Text(
                     "Szacun Rispekt Library",

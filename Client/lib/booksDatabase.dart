@@ -1,4 +1,3 @@
-import 'package:universal_io/io.dart';
 import 'package:client/authorModel/author.dart';
 import 'package:client/bookModel/book.dart';
 import 'package:client/publisherModel/publisher.dart';
@@ -11,37 +10,27 @@ import 'package:uuid/uuid.dart';
 
 class BooksDatabase{
 
-  static FirebaseStorage? _storage = null;
-  static FirebaseAuth? _auth = null;
-  static FirebaseFirestore? _firestore = null;
+  static FirebaseStorage? _storage;
+  static FirebaseAuth? _auth;
+  static FirebaseFirestore? _firestore;
 
   FirebaseStorage? getStorage ()
   {
-    if( _storage == null )
-    {
-      _storage = FirebaseStorage.instance;
-    }
+    _storage ??= FirebaseStorage.instance;
 
     return _storage;
   }
 
   FirebaseAuth? getAuth ()
   {
-    if ( _auth == null )
-    {
-      _auth = FirebaseAuth.instance;
-    }
+    _auth ??= FirebaseAuth.instance;
 
     return _auth;
   }
 
   FirebaseFirestore? getFirestore ()
   {
-    if ( _firestore == null )
-    {
-
-      _firestore = FirebaseFirestore.instance;
-    }
+    _firestore ??= FirebaseFirestore.instance;
 
     return _firestore;
   }
@@ -97,7 +86,7 @@ class BooksDatabase{
 
     for( int i = 0; i < documentSnapshot.docs.length; i++ )
     {
-      categories.add( documentSnapshot.docs[i].data()!["category"] );
+      categories.add( documentSnapshot.docs[i].data()["category"] );
     }
 
     categories = categories.toSet().toList();
@@ -112,8 +101,8 @@ class BooksDatabase{
     {
       try
       {
-        final ref = getStorage()!.ref().child("images").child( nameBookID + " " + DateTime.now().toString());
-        var fileBytes = await imageFiles[i];
+        final ref = getStorage()!.ref().child("images").child( "$nameBookID ${DateTime.now()}");
+        var fileBytes = imageFiles[i];
         await ref.putData(fileBytes, SettableMetadata(contentType: 'image/jpeg'));
         imageUrls.add(await ref.getDownloadURL());
       }
@@ -150,7 +139,7 @@ class BooksDatabase{
 
     if ( !found )
     {
-      authorID = Uuid().v4();
+      authorID = const Uuid().v4();
       Author newAuthor = Author.author(authorID: authorID, authorName: authorName);
       await getFirestore()!.collection("authors").doc(newAuthor.authorID).set(newAuthor.toJson());
     }
@@ -182,7 +171,7 @@ class BooksDatabase{
 
     if ( !found )
     {
-      publisherID = Uuid().v4();
+      publisherID = const Uuid().v4();
       Publisher newPublisher = Publisher.publisher(publisherID: publisherID, publisherName: publisherName);
       await getFirestore()!.collection("publishers").doc(newPublisher.publisherID).set(newPublisher.toJson());
     }

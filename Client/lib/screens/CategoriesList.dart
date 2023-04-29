@@ -21,7 +21,7 @@ class _CategoriesListState extends State<CategoriesList> {
 
   Widget space( [double? value] ){
     return SizedBox(
-      height: value == null ? scaleHeight : value,
+      height: value ?? scaleHeight,
     );
   }
 
@@ -37,24 +37,24 @@ class _CategoriesListState extends State<CategoriesList> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(itemCount: snapshot.data!.length,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index)
               {
                 return space();
               },
               itemBuilder: (context, index)
               {
-                return AuthorItemList(snapshot.data![index], context);
+                return authorItemList(snapshot.data![index], context);
               }
               ,shrinkWrap: true,
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }
 
-  Widget AuthorItemList(Author author, BuildContext context) {
+  Widget authorItemList(Author author, BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => {
@@ -67,13 +67,13 @@ class _CategoriesListState extends State<CategoriesList> {
           border: Border.all(
             width: 2,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.person_outline_outlined),
+              const Icon(Icons.person_outline_outlined),
               spaceWidth(10),
               Text(author.authorName, textAlign: TextAlign.center,),
             ],
@@ -89,24 +89,24 @@ class _CategoriesListState extends State<CategoriesList> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(itemCount: snapshot.data!.length,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index)
               {
                 return space();
               },
               itemBuilder: (context, index)
               {
-                return CategoryItemList(snapshot.data![index], context);
+                return categoryItemList(snapshot.data![index], context);
               }
               ,shrinkWrap: true,
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }
 
-  Widget CategoryItemList(String text, BuildContext context) {
+  Widget categoryItemList(String text, BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => {
@@ -119,13 +119,13 @@ class _CategoriesListState extends State<CategoriesList> {
           border: Border.all(
             width: 2,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.menu_book_outlined),
+              const Icon(Icons.menu_book_outlined),
               spaceWidth(10),
               Text(text, textAlign: TextAlign.center,),
             ],
@@ -160,19 +160,19 @@ class _CategoriesListState extends State<CategoriesList> {
                     border: Border.all(
                       width: 2,
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
                   height: scaleHeight * 3,
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   child: DropdownButton<String>(
                     isExpanded: true,
                     iconSize: 35,
-                    icon: Icon(Icons.arrow_drop_down_circle_outlined),
+                    icon: const Icon(Icons.arrow_drop_down_circle_outlined),
                     value: widget.selectedItem,
                     items: items
                         .map((String item) => DropdownMenuItem<String>(
                       value: item,
-                      child: Center(child: FittedBox(child: Text(item, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),))),
+                      child: Center(child: FittedBox(child: Text(item, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),))),
                     ))
                         .toList(),
                     onChanged: (item) => setState(() {

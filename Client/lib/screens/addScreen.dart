@@ -40,7 +40,7 @@ class _BookCreatorState extends State<BookCreator> {
   @override void initState() {
     super.initState();
 
-    bookID = Uuid().v4();
+    bookID = const Uuid().v4();
     title = TextEditingController();
     author = TextEditingController();
     numberOfPages = TextEditingController();
@@ -84,7 +84,7 @@ class _BookCreatorState extends State<BookCreator> {
             child: Row(
               children: [
                 Expanded(child: AuthorTextFormFields(i)),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 _addRemoveButton(i == authorsList.length-1, i),
               ],
             ),
@@ -100,7 +100,9 @@ class _BookCreatorState extends State<BookCreator> {
         if(add){
           authorsList.insert(index, "");
         }
-        else authorsList.removeAt(index);
+        else {
+          authorsList.removeAt(index);
+        }
         setState((){});
       },
       child: Container(
@@ -117,7 +119,7 @@ class _BookCreatorState extends State<BookCreator> {
 
   Widget space( [double? value] ){
     return SizedBox(
-      height: value == null ? scaleHeight : value,
+      height: value ?? scaleHeight,
     );
   }
 
@@ -142,11 +144,11 @@ class _BookCreatorState extends State<BookCreator> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {},
-          child: Icon(
+          child: const Icon(
             Icons.bookmark_add_outlined,
           ),
         ),
-        title: Text("Add book"),
+        title: const Text("Add book"),
       ),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -173,7 +175,7 @@ class _BookCreatorState extends State<BookCreator> {
                 },
               ),
               space(),
-              imagesWeb.length > 0 ? Container(
+              imagesWeb.isNotEmpty ? SizedBox(
                 width: MediaQuery.of(context).size.width / 3,
                 child: GridView.builder(
                     shrinkWrap: true,
@@ -186,12 +188,10 @@ class _BookCreatorState extends State<BookCreator> {
                     ),
                     itemBuilder: (context, index) => GridElement( image: imagesWeb[index])
                 ),
-              ) : Center(
-                child: Container(
-                  child: FittedBox(
-                    child: Text(
-                      "No images found, please add images!", style: TextStyle( fontSize: 18 ),
-                    ),
+              ) : const Center(
+                child: FittedBox(
+                  child: Text(
+                    "No images found, please add images!", style: TextStyle( fontSize: 18 ),
                   ),
                 ),
               ),
@@ -199,19 +199,19 @@ class _BookCreatorState extends State<BookCreator> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.04,
-                child: Center(child: Text('Authors', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                 ),
+                child: const Center(child: Text('Authors', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
               ),
               ...getAuthors(),
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.04,
-                child: Center(child: Text('Book details', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                 ),
+                child: const Center(child: Text('Book details', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
               ),
               space(),
               reusableTextFormField("Title", Icons.title, title, "Enter title"),
@@ -239,10 +239,10 @@ class _BookCreatorState extends State<BookCreator> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.04,
-                child: Center(child: Text('Description', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                 ),
+                child: const Center(child: Text('Description', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),)),
               ),
               space(),
               TextFormField(
@@ -257,7 +257,7 @@ class _BookCreatorState extends State<BookCreator> {
                     return null;
                   }
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   icon: Icon( Icons.description),
                   hintText: "Enter description",
                   labelText: "Description",
@@ -278,7 +278,7 @@ class _BookCreatorState extends State<BookCreator> {
                 {
                     final isValidForm = formKey.currentState!.validate();
 
-                    if( imagesWeb.length == 0 ){
+                    if( imagesWeb.isEmpty ){
 
                       return;
                     }
@@ -299,10 +299,6 @@ class _BookCreatorState extends State<BookCreator> {
                     }
 
                 },
-                child: Text(
-                  "Add book",
-                  style: TextStyle( fontWeight: FontWeight.bold, fontSize: 18 ),
-                ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith((states) {
                     if (states.contains(MaterialState.pressed)) {
@@ -310,6 +306,10 @@ class _BookCreatorState extends State<BookCreator> {
                     }
                     return Theme.of(context).colorScheme.primary;
                   }),
+                ),
+                child: const Text(
+                  "Add book",
+                  style: TextStyle( fontWeight: FontWeight.bold, fontSize: 18 ),
                 ),
               ),
             ],
@@ -334,36 +334,34 @@ class _GridElementState extends State<GridElement> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: widget.onTap,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
-                  ),
-                  image: DecorationImage(
-                      image: MemoryImage(widget.image),
-                      fit: BoxFit.cover
-                  ),
+    return Column(
+      children: [
+        Expanded(
+          child: InkWell(
+            onTap: widget.onTap,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(15),
+                ),
+                image: DecorationImage(
+                    image: MemoryImage(widget.image),
+                    fit: BoxFit.cover
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
 class AuthorTextFormFields extends StatefulWidget {
   final int index;
-  AuthorTextFormFields(this.index);
+  const AuthorTextFormFields(this.index, {super.key});
   @override
-  _AuthorTextFormFieldsState createState() => _AuthorTextFormFieldsState();
+  State<AuthorTextFormFields> createState() => _AuthorTextFormFieldsState();
 }
 
 class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
@@ -385,7 +383,7 @@ class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
   Widget build(BuildContext context) {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      nameController.text = _BookCreatorState.authorsList[widget.index] ?? '';
+      nameController.text = _BookCreatorState.authorsList[widget.index];
     });
 
     return TextFormField(
@@ -401,7 +399,7 @@ class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
         }
       },
       onChanged: (v) => _BookCreatorState.authorsList[widget.index] = v,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         icon: Icon(Icons.person_add_alt_1),
         hintText: "Enter author",
         labelText: "Author",
@@ -434,10 +432,10 @@ TextFormField reusableTextFormField( String label, IconData icon, TextEditingCon
       icon: Icon(icon),
       hintText: hintText,
       labelText: label,
-      enabledBorder: OutlineInputBorder(
+      enabledBorder: const OutlineInputBorder(
         borderSide: BorderSide( width: 3 ),
       ),
-      focusedBorder: OutlineInputBorder(
+      focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide( width: 5 ),
       ),
     ),

@@ -15,8 +15,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   final formKey = GlobalKey<FormState>();
-  TextEditingController _emailTextController = TextEditingController(text: "disom17488@in2reach.com");
-  TextEditingController _passwordTextController = TextEditingController(text: "12345678");
+  final _emailTextController = TextEditingController(text: "disom17488@in2reach.com");
+  final _passwordTextController = TextEditingController(text: "12345678");
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
               globals.space(),
               logoWidget("assets/image/logo.png"),
               globals.space(),
-              Center(
+              const Center(
                 child: FittedBox(
                   child: Text(
                     "Szacun Rispekt Library",
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       email: _emailTextController.text, password: _passwordTextController.text)
                       .then((value){
                     Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => MyHomePage())));
+                        MaterialPageRoute(builder: ((context) => const MyHomePage())));
                   }).onError((error, stackTrace) {
                     dialogTrigger(context, "Login failed", error.toString());
                   });
@@ -102,15 +102,20 @@ TextFormField reusableTextFormField(String text, IconData icon, String fieldType
       {
         if( value.length < 8 || !value.contains("@") ){
           return "Incorrect email";
-        } else return null;
+        } else {
+          return null;
+        }
       }
 
       if( fieldType == "password" )
       {
         if( value.length < 8  ){
           return "Incorrect password";
-        } else return null;
+        } else {
+          return null;
+        }
       }
+      return null;
     },
     decoration: InputDecoration(
       prefixIcon: Icon(
@@ -136,14 +141,14 @@ Widget forgetPassword(BuildContext context) {
     height: globals.scaleHeight * 2,
     alignment: Alignment.bottomRight,
     child: TextButton(
-      child: FittedBox(
+      child: const FittedBox(
         child: Text(
           "Forgot Password?",
           textAlign: TextAlign.right,
         ),
       ),
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const ResetPassword()));
       },
     ),
   );
@@ -159,7 +164,7 @@ Row signUpOption(BuildContext context) {
       globals.spaceWidth(globals.scaleHeight),
       GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
         },
         child: const Text(
           " Sign Up",
@@ -179,12 +184,6 @@ Container firebaseButton(BuildContext context, String title, Function onTap) {
       onPressed: () {
         onTap();
       },
-      child: FittedBox(
-        child: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-      ),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
@@ -194,6 +193,12 @@ Container firebaseButton(BuildContext context, String title, Function onTap) {
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))),
+      child: FittedBox(
+        child: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ),
     ),
   );
 }
@@ -204,11 +209,11 @@ Future<Future> dialogTrigger(BuildContext context, String titleText, String text
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(titleText, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+          title: Text(titleText, style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
           content: Text(text),
           actions: <Widget>[
             ElevatedButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: (){
                 Navigator.pop(context);
               },

@@ -3,7 +3,6 @@ import 'package:client/screens/CategoriesList.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../universalBooksList.dart';
-import 'package:client/globals.dart' as globals;
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key, required this.search, required this.category, required this.sort}) : super(key: key);
@@ -13,15 +12,23 @@ class SearchScreen extends StatefulWidget {
   final String? sort;
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState(category ?? "All", search ?? "", sort ?? "Default");
+  State<SearchScreen> createState() => _SearchScreenState();
+
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  _SearchScreenState(this.value, this.search, this.sort);
 
-  dynamic value;
-  String search;
-  String sort;
+  @override
+  void initState() {
+    super.initState();
+    value = widget.category ?? value;
+    search = widget.search ?? search;
+    sort = widget.sort ?? sort;
+  }
+
+  dynamic value = "All";
+  String search = "";
+  String sort = "Default";
 
   //Dropdown button
   String selectedItem = "None";
@@ -34,7 +41,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget space( [double? value] ){
     return SizedBox(
-      height: value == null ? scaleHeight : value,
+      height: value ?? scaleHeight,
     );
   }
 
@@ -46,20 +53,20 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget returnSorts(BuildContext context){
     return ListView.separated(itemCount: sortList.length,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       separatorBuilder: (context, index)
       {
         return space();
       },
       itemBuilder: (context, index)
       {
-        return CategoryItemList(sortList[index], context);
+        return categoryItemList(sortList[index], context);
       }
       ,shrinkWrap: true,
     );
   }
 
-  Widget CategoryItemList(String text, BuildContext context) {
+  Widget categoryItemList(String text, BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => {
@@ -72,13 +79,13 @@ class _SearchScreenState extends State<SearchScreen> {
           border: Border.all(
             width: 2,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.menu_book_outlined),
+              const Icon(Icons.menu_book_outlined),
               spaceWidth(10),
               Text(text, textAlign: TextAlign.center,),
             ],
@@ -98,11 +105,11 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {},
-          child: Icon(
+          child: const Icon(
             Icons.search,
           ),
         ),
-        title: Text( "Books", style: TextStyle( fontSize: 20 ), ),
+        title: const Text( "Books", style: TextStyle( fontSize: 20 ), ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB( kIsWeb ? scaleWidthWeb : scaleWidthApp, MediaQuery.of(context).size.height * 0.05, kIsWeb ? scaleWidthWeb : scaleWidthApp, MediaQuery.of(context).size.height * 0.05),
@@ -116,14 +123,14 @@ class _SearchScreenState extends State<SearchScreen> {
                     enableSuggestions: true,
                     autocorrect: true,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search_outlined),
-                      suffixIcon: searchController.text.length > 0 ? GestureDetector(child: Icon(Icons.highlight_remove_outlined), onTap: null,) : null,
+                      prefixIcon: const Icon(Icons.search_outlined),
+                      suffixIcon: searchController.text.isNotEmpty ? GestureDetector(onTap: null,child: const Icon(Icons.highlight_remove_outlined),) : null,
                       hintText: "Search something...",
                       labelText: "Search",
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide( width: 2 ),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide( width: 4 ),
                       ),
                     ),
@@ -151,19 +158,19 @@ class _SearchScreenState extends State<SearchScreen> {
                         });
                       }
                     },
-                    child: Container(
+                    child: SizedBox(
                       height: scaleHeight * 3,
                       child: InputDecorator(
                         decoration: InputDecoration(
                           filled: true,
                           isCollapsed: true,
-                          labelStyle: TextStyle(fontSize: 18),
+                          labelStyle: const TextStyle(fontSize: 18),
                           labelText: "Filter by",
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        child: Center(child:FittedBox(child: Text( ( selectedItem == "None" ? selectedItem : selectedItem + ": " + value is Author ? value.authorName : value ), style: TextStyle( fontWeight: FontWeight.bold, fontSize: 18),)) ),
+                        child: Center(child:FittedBox(child: Text( ( selectedItem == "None" ? selectedItem : "$selectedItem: " + value is Author ? value.authorName : value ), style: const TextStyle( fontWeight: FontWeight.bold, fontSize: 18),)) ),
                       ),
                     ),
                   ),
@@ -195,10 +202,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                             border: Border.all(
                                               width: 2,
                                             ),
-                                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
                                           ),
                                           height: scaleHeight * 3,
-                                          child: Center(
+                                          child: const Center(
                                             child: FittedBox(
                                               child: Text(
                                                 "Sort",
@@ -224,19 +231,19 @@ class _SearchScreenState extends State<SearchScreen> {
                         });
                       }
                     },
-                    child: Container(
+                    child: SizedBox(
                       height: scaleHeight * 3,
                       child: InputDecorator(
                         decoration: InputDecoration(
                           filled: true,
                           isCollapsed: true,
-                          labelStyle: TextStyle(fontSize: 18),
+                          labelStyle: const TextStyle(fontSize: 18),
                           labelText: "Sort by",
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        child: Center(child: FittedBox(child: Text(sort, style: TextStyle( fontWeight: FontWeight.bold, fontSize: 18 ),)) ),
+                        child: Center(child: FittedBox(child: Text(sort, style: const TextStyle( fontWeight: FontWeight.bold, fontSize: 18 ),)) ),
                       ),
                     ),
                   ),

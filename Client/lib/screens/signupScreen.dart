@@ -15,9 +15,9 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
 
   final formKey = GlobalKey<FormState>();
-  TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _userNameTextController = TextEditingController();
-  TextEditingController _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  final _userNameTextController = TextEditingController();
+  final _emailTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               globals.space(),
               logoWidget("assets/image/logo.png"),
               globals.space(),
-              Center(
+              const Center(
                 child: FittedBox(
                   child: Text(
                     "Szacun Rispekt Library",
@@ -61,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     UserLibrary newUser = UserLibrary.user(userID: userID, userName: _userNameTextController.text, userMail: _emailTextController.text, userType: "user");
                     globals.userDatabase.addUser(newUser);
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
                   }).onError((error, stackTrace) {
                     dialogTrigger(context, "Registration failed", error.toString());
                   });

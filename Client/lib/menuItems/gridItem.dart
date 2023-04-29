@@ -15,47 +15,45 @@ class _GridItemState extends State<GridItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Expanded(
-              child: InkWell(
-                onTap: widget.onTap,
-                splashColor: Colors.white60,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
-                    ),
-                    image: DecorationImage(
-                      image: AssetImage("assets/image/${widget.image}"),
-                        fit: BoxFit.cover
-                    ),
+    return Column(
+      children: [
+        Expanded(
+            child: InkWell(
+              onTap: widget.onTap,
+              splashColor: Colors.white60,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage("assets/image/${widget.image}"),
+                      fit: BoxFit.cover
                   ),
                 ),
               ),
-          ),
-          Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-                color: Colors.black,
+            ),
+        ),
+        Container(
+            padding: const EdgeInsets.all(5),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
               ),
-              child: Center(
-                child: FittedBox(
-                  child: Text(
-                    widget.name,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
+              color: Colors.black,
+            ),
+            child: Center(
+              child: FittedBox(
+                child: Text(
+                  widget.name,
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
-          ),
-        ],
-      ),
+            ),
+        ),
+      ],
     );
   }
 }

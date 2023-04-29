@@ -1,11 +1,6 @@
-import 'dart:io';
-import 'package:client/authorModel/author.dart';
 import 'package:client/publisherModel/publisher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'globals.dart' as globals;
 
 class PublisherDatabase{
 

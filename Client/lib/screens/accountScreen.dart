@@ -1,4 +1,3 @@
-import 'package:client/libraryModel/library.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:client/screens/usersScreen.dart';
 import 'package:client/userModel/userLibrary.dart';
@@ -48,7 +47,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 border: Border.all(
                   width: 2,
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   bottomLeft: Radius.circular(20),
                 ),
@@ -63,7 +62,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 border: Border.all(
                   width: 2,
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
@@ -73,19 +72,19 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: [
                   FittedBox(
                     child: Text(
-                    "Username: " + user.userName, style: TextStyle(fontWeight: FontWeight.bold),
+                    "Username: ${user.userName}", style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   globals.space(),
                   FittedBox(
                     child: Text(
-                      "Email: " + user.userMail, style: TextStyle(fontWeight: FontWeight.bold),
+                      "Email: ${user.userMail}", style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   globals.space(),
                   FittedBox(
                     child: Text(
-                      "Account type: " + user.userType, style: TextStyle(fontWeight: FontWeight.bold),
+                      "Account type: ${user.userType}", style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -103,11 +102,11 @@ class _AccountScreenState extends State<AccountScreen> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {},
-          child: Icon(
+          child: const Icon(
             Icons.search,
           ),
         ),
-        title: Text( "Account", style: TextStyle( fontSize: 20 ), ),
+        title: const Text( "Account", style: TextStyle( fontSize: 20 ), ),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
 
@@ -124,7 +123,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 ],
                 textIconButton(context, "Logout", Icons.logout_outlined, () {
                   FirebaseAuth.instance.signOut().then((value) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                   });
                 },)
               ],
@@ -132,7 +131,7 @@ class _AccountScreenState extends State<AccountScreen> {
           );
         }
         else{
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
       }),
@@ -173,7 +172,7 @@ Widget textIconButton( BuildContext context, String text, IconData icon, Functio
 Widget adminList(BuildContext context){
   return Column(
     children: [
-      textIconButton(context, "Manage users", Icons.person_outline_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen() ))), ),
+      textIconButton(context, "Manage users", Icons.person_outline_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => const UsersScreen() ))), ),
       globals.space(),
 
     ],

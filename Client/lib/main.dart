@@ -1,4 +1,3 @@
-import 'package:client/screens/homeScreen.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       title: 'BookAPP',
-      home: LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }

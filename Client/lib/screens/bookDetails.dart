@@ -27,7 +27,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
       height: height * 4,
       decoration: BoxDecoration(
           color: const Color(0xff756651),
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(15),
           ),
           border: Border.all(
@@ -37,7 +37,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
       child: Center(
         child: Text(
           text,
-          style: TextStyle( fontWeight: FontWeight.bold ),
+          style: const TextStyle( fontWeight: FontWeight.bold ),
         ),
       ),
     );
@@ -52,7 +52,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             height: height * 3,
             decoration: BoxDecoration(
                 color: const Color(0xffCCB18C),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(15),
                   bottomLeft: Radius.circular(15),
                 ),
@@ -73,7 +73,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             height: height * 3,
             decoration: BoxDecoration(
                 color: const Color(0xffCCB18C),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(15),
                   bottomRight: Radius.circular(15),
                 ),
@@ -103,7 +103,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
 
   Widget space( [double? value] ){
     return SizedBox(
-      height: value == null ? scaleHeight : value,
+      height: value ?? scaleHeight,
     );
   }
 
@@ -115,7 +115,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
+        leading: const Icon(
           Icons.menu_book_outlined,
         ),
         title: FittedBox(child: Text(widget.book.title)),
@@ -140,8 +140,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                             initialPage: 0,
                             enableInfiniteScroll: true,
                             autoPlay: true,
-                            autoPlayInterval: Duration(seconds: 5),
-                            autoPlayAnimationDuration: Duration(milliseconds: 1000),
+                            autoPlayInterval: const Duration(seconds: 5),
+                            autoPlayAnimationDuration: const Duration(milliseconds: 1000),
                             autoPlayCurve: Curves.fastOutSlowIn,
                             enlargeCenterPage: false,
                             scrollDirection: Axis.horizontal,
@@ -158,7 +158,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         Center(
                           child: Text(
                             widget.book.title,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -166,7 +166,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         Center(
                           child: Text(
                             "by  ${widget.authors[0].authorName}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -199,18 +199,18 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             universalContainer("Description", scaleHeight),
             Container(
               width: double.infinity,
+              decoration: BoxDecoration(
+                  color: const Color(0xffCCB18C),
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(
+                    width: 2,
+                  )
+              ),
               child: Padding(
                 padding: EdgeInsets.all(scaleHeight),
                 child: Text(
                   widget.book.description,
                 ),
-              ),
-              decoration: BoxDecoration(
-                  color: const Color(0xffCCB18C),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  border: Border.all(
-                    width: 2,
-                  )
               ),
             ),
           ],

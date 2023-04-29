@@ -25,12 +25,12 @@ class _MyHomePageState extends State<MyHomePage> {
               Icons.menu_book_outlined,
             ),
           ),
-          title: Text("Szacun Rispekt"),
+          title: const Text("Szacun Rispekt"),
         ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only( top: 25, bottom: 30, left: kIsWeb ? MediaQuery.of(context).size.width / 5 : MediaQuery.of(context).size.width / 20, right: kIsWeb ? MediaQuery.of(context).size.width / 5 : MediaQuery.of(context).size.width / 20 ),
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: GridView.count(
@@ -39,9 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisSpacing: MediaQuery.of(context).size.height * 0.03,
                   children: [
                     GridItem(name:  "Wypożycz", image: "library1.jpg", onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => const BookCreator() ))),),
-                    GridItem(name:  "Przeglądaj", image: "library2.jpg", onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => SearchScreen(search: '', category: 'All', sort: 'Default',) ))), ),
-                    GridItem(name:  "Biblioteki", image: "library3.jpg", onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => LoginScreen() ))), ),
-                    GridItem(name:  "Twoje konto", image: "library4.jpg", onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => AccountScreen())))),
+                    GridItem(name:  "Przeglądaj", image: "library2.jpg", onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => const SearchScreen(search: '', category: 'All', sort: 'Default',) ))), ),
+                    GridItem(name:  "Biblioteki", image: "library3.jpg", onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => const LoginScreen() ))), ),
+                    GridItem(name:  "Twoje konto", image: "library4.jpg", onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => const AccountScreen())))),
                   ]
               ),
             ),

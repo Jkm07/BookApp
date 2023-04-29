@@ -17,7 +17,7 @@ final scaleWidthApp =  WidgetsBinding.instance.window.physicalSize.width / pixel
 
 Widget space( [double? value] ){
   return SizedBox(
-    height: value == null ? scaleHeight : value,
+    height: value ?? scaleHeight,
   );
 }
 

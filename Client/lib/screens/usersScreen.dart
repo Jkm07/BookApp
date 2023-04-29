@@ -20,11 +20,11 @@ class _UsersScreenState extends State<UsersScreen> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {},
-          child: Icon(
+          child: const Icon(
             Icons.search,
           ),
         ),
-        title: Text( "Users", style: TextStyle( fontSize: 20 ), ),
+        title: const Text( "Users", style: TextStyle( fontSize: 20 ), ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only( top: globals.scaleHeight * 2 , bottom: globals.scaleHeight * 2, left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp, right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp ),
@@ -32,7 +32,7 @@ class _UsersScreenState extends State<UsersScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             globals.space(),
-            UsersList(),
+            const UsersList(),
           ],
         ),
       ),
