@@ -178,18 +178,6 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {},
-          child: const Icon(
-            Icons.search,
-          ),
-        ),
-        title: const Text(
-          "Account",
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
       body: LayoutBuilder(builder: (context, constraints) {
         if (loadedData) {
           return SingleChildScrollView(

@@ -7,14 +7,14 @@ import '../universalBooksList.dart';
 class SearchScreen extends StatefulWidget {
   const SearchScreen(
       {Key? key,
-      required this.search,
-      required this.category,
-      required this.sort})
+      this.search = "",
+      this.category = "All",
+      this.sort = "Default"})
       : super(key: key);
 
-  final String? search;
-  final String? category;
-  final String? sort;
+  final String search;
+  final String category;
+  final String sort;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -24,9 +24,9 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    value = widget.category ?? value;
-    search = widget.search ?? search;
-    sort = widget.sort ?? sort;
+    value = widget.category;
+    search = widget.search;
+    sort = widget.sort;
   }
 
   dynamic value = "All";
@@ -105,18 +105,6 @@ class _SearchScreenState extends State<SearchScreen> {
     scaleWidthApp = MediaQuery.of(context).size.width / 20;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {},
-          child: const Icon(
-            Icons.search,
-          ),
-        ),
-        title: const Text(
-          "Books",
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(
             kIsWeb ? scaleWidthWeb : scaleWidthApp,

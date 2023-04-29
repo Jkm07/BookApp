@@ -1,4 +1,4 @@
-import 'package:client/screens/homeScreen.dart';
+import 'package:client/screens/home_screen.dart';
 import 'package:client/screens/resetPassword.dart';
 import 'package:client/screens/signupScreen.dart';
 import 'package:flutter/foundation.dart';

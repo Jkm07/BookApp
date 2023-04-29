@@ -143,21 +143,12 @@ class _BookCreatorState extends State<BookCreator> {
     scaleWidthApp = MediaQuery.of(context).size.width / 20;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {},
-          child: const Icon(
-            Icons.bookmark_add_outlined,
-          ),
-        ),
-        title: const Text("Add book"),
-      ),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
         child: SingleChildScrollView(
           padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.05,
+              top: MediaQuery.of(context).size.height * 0.03,
               bottom: MediaQuery.of(context).size.height * 0.05,
               left: kIsWeb ? scaleWidthWeb : scaleWidthApp,
               right: kIsWeb ? scaleWidthWeb : scaleWidthApp),

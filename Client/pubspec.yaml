@@ -49,6 +49,7 @@ dependencies:
   universal_io: ^2.2.0
   cross_scroll: ^0.0.75
   carousel_slider: ^4.2.1
+  google_nav_bar: ^5.0.6
 
 dev_dependencies:
   flutter_test:
