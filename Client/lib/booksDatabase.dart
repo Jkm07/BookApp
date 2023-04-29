@@ -68,7 +68,7 @@ class BooksDatabase{
     }
     else if ( filterType == "Authors" )
     {
-      querySnapshot = await database.where("authorsID", isEqualTo: value).get();
+      querySnapshot = await database.where("authorsID", arrayContains: value).get();
     }
 
     final books = querySnapshot!.docs

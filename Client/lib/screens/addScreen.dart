@@ -431,7 +431,7 @@ class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
   }
 }
 
-TextFormField reusableTextFormField( String label, IconData icon, TextEditingController controller, String hintText  ){
+TextFormField reusableTextFormField( String label, IconData icon, TextEditingController controller, String hintText ){
   return TextFormField(
     style: TextStyle( color: Colors.white ),
     controller: controller,

@@ -1,4 +1,5 @@
 import 'package:client/libraryModel/library.dart';
+import 'package:client/screens/addLibrary.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:client/screens/usersScreen.dart';
 import 'package:client/userModel/userLibrary.dart';
@@ -54,7 +55,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   bottomLeft: Radius.circular(20),
                 ),
               ),
-              child: Image.asset("assets/image/read.png", fit: BoxFit.fitHeight,),
+              child: Image.asset( user.userType == "librarian" ? "assets/image/librarian.png" : "assets/image/reader.png", fit: BoxFit.fitHeight,),
             ),
           ),
           Expanded(
@@ -99,6 +100,58 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
+  Widget adminList(BuildContext context){
+    return Column(
+      children: [
+        textIconButton("Manage users", Icons.person_outline_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen() ))), ),
+        globals.space(),
+        textIconButton("Manage libraries", Icons.holiday_village_outlined, () {}  ),
+        globals.space(),
+        textIconButton("Add library", Icons.home_filled, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => AddLibrary() ))), ),
+        globals.space(),
+      ],
+    );
+  }
+
+  Widget librarianList(BuildContext context){
+    return Column(
+      children: [
+        textIconButton("Change username", Icons.abc_outlined, () {} ),
+        globals.space(),
+        textIconButton("Change password", Icons.lock_outline, () {} ),
+        globals.space(),
+        textIconButton("Change email address", Icons.mail_outline_outlined, () {} ),
+        globals.space(),
+        textIconButton("Manage users", Icons.person_outline_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen() ))), ),
+        globals.space(),
+        textIconButton("Manage books", Icons.menu_book_outlined, () {} ),
+        globals.space(),
+      ],
+    );
+  }
+
+  Widget userList(BuildContext context){
+    return Column(
+      children: [
+        //() => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen() ))),
+        textIconButton("Change username", Icons.abc_outlined, () {} ),
+        globals.space(),
+        textIconButton("Change password", Icons.lock_outline, () {} ),
+        globals.space(),
+        textIconButton("Change email address", Icons.mail_outline_outlined, () {} ),
+        globals.space(),
+        textIconButton("My loans", Icons.list_alt_rounded, () {} ),
+        globals.space(),
+        textIconButton("Delete account", Icons.restore_from_trash_outlined, () {
+          globals.userDatabase.deleteUserData(user);
+          globals.userDatabase.deleteMyAccount();
+        }, color: Colors.red ),
+        globals.space(),
+
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,6 +178,12 @@ class _AccountScreenState extends State<AccountScreen> {
                 globals.space(),
                 if( user.userType == "admin" )... [
                   adminList(context),
+                ]
+                else if( user.userType == "librarian" )... [
+                  librarianList(context),
+                ]
+                else if( user.userType == "user" )... [
+                  userList(context),
                 ],
                 textIconButton("Logout", Icons.logout_outlined, () {
                   FirebaseAuth.instance.signOut().then((value) {
@@ -144,7 +203,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 }
 
-Widget textIconButton( String text, IconData icon, Function() onTap ){
+Widget textIconButton( String text, IconData icon, Function() onTap, {Color color = Colors.black} ){
   return Container(
     width: double.infinity,
     height: globals.scaleHeight * 2.5,
@@ -168,21 +227,11 @@ Widget textIconButton( String text, IconData icon, Function() onTap ){
             if (states.contains(MaterialState.pressed)) {
               return Colors.red;
             }
-            return Colors.black;
+            return color;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30)))),
     ),
-  );
-}
-
-Widget adminList(BuildContext context){
-  return Column(
-    children: [
-      textIconButton("Manage users", Icons.person_outline_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen() ))), ),
-      globals.space(),
-
-    ],
   );
 }

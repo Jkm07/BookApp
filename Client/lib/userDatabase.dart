@@ -29,6 +29,19 @@ class UserDatabase{
       await globals.booksDatabase.getFirestore()!.collection("users").doc(user.userID).set(user.toJson());
   }
 
+  updateUser( UserLibrary user ) async{
+    await globals.booksDatabase.getFirestore()!.collection("users").doc(user.userID).update(user.toJson());
+  }
+
+  deleteUserData( UserLibrary user ) async{
+    await globals.booksDatabase.getFirestore()!.collection("users").doc(user.userID).delete();
+  }
+
+  deleteMyAccount() async{
+    User? currentUser = await FirebaseAuth.instance.currentUser;
+    currentUser!.delete();
+  }
+
   Future<UserLibrary> getCurrentUser( ) async {
     String userID = await getUserID();
     final database = globals.booksDatabase.getFirestore()!.collection("users");
@@ -42,7 +55,7 @@ class UserDatabase{
     return users[0];
   }
 
-  changePermissions( String email ) async {
+  changePermissions( String email, String accountType ) async {
     final database = globals.booksDatabase.getFirestore()!.collection("users");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
     querySnapshot = await database.where("userMail", isEqualTo: email).get();
@@ -52,7 +65,7 @@ class UserDatabase{
         .toList();
 
     if( user.isNotEmpty ){
-      UserLibrary updatedUser = UserLibrary.user(userID: user[0].userID, userName: user[0].userName, userMail: user[0].userMail, userType: "librarian");
+      UserLibrary updatedUser = UserLibrary.user(userID: user[0].userID, userName: user[0].userName, userMail: user[0].userMail, userType: accountType);
         await globals.booksDatabase.getFirestore()!.collection("users").doc(updatedUser.userID).update(updatedUser.toJson());
     }
   }
@@ -67,6 +80,18 @@ class UserDatabase{
         .toList();
 
     return users;
+  }
+
+  getUser(String mail) async{
+    final database = globals.booksDatabase.getFirestore()!.collection("users");
+    QuerySnapshot<Map<String, dynamic>>? querySnapshot;
+    querySnapshot = await database.where("userMail", isEqualTo: mail).get();
+
+    final users = querySnapshot!.docs
+        .map((doc) => UserLibrary.fromJson(doc.data()))
+        .toList();
+
+    return users[0];
   }
 
 }
