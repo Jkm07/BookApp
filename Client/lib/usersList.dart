@@ -12,44 +12,68 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-
-  Widget UserItemList( UserLibrary user ){
+  Widget userItemList(UserLibrary user) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => UserDetails(user: user)));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => UserDetails(user: user)));
       },
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: user.userType == "librarian" ? Color(0xff6b0215) : Color(0xff0b0994),
+            color: user.userType == "librarian"
+                ? const Color(0xff6b0215)
+                : const Color(0xff0b0994),
             border: Border.all(
               color: Colors.black,
               width: 2,
             ),
-            borderRadius: BorderRadius.all(Radius.circular(20))
-        ),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
         child: SizedBox(
           height: globals.scaleHeight * 4,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            AspectRatio(
+              AspectRatio(
                 aspectRatio: 1,
-                child: Image.asset( user.userType == "librarian" ? "assets/image/librarian.png" : "assets/image/reader.png", fit: BoxFit.fitHeight,),
+                child: Image.asset(
+                  user.userType == "librarian"
+                      ? "assets/image/librarian.png"
+                      : "assets/image/reader.png",
+                  fit: BoxFit.fitHeight,
+                ),
               ),
-              globals.spaceWidth( kIsWeb ? globals.scaleHeight * 3 : globals.scaleHeight),
+              globals.spaceWidth(
+                  kIsWeb ? globals.scaleHeight * 3 : globals.scaleHeight),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    FittedBox(child: Text(user.userName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 20),)),
-                    FittedBox(child: Text(user.userMail, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 16),)),
+                    FittedBox(
+                        child: Text(
+                      user.userName,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20),
+                    )),
+                    FittedBox(
+                        child: Text(
+                      user.userMail,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16),
+                    )),
                   ],
                 ),
               ),
-              Icon( Icons.arrow_back_ios_new_outlined, color: Colors.white, ),
+              const Icon(
+                Icons.arrow_back_ios_new_outlined,
+                color: Colors.white,
+              ),
             ],
           ),
         ),
@@ -61,23 +85,21 @@ class _UsersListState extends State<UsersList> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: globals.userDatabase.getUsers(),
-        builder: (context, snapshot){
-          if (snapshot.hasData){
-            return ListView.separated(itemCount: snapshot.data!.length,
-              separatorBuilder: (context, index)
-              {
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.separated(
+              itemCount: snapshot.data!.length,
+              separatorBuilder: (context, index) {
                 return globals.space();
               },
-              itemBuilder: (context, index)
-              {
-                return UserItemList(snapshot.data![index]);
-              }
-              ,shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return userItemList(snapshot.data![index]);
+              },
+              shrinkWrap: true,
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
-        }
-    );
+        });
   }
 }
