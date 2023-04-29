@@ -13,9 +13,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final formKey = GlobalKey<FormState>();
-  final _emailTextController = TextEditingController(text: "disom17488@in2reach.com");
+  final _emailTextController =
+      TextEditingController(text: "disom17488@in2reach.com");
   final _passwordTextController = TextEditingController(text: "12345678");
 
   @override
@@ -25,7 +25,11 @@ class _LoginScreenState extends State<LoginScreen> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsets.only( top: globals.scaleHeight * 2 , bottom: globals.scaleHeight * 2, left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp, right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp ),
+          padding: EdgeInsets.only(
+              top: globals.scaleHeight * 2,
+              bottom: globals.scaleHeight * 2,
+              left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
+              right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -44,30 +48,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               globals.space(),
-              reusableTextFormField("Enter email address", Icons.mail_outline_outlined, "email", _emailTextController),
+              reusableTextFormField("Enter email address",
+                  Icons.mail_outline_outlined, "email", _emailTextController),
               globals.space(),
-              reusableTextFormField("Enter password", Icons.lock_outline, "password", _passwordTextController),
+              reusableTextFormField("Enter password", Icons.lock_outline,
+                  "password", _passwordTextController),
               forgetPassword(context),
               globals.space(),
-              firebaseButton(context, "Sign In", (){
+              firebaseButton(context, "Sign In", () {
                 final isValidForm = formKey.currentState!.validate();
 
-                if( isValidForm ){
-                  globals.booksDatabase.getAuth()!.signInWithEmailAndPassword(
-                      email: _emailTextController.text, password: _passwordTextController.text)
-                      .then((value){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => const MyHomePage())));
+                if (isValidForm) {
+                  globals.booksDatabase
+                      .getAuth()!
+                      .signInWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
+                      .then((value) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => const MyHomePage())));
                   }).onError((error, stackTrace) {
                     dialogTrigger(context, "Login failed", error.toString());
                   });
+                } else {
+                  dialogTrigger(context, "Incorrect data",
+                      "Email address or password is incorrect!");
                 }
-                else{
-                  dialogTrigger(context, "Incorrect data", "Email address or password is incorrect!");
-                }
-
-              }
-              ),
+              }),
               signUpOption(context),
             ],
           ),
@@ -75,7 +84,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
 }
 
 Widget logoWidget(String imageName) {
@@ -87,29 +95,28 @@ Widget logoWidget(String imageName) {
   );
 }
 
-TextFormField reusableTextFormField(String text, IconData icon, String fieldType, TextEditingController controller) {
+TextFormField reusableTextFormField(String text, IconData icon,
+    String fieldType, TextEditingController controller) {
   return TextFormField(
     controller: controller,
     obscureText: fieldType == "password",
     enableSuggestions: fieldType != "password",
     autocorrect: fieldType != "password",
     validator: (value) {
-      if ( value == null || value.isEmpty ) {
+      if (value == null || value.isEmpty) {
         return "This field can not be empty!";
       }
 
-      if( fieldType == "email" )
-      {
-        if( value.length < 8 || !value.contains("@") ){
+      if (fieldType == "email") {
+        if (value.length < 8 || !value.contains("@")) {
           return "Incorrect email";
         } else {
           return null;
         }
       }
 
-      if( fieldType == "password" )
-      {
-        if( value.length < 8  ){
+      if (fieldType == "password") {
+        if (value.length < 8) {
           return "Incorrect password";
         } else {
           return null;
@@ -148,7 +155,8 @@ Widget forgetPassword(BuildContext context) {
         ),
       ),
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const ResetPassword()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ResetPassword()));
       },
     ),
   );
@@ -164,7 +172,8 @@ Row signUpOption(BuildContext context) {
       globals.spaceWidth(globals.scaleHeight),
       GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const SignUpScreen()));
         },
         child: const Text(
           " Sign Up",
@@ -203,23 +212,26 @@ Container firebaseButton(BuildContext context, String title, Function onTap) {
   );
 }
 
-Future<Future> dialogTrigger(BuildContext context, String titleText, String text) async{
+Future<Future> dialogTrigger(
+    BuildContext context, String titleText, String text) async {
   return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(titleText, style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+          title: Text(
+            titleText,
+            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
           content: Text(text),
           actions: <Widget>[
             ElevatedButton(
               child: const Text("OK"),
-              onPressed: (){
+              onPressed: () {
                 Navigator.pop(context);
               },
             )
           ],
         );
-      }
-  );
+      });
 }

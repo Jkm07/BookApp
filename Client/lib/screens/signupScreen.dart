@@ -13,7 +13,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   final formKey = GlobalKey<FormState>();
   final _passwordTextController = TextEditingController();
   final _userNameTextController = TextEditingController();
@@ -26,7 +25,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsets.only( top: globals.scaleHeight * 2 , bottom: globals.scaleHeight * 2, left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp, right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp ),
+          padding: EdgeInsets.only(
+              top: globals.scaleHeight * 2,
+              bottom: globals.scaleHeight * 2,
+              left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
+              right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -45,31 +48,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               globals.space(),
-              reusableTextFormField("Enter username", Icons.person_outline_outlined, "", _userNameTextController),
+              reusableTextFormField("Enter username",
+                  Icons.person_outline_outlined, "", _userNameTextController),
               globals.space(),
-              reusableTextFormField("Enter Email", Icons.mail_outline_outlined, "email", _emailTextController),
+              reusableTextFormField("Enter Email", Icons.mail_outline_outlined,
+                  "email", _emailTextController),
               globals.space(),
-              reusableTextFormField("Enter password", Icons.lock_outline, "password", _passwordTextController),
+              reusableTextFormField("Enter password", Icons.lock_outline,
+                  "password", _passwordTextController),
               globals.space(),
-              firebaseButton(context, "Sign Up", (){
+              firebaseButton(context, "Sign Up", () {
                 final isValidForm = formKey.currentState!.validate();
 
-                if(isValidForm){
-                  globals.booksDatabase.getAuth()!.createUserWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text)
+                if (isValidForm) {
+                  globals.booksDatabase
+                      .getAuth()!
+                      .createUserWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
                       .then((value) async {
                     String userID = await globals.userDatabase.getUserID();
-                    UserLibrary newUser = UserLibrary.user(userID: userID, userName: _userNameTextController.text, userMail: _emailTextController.text, userType: "user");
+                    UserLibrary newUser = UserLibrary.user(
+                        userID: userID,
+                        userName: _userNameTextController.text,
+                        userMail: _emailTextController.text,
+                        userType: "user");
                     globals.userDatabase.addUser(newUser);
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyHomePage()));
                   }).onError((error, stackTrace) {
-                    dialogTrigger(context, "Registration failed", error.toString());
+                    dialogTrigger(
+                        context, "Registration failed", error.toString());
                   });
+                } else {
+                  dialogTrigger(context, "Incorrect data",
+                      "Email address, password or username is incorrect!");
                 }
-                else{
-                  dialogTrigger(context, "Incorrect data", "Email address, password or username is incorrect!");
-                }
-
               }),
             ],
           ),

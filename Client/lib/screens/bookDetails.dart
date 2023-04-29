@@ -6,7 +6,12 @@ import '../authorModel/author.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class BookDetailsScreen extends StatefulWidget {
-  const BookDetailsScreen({Key? key, required this.book, required this.publisher, required this.authors}) : super(key: key);
+  const BookDetailsScreen(
+      {Key? key,
+      required this.book,
+      required this.publisher,
+      required this.authors})
+      : super(key: key);
   final Book book;
   final Publisher publisher;
   final List<Author> authors;
@@ -16,13 +21,13 @@ class BookDetailsScreen extends StatefulWidget {
 }
 
 class _BookDetailsScreenState extends State<BookDetailsScreen> {
-
-  var pixelRatio = MediaQueryData.fromWindow(WidgetsBinding.instance.window).devicePixelRatio;
+  var pixelRatio = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+      .devicePixelRatio;
   late double scaleHeight;
   late double scaleWidthApp;
   late double scaleWidthWeb;
 
-  Widget universalContainer( String text, double height ){
+  Widget universalContainer(String text, double height) {
     return Container(
       height: height * 4,
       decoration: BoxDecoration(
@@ -32,18 +37,17 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           ),
           border: Border.all(
             width: 2,
-          )
-      ),
+          )),
       child: Center(
         child: Text(
           text,
-          style: const TextStyle( fontWeight: FontWeight.bold ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 
-  Row createRow( String parameterName, String text, double height ){
+  Row createRow(String parameterName, String text, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -59,8 +63,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 border: Border.all(
                   width: 2,
                   color: Colors.black,
-                )
-            ),
+                )),
             child: Center(
               child: Text(
                 parameterName,
@@ -79,8 +82,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 ),
                 border: Border.all(
                   width: 2,
-                )
-            ),
+                )),
             child: Center(
               child: Text(
                 text,
@@ -92,16 +94,16 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     );
   }
 
-  List<Widget> displayAuthors(double height){
+  List<Widget> displayAuthors(double height) {
     List<Widget> widgets = [];
-    for( int i = 0; i < widget.authors.length; i++ )
-    {
-      widgets.add( createRow("#${i+1} Author", widget.authors[i].authorName, height) );
+    for (int i = 0; i < widget.authors.length; i++) {
+      widgets.add(
+          createRow("#${i + 1} Author", widget.authors[i].authorName, height));
     }
     return widgets;
   }
 
-  Widget space( [double? value] ){
+  Widget space([double? value]) {
     return SizedBox(
       height: value ?? scaleHeight,
     );
@@ -109,9 +111,12 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    scaleHeight = WidgetsBinding.instance.window.physicalSize.height / pixelRatio * 0.02;
-    scaleWidthWeb = WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 5;
-    scaleWidthApp =  WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 20;
+    scaleHeight =
+        WidgetsBinding.instance.window.physicalSize.height / pixelRatio * 0.02;
+    scaleWidthWeb =
+        WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 5;
+    scaleWidthApp =
+        WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 20;
 
     return Scaffold(
       appBar: AppBar(
@@ -121,7 +126,9 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         title: FittedBox(child: Text(widget.book.title)),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric( horizontal: kIsWeb ? scaleWidthWeb : scaleWidthApp, vertical: kIsWeb ? scaleHeight * 3 : scaleHeight),
+        padding: EdgeInsets.symmetric(
+            horizontal: kIsWeb ? scaleWidthWeb : scaleWidthApp,
+            vertical: kIsWeb ? scaleHeight * 3 : scaleHeight),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -131,22 +138,29 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                      child: CarouselSlider(
-                          items: widget.book.images.map((e) => GestureDetector(child: Image.network(e), onTap: () => print("123"),),).toList(),
-                          options: CarouselOptions(
-                            height: 400,
-                            aspectRatio: 16/9,
-                            viewportFraction: 1,
-                            initialPage: 0,
-                            enableInfiniteScroll: true,
-                            autoPlay: true,
-                            autoPlayInterval: const Duration(seconds: 5),
-                            autoPlayAnimationDuration: const Duration(milliseconds: 1000),
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enlargeCenterPage: false,
-                            scrollDirection: Axis.horizontal,
-                          )
-                      ),
+                    child: CarouselSlider(
+                        items: widget.book.images
+                            .map(
+                              (e) => GestureDetector(
+                                child: Image.network(e),
+                                onTap: () => print("123"),
+                              ),
+                            )
+                            .toList(),
+                        options: CarouselOptions(
+                          height: 400,
+                          aspectRatio: 16 / 9,
+                          viewportFraction: 1,
+                          initialPage: 0,
+                          enableInfiniteScroll: true,
+                          autoPlay: true,
+                          autoPlayInterval: const Duration(seconds: 5),
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 1000),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enlargeCenterPage: false,
+                          scrollDirection: Axis.horizontal,
+                        )),
                   ),
                   SizedBox(
                     width: scaleHeight,
@@ -162,7 +176,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        space( scaleHeight * 1.5 ),
+                        space(scaleHeight * 1.5),
                         Center(
                           child: Text(
                             "by  ${widget.authors[0].authorName}",
@@ -170,10 +184,10 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        space( scaleHeight * 1.5 ),
+                        space(scaleHeight * 1.5),
                         Center(
                           child: Text(
-                              widget.book.category,
+                            widget.book.category,
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -187,13 +201,15 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             universalContainer("Authors", scaleHeight),
             ...displayAuthors(scaleHeight),
             universalContainer("Book details", scaleHeight),
-            createRow( "ISBN", widget.book.ISBN, scaleHeight),
-            createRow("Number of Pages", widget.book.numberOfPages, scaleHeight),
+            createRow("ISBN", widget.book.ISBN, scaleHeight),
+            createRow(
+                "Number of Pages", widget.book.numberOfPages, scaleHeight),
             createRow("Cover type", widget.book.coverType, scaleHeight),
             createRow("Language", widget.book.language, scaleHeight),
             createRow("Publisher", widget.publisher.publisherName, scaleHeight),
             createRow("Publisher date", widget.book.publishedDate, scaleHeight),
-            createRow("Publication year", widget.book.yearPublication, scaleHeight),
+            createRow(
+                "Publication year", widget.book.yearPublication, scaleHeight),
             createRow("Issue number", widget.book.issueNumber, scaleHeight),
             space(scaleHeight * 2),
             universalContainer("Description", scaleHeight),
@@ -204,8 +220,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                   border: Border.all(
                     width: 2,
-                  )
-              ),
+                  )),
               child: Padding(
                 padding: EdgeInsets.all(scaleHeight),
                 child: Text(

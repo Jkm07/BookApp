@@ -22,13 +22,16 @@ Publisher _$PublisherFromJson(Map<String, dynamic> json) {
 mixin _$Publisher {
 //common
   String get publisherID => throw _privateConstructorUsedError;
+
   String get publisherName => throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String publisherID, String publisherName)
         publisher,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String publisherID, String publisherName)? publisher,
@@ -40,11 +43,13 @@ mixin _$Publisher {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(publisher value) publisher,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(publisher value)? publisher,
@@ -75,9 +80,9 @@ class _$PublisherCopyWithImpl<$Res, $Val extends Publisher>
     implements $PublisherCopyWith<$Res> {
   _$PublisherCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
+// ignore: unused_field
   final $Val _value;
-  // ignore: unused_field
+// ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')

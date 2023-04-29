@@ -11,7 +11,6 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-
   final formKey = GlobalKey<FormState>();
   final _emailTextController = TextEditingController();
 
@@ -22,7 +21,11 @@ class _ResetPasswordState extends State<ResetPassword> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsets.only( top: globals.scaleHeight * 2 , bottom: globals.scaleHeight * 2, left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp, right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp ),
+          padding: EdgeInsets.only(
+              top: globals.scaleHeight * 2,
+              bottom: globals.scaleHeight * 2,
+              left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
+              right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -41,18 +44,20 @@ class _ResetPasswordState extends State<ResetPassword> {
                 ),
               ),
               globals.space(),
-              reusableTextFormField("Enter Email", Icons.mail_outline_outlined, "email", _emailTextController),
+              reusableTextFormField("Enter Email", Icons.mail_outline_outlined,
+                  "email", _emailTextController),
               globals.space(),
-              firebaseButton(context, "Reset Password", (){
+              firebaseButton(context, "Reset Password", () {
                 final isValidForm = formKey.currentState!.validate();
 
-                if(isValidForm){
-                  globals.booksDatabase.getAuth()
-                      !.sendPasswordResetEmail(email: _emailTextController.text)
-                      .then((value) => dialogTrigger(context, "Reset Password", "Password reset email has been sent to the provided email address!"))
+                if (isValidForm) {
+                  globals.booksDatabase
+                      .getAuth()!
+                      .sendPasswordResetEmail(email: _emailTextController.text)
+                      .then((value) => dialogTrigger(context, "Reset Password",
+                          "Password reset email has been sent to the provided email address!"))
                       .then((value) => Navigator.of(context).pop());
-                }
-                else{
+                } else {
                   dialogTrigger(context, "Email issue", "Incorrect Email");
                 }
               }),

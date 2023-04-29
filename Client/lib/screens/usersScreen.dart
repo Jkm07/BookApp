@@ -11,9 +11,6 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +21,17 @@ class _UsersScreenState extends State<UsersScreen> {
             Icons.search,
           ),
         ),
-        title: const Text( "Users", style: TextStyle( fontSize: 20 ), ),
+        title: const Text(
+          "Users",
+          style: TextStyle(fontSize: 20),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.only( top: globals.scaleHeight * 2 , bottom: globals.scaleHeight * 2, left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp, right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp ),
+        padding: EdgeInsets.only(
+            top: globals.scaleHeight * 2,
+            bottom: globals.scaleHeight * 2,
+            left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
+            right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

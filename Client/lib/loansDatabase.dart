@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'globals.dart' as globals;
 
-class LoansDatabase{
-
+class LoansDatabase {
   // Future createLoan () async{
   //   String userID = await globals.userDatabase.getUserID();
   //   await FirebaseFirestore.instance.collection("loans").doc(Uuid().v4()).set( { "userID": userID, "products": [] } );
@@ -18,34 +17,55 @@ class LoansDatabase{
   //   return loans;
   // }
 
-  Future createLoanRecordForUser() async
-  {
+  Future createLoanRecordForUser() async {
     String userID = await globals.userDatabase.getUserID();
-    await globals.booksDatabase.getFirestore()!.collection("loansList").doc(userID).set( { "userID": userID, "booksID": [] } );
+    await globals.booksDatabase
+        .getFirestore()!
+        .collection("loansList")
+        .doc(userID)
+        .set({"userID": userID, "booksID": []});
   }
 
-  Future cleanLoanList () async{
+  Future cleanLoanList() async {
     String userID = await globals.userDatabase.getUserID();
-    await globals.booksDatabase.getFirestore()!.collection("loansList").doc(userID).update( { "userID": userID, "booksID": [] } );
+    await globals.booksDatabase
+        .getFirestore()!
+        .collection("loansList")
+        .doc(userID)
+        .update({"userID": userID, "booksID": []});
   }
 
-  Future addBookToLoanList ( String bookID ) async {
+  Future addBookToLoanList(String bookID) async {
     String userID = await globals.userDatabase.getUserID();
-    await globals.booksDatabase.getFirestore()!.collection("loansList").doc(userID).update({ "booksID": FieldValue.arrayUnion([bookID]) });
+    await globals.booksDatabase
+        .getFirestore()!
+        .collection("loansList")
+        .doc(userID)
+        .update({
+      "booksID": FieldValue.arrayUnion([bookID])
+    });
   }
 
-  Future removeBookFromLoanList ( String bookID ) async {
+  Future removeBookFromLoanList(String bookID) async {
     String userID = await globals.userDatabase.getUserID();
-    await globals.booksDatabase.getFirestore()!.collection("loansList").doc(userID).update({ "booksID": FieldValue.arrayRemove([bookID]) });
+    await globals.booksDatabase
+        .getFirestore()!
+        .collection("loansList")
+        .doc(userID)
+        .update({
+      "booksID": FieldValue.arrayRemove([bookID])
+    });
   }
 
-  Future<List<String>> getLoansList() async{
+  Future<List<String>> getLoansList() async {
     String userID = await globals.userDatabase.getUserID();
     List<String> booksID;
-    var documentSnapshot = await FirebaseFirestore.instance.collection("loansList").doc(userID).get();
-    booksID = List.from( documentSnapshot.data()!["booksID"] );
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection("loansList")
+        .doc(userID)
+        .get();
+    booksID = List.from(documentSnapshot.data()!["booksID"]);
 
     return booksID;
   }
-
 }

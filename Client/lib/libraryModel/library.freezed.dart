@@ -22,10 +22,14 @@ Library _$LibraryFromJson(Map<String, dynamic> json) {
 mixin _$Library {
 //common
   String get name => throw _privateConstructorUsedError;
+
   String get address => throw _privateConstructorUsedError;
+
   List<String> get librarianList => throw _privateConstructorUsedError;
+
   Map<String, String> get booksAndQuantity =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name, String address,
@@ -33,6 +37,7 @@ mixin _$Library {
         library,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String name, String address, List<String> librarianList,
@@ -48,11 +53,13 @@ mixin _$Library {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(libraryModel value) library,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(libraryModel value)? library,
@@ -86,9 +93,9 @@ class _$LibraryCopyWithImpl<$Res, $Val extends Library>
     implements $LibraryCopyWith<$Res> {
   _$LibraryCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
+// ignore: unused_field
   final $Val _value;
-  // ignore: unused_field
+// ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -195,7 +202,7 @@ class _$libraryModel extends libraryModel {
   @override
   List<String> get librarianList {
     if (_librarianList is EqualUnmodifiableListView) return _librarianList;
-    // ignore: implicit_dynamic_type
+// ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_librarianList);
   }
 
@@ -203,7 +210,7 @@ class _$libraryModel extends libraryModel {
   @override
   Map<String, String> get booksAndQuantity {
     if (_booksAndQuantity is EqualUnmodifiableMapView) return _booksAndQuantity;
-    // ignore: implicit_dynamic_type
+// ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_booksAndQuantity);
   }
 

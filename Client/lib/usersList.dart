@@ -10,19 +10,19 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-
-  Widget UserItemList( UserLibrary user ){
+  Widget userItemList(UserLibrary user) {
     return Container(
       //height: globals.scaleHeight * 2,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: user.userType == "librarian" ? Color(0xff6b0215) : Color(0xff0b0994),
+          color: user.userType == "librarian"
+              ? const Color(0xff6b0215)
+              : const Color(0xff0b0994),
           border: Border.all(
             color: Colors.black,
             width: 2,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(20))
-      ),
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
 
       // child: Row(
       //   mainAxisAlignment: MainAxisAlignment.center,
@@ -51,23 +51,21 @@ class _UsersListState extends State<UsersList> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: globals.userDatabase.getUsers(),
-        builder: (context, snapshot){
-          if (snapshot.hasData){
-            return ListView.separated(itemCount: snapshot.data!.length,
-              separatorBuilder: (context, index)
-              {
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.separated(
+              itemCount: snapshot.data!.length,
+              separatorBuilder: (context, index) {
                 return globals.space();
               },
-              itemBuilder: (context, index)
-              {
-                return UserItemList(snapshot.data![index]);
-              }
-              ,shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return userItemList(snapshot.data![index]);
+              },
+              shrinkWrap: true,
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
-        }
-    );
+        });
   }
 }

@@ -14,27 +14,23 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-
   late UserLibrary user;
   bool loadedData = false;
 
   @override
-  initState(){
+  initState() {
     super.initState();
-    getData().then((value){
+    getData().then((value) {
       loadedData = true;
-      setState(() {
-
-      });
+      setState(() {});
     });
-
   }
 
-  getData() async{
+  getData() async {
     user = await globals.userDatabase.getCurrentUser();
   }
 
-  Widget returnUserInfo(){
+  Widget returnUserInfo() {
     return AspectRatio(
       aspectRatio: kIsWeb ? 5 : 3 / 1,
       child: Row(
@@ -52,7 +48,10 @@ class _AccountScreenState extends State<AccountScreen> {
                   bottomLeft: Radius.circular(20),
                 ),
               ),
-              child: Image.asset("assets/image/read.png", fit: BoxFit.fitHeight,),
+              child: Image.asset(
+                "assets/image/read.png",
+                fit: BoxFit.fitHeight,
+              ),
             ),
           ),
           Expanded(
@@ -72,19 +71,22 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: [
                   FittedBox(
                     child: Text(
-                    "Username: ${user.userName}", style: const TextStyle(fontWeight: FontWeight.bold),
+                      "Username: ${user.userName}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   globals.space(),
                   FittedBox(
                     child: Text(
-                      "Email: ${user.userMail}", style: const TextStyle(fontWeight: FontWeight.bold),
+                      "Email: ${user.userMail}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   globals.space(),
                   FittedBox(
                     child: Text(
-                      "Account type: ${user.userType}", style: const TextStyle(fontWeight: FontWeight.bold),
+                      "Account type: ${user.userType}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -106,40 +108,53 @@ class _AccountScreenState extends State<AccountScreen> {
             Icons.search,
           ),
         ),
-        title: const Text( "Account", style: TextStyle( fontSize: 20 ), ),
+        title: const Text(
+          "Account",
+          style: TextStyle(fontSize: 20),
+        ),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
-
-        if( loadedData ){
+        if (loadedData) {
           return SingleChildScrollView(
-            padding: EdgeInsets.only( top: globals.scaleHeight * 2 , bottom: globals.scaleHeight * 2, left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp, right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp ),
+            padding: EdgeInsets.only(
+                top: globals.scaleHeight * 2,
+                bottom: globals.scaleHeight * 2,
+                left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
+                right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 returnUserInfo(),
                 globals.space(),
-                if( user.userType == "admin" )... [
+                if (user.userType == "admin") ...[
                   adminList(context),
                 ],
-                textIconButton(context, "Logout", Icons.logout_outlined, () {
-                  FirebaseAuth.instance.signOut().then((value) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
-                  });
-                },)
+                textIconButton(
+                  context,
+                  "Logout",
+                  Icons.logout_outlined,
+                  () {
+                    FirebaseAuth.instance.signOut().then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()));
+                    });
+                  },
+                )
               ],
             ),
           );
-        }
-        else{
+        } else {
           return const Center(child: CircularProgressIndicator());
         }
-
       }),
     );
   }
 }
 
-Widget textIconButton( BuildContext context, String text, IconData icon, Function() onTap ){
+Widget textIconButton(
+    BuildContext context, String text, IconData icon, Function() onTap) {
   return Container(
     width: double.infinity,
     height: globals.scaleHeight * 2.5,
@@ -150,9 +165,7 @@ Widget textIconButton( BuildContext context, String text, IconData icon, Functio
       label: SizedBox(
         child: Text(
           text,
-          style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16),
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
         ),
       ),
       style: ButtonStyle(
@@ -163,18 +176,22 @@ Widget textIconButton( BuildContext context, String text, IconData icon, Functio
             return Theme.of(context).colorScheme.primary;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
     ),
   );
 }
 
-Widget adminList(BuildContext context){
+Widget adminList(BuildContext context) {
   return Column(
     children: [
-      textIconButton(context, "Manage users", Icons.person_outline_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => const UsersScreen() ))), ),
+      textIconButton(
+        context,
+        "Manage users",
+        Icons.person_outline_outlined,
+        () => Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const UsersScreen()))),
+      ),
       globals.space(),
-
     ],
   );
 }

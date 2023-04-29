@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'loan.freezed.dart';
+
 part 'loan.g.dart';
 
 @freezed
@@ -16,7 +17,6 @@ class Loan with _$Loan {
     required String endDate,
 
     // depends on post type
-
   }) = loan;
 
   factory Loan.fromJson(Map<String, dynamic> json) => _$LoanFromJson(json);

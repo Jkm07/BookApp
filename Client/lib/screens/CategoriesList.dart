@@ -13,19 +13,18 @@ class CategoriesList extends StatefulWidget {
 }
 
 class _CategoriesListState extends State<CategoriesList> {
-
   final items = ["None", "Categories", "Authors"];
   late double scaleHeight;
   late double scaleWidthApp;
   late double scaleWidthWeb;
 
-  Widget space( [double? value] ){
+  Widget space([double? value]) {
     return SizedBox(
       height: value ?? scaleHeight,
     );
   }
 
-  Widget spaceWidth( double value ){
+  Widget spaceWidth(double value) {
     return SizedBox(
       width: value,
     );
@@ -36,17 +35,16 @@ class _CategoriesListState extends State<CategoriesList> {
         future: globals.authorsDatabase.getAllAuthors(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.separated(itemCount: snapshot.data!.length,
+            return ListView.separated(
+              itemCount: snapshot.data!.length,
               physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index)
-              {
+              separatorBuilder: (context, index) {
                 return space();
               },
-              itemBuilder: (context, index)
-              {
+              itemBuilder: (context, index) {
                 return authorItemList(snapshot.data![index], context);
-              }
-              ,shrinkWrap: true,
+              },
+              shrinkWrap: true,
             );
           } else {
             return const Center(child: CircularProgressIndicator());
@@ -75,7 +73,10 @@ class _CategoriesListState extends State<CategoriesList> {
             children: [
               const Icon(Icons.person_outline_outlined),
               spaceWidth(10),
-              Text(author.authorName, textAlign: TextAlign.center,),
+              Text(
+                author.authorName,
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
@@ -88,17 +89,16 @@ class _CategoriesListState extends State<CategoriesList> {
         future: globals.booksDatabase.getCategories(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.separated(itemCount: snapshot.data!.length,
+            return ListView.separated(
+              itemCount: snapshot.data!.length,
               physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index)
-              {
+              separatorBuilder: (context, index) {
                 return space();
               },
-              itemBuilder: (context, index)
-              {
+              itemBuilder: (context, index) {
                 return categoryItemList(snapshot.data![index], context);
-              }
-              ,shrinkWrap: true,
+              },
+              shrinkWrap: true,
             );
           } else {
             return const Center(child: CircularProgressIndicator());
@@ -127,7 +127,10 @@ class _CategoriesListState extends State<CategoriesList> {
             children: [
               const Icon(Icons.menu_book_outlined),
               spaceWidth(10),
-              Text(text, textAlign: TextAlign.center,),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
@@ -171,21 +174,26 @@ class _CategoriesListState extends State<CategoriesList> {
                     value: widget.selectedItem,
                     items: items
                         .map((String item) => DropdownMenuItem<String>(
-                      value: item,
-                      child: Center(child: FittedBox(child: Text(item, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),))),
-                    ))
+                              value: item,
+                              child: Center(
+                                  child: FittedBox(
+                                      child: Text(
+                                item,
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ))),
+                            ))
                         .toList(),
                     onChanged: (item) => setState(() {
                       widget.selectedItem = item!;
-                      if( item == "None" ) Navigator.pop(context, [item, item]);
+                      if (item == "None") Navigator.pop(context, [item, item]);
                     }),
                   ),
                 ),
                 space(),
-                if( widget.selectedItem == "Categories" )...[
+                if (widget.selectedItem == "Categories") ...[
                   returnCategories(context),
-                ]
-                else if( widget.selectedItem == "Authors" )...[
+                ] else if (widget.selectedItem == "Authors") ...[
                   returnAuthors(context),
                 ],
               ],

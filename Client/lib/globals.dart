@@ -10,18 +10,22 @@ UserDatabase userDatabase = UserDatabase();
 LoansDatabase loansDatabase = LoansDatabase();
 PublisherDatabase publisherDatabase = PublisherDatabase();
 AuthorsDatabase authorsDatabase = AuthorsDatabase();
-final pixelRatio = MediaQueryData.fromWindow(WidgetsBinding.instance.window).devicePixelRatio;
-final scaleHeight = WidgetsBinding.instance.window.physicalSize.height / pixelRatio * 0.02;
-final scaleWidthWeb = WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 5;
-final scaleWidthApp =  WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 20;
+final pixelRatio =
+    MediaQueryData.fromWindow(WidgetsBinding.instance.window).devicePixelRatio;
+final scaleHeight =
+    WidgetsBinding.instance.window.physicalSize.height / pixelRatio * 0.02;
+final scaleWidthWeb =
+    WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 5;
+final scaleWidthApp =
+    WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 20;
 
-Widget space( [double? value] ){
+Widget space([double? value]) {
   return SizedBox(
     height: value ?? scaleHeight,
   );
 }
 
-Widget spaceWidth( double value ){
+Widget spaceWidth(double value) {
   return SizedBox(
     width: value,
   );

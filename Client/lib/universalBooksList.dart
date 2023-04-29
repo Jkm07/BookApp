@@ -7,7 +7,13 @@ import 'bookModel/book.dart';
 import 'globals.dart' as globals;
 
 class UniversalBooksList extends StatefulWidget {
-  const UniversalBooksList({Key? key, required this.filterType, required this.value, required this.search, required this.sort}) : super(key: key);
+  const UniversalBooksList(
+      {Key? key,
+      required this.filterType,
+      required this.value,
+      required this.search,
+      required this.sort})
+      : super(key: key);
 
   final String filterType;
   final String value;
@@ -19,27 +25,28 @@ class UniversalBooksList extends StatefulWidget {
 }
 
 class _UniversalBooksListState extends State<UniversalBooksList> {
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Book>>(
-        future: globals.booksDatabase.getBooksFromCategory(widget.filterType, widget.value, widget.search, widget.sort),
+        future: globals.booksDatabase.getBooksFromCategory(
+            widget.filterType, widget.value, widget.search, widget.sort),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: snapshot.data!.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: kIsWeb ? 4 : 2,
-                  crossAxisSpacing: MediaQuery.of(context).size.width * 0.02,
-                  mainAxisSpacing: MediaQuery.of(context).size.height * 0.02,
-                  childAspectRatio: 0.6,
-                ),
-                itemBuilder: (context, index) => BookElement(book: snapshot.data![index]),
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: snapshot.data!.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: kIsWeb ? 4 : 2,
+                crossAxisSpacing: MediaQuery.of(context).size.width * 0.02,
+                mainAxisSpacing: MediaQuery.of(context).size.height * 0.02,
+                childAspectRatio: 0.6,
+              ),
+              itemBuilder: (context, index) =>
+                  BookElement(book: snapshot.data![index]),
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }
@@ -55,44 +62,41 @@ class BookElement extends StatefulWidget {
 }
 
 class _BookElementState extends State<BookElement> {
-
-  @override void initState() {
+  @override
+  void initState() {
     super.initState();
     //getParameters();
   }
 
-  Widget space( [double? value] ){
+  Widget space([double? value]) {
     return SizedBox(
-      height: value == null ? scaleHeight : value,
+      height: value ?? scaleHeight,
     );
   }
 
-  Future<Publisher> getParameters() async
-  {
-    authors = await (globals.authorsDatabase.getAuthorsList(widget.book.authorsID));
-    publisher = await ( globals.publisherDatabase.getPublisher(widget.book.publisherID));
+  Future<Publisher> getParameters() async {
+    authors =
+        await (globals.authorsDatabase.getAuthorsList(widget.book.authorsID));
+    publisher =
+        await (globals.publisherDatabase.getPublisher(widget.book.publisherID));
     return publisher;
   }
 
-  Container universalContainer(String text, bool bold){
+  Container universalContainer(String text, bool bold) {
     return Container(
         height: MediaQuery.of(context).size.height * 0.03,
         decoration: BoxDecoration(
-          color: Colors.black,
-          border: Border.all(
-            width: 1,
-            color: Colors.grey
-          )
-        ),
+            color: Colors.black,
+            border: Border.all(width: 1, color: Colors.grey)),
         child: Center(
           child: Text(
             text,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle( color: Colors.white, fontWeight: bold ? FontWeight.bold : null ),
+            style: TextStyle(
+                color: Colors.white, fontWeight: bold ? FontWeight.bold : null),
             textAlign: TextAlign.center,
           ),
-        )
-    );
+        ));
   }
 
   late double scaleHeight;
@@ -108,26 +112,30 @@ class _BookElementState extends State<BookElement> {
     scaleWidthApp = MediaQuery.of(context).size.width / 20;
 
     return FutureBuilder(
-      future: getParameters(),
-      builder: (context, snapshot){
-        if (snapshot.hasData){
-          return InkWell(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => BookDetailsScreen(book: widget.book, publisher: publisher, authors: authors) ))),
-            child: Container(
+        future: getParameters(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return InkWell(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => BookDetailsScreen(
+                          book: widget.book,
+                          publisher: publisher,
+                          authors: authors)))),
               child: Column(
                 children: [
                   Expanded(
                     child: InkWell(
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(15),
                             topRight: Radius.circular(15),
                           ),
                           image: DecorationImage(
                               image: NetworkImage(widget.book.images[0]),
-                              fit: BoxFit.cover
-                          ),
+                              fit: BoxFit.cover),
                         ),
                       ),
                     ),
@@ -137,14 +145,10 @@ class _BookElementState extends State<BookElement> {
                   universalContainer(widget.book.category, false),
                 ],
               ),
-            ),
-          );
-        }
-        else
-        {
-          return Center(child: CircularProgressIndicator());
-        }
-      }
-    );
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 }

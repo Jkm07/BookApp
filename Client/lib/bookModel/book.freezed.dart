@@ -22,20 +22,35 @@ Book _$BookFromJson(Map<String, dynamic> json) {
 mixin _$Book {
 //common
   String get bookID => throw _privateConstructorUsedError;
+
   String get title => throw _privateConstructorUsedError;
+
   List<String> get authorsID => throw _privateConstructorUsedError;
+
   String get numberOfPages => throw _privateConstructorUsedError;
+
   String get coverType => throw _privateConstructorUsedError;
+
   String get category => throw _privateConstructorUsedError;
+
   String get ISBN => throw _privateConstructorUsedError;
+
   String get language => throw _privateConstructorUsedError;
+
   String get publishedDate => throw _privateConstructorUsedError;
+
   String get publisherID => throw _privateConstructorUsedError;
+
   String get issueNumber => throw _privateConstructorUsedError;
+
   String get yearPublication => throw _privateConstructorUsedError;
+
   String get description => throw _privateConstructorUsedError;
+
   String get quantity => throw _privateConstructorUsedError;
+
   List<String> get images => throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -57,6 +72,7 @@ mixin _$Book {
         book,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
@@ -100,11 +116,13 @@ mixin _$Book {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(book value) book,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(book value)? book,
@@ -149,9 +167,9 @@ class _$BookCopyWithImpl<$Res, $Val extends Book>
     implements $BookCopyWith<$Res> {
   _$BookCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
+// ignore: unused_field
   final $Val _value;
-  // ignore: unused_field
+// ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -386,7 +404,7 @@ class _$book extends book {
   @override
   List<String> get authorsID {
     if (_authorsID is EqualUnmodifiableListView) return _authorsID;
-    // ignore: implicit_dynamic_type
+// ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_authorsID);
   }
 
@@ -416,7 +434,7 @@ class _$book extends book {
   @override
   List<String> get images {
     if (_images is EqualUnmodifiableListView) return _images;
-    // ignore: implicit_dynamic_type
+// ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_images);
   }
 

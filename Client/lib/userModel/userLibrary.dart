@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'userLibrary.freezed.dart';
+
 part 'userLibrary.g.dart';
 
 @freezed
@@ -15,9 +16,8 @@ class UserLibrary with _$UserLibrary {
     required String userType,
 
     // depends on post type
-
-
   }) = userLibrary;
 
-  factory UserLibrary.fromJson(Map<String, dynamic> json) => _$UserLibraryFromJson(json);
+  factory UserLibrary.fromJson(Map<String, dynamic> json) =>
+      _$UserLibraryFromJson(json);
 }
