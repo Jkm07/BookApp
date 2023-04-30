@@ -26,8 +26,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         textTheme: Typography.blackRedwoodCity,
+        scaffoldBackgroundColor: Colors.transparent,
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.lightGreen,
+          primarySwatch: Colors.green,
           errorColor: Colors.red,
           backgroundColor: Colors.white,
           accentColor: Colors.black,

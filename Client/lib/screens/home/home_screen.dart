@@ -1,10 +1,11 @@
 import 'package:client/screens/accountScreen.dart';
+import 'package:client/screens/home/main_background.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:client/screens/searchScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'addScreen.dart';
+import '../addScreen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -15,8 +16,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   final List<Widget> _pages = [
     const BookCreator(),
     const SearchScreen(),
@@ -34,12 +34,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     final paddingHorizontal =
         kIsWeb ? MediaQuery.of(context).size.width / 5 : 0.0;
 
     return Scaffold(
-
         appBar: AppBar(
           leading: GestureDetector(
             child: const Icon(
@@ -48,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           title: const Text("Szacun Rispekt"),
         ),
-
         bottomNavigationBar: Container(
           color: Theme.of(context).colorScheme.secondary,
           padding:
@@ -66,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 GButton(icon: Icons.person, text: "Ustawienia"),
               ]),
         ),
-
-        body: _pages[_currentPage]);
+        body: MainBackground(child: _pages[_currentPage]));
   }
 }
