@@ -1,4 +1,5 @@
-import 'package:client/screens/homeScreen.dart';
+import 'package:client/screens/home/home_screen.dart';
+import 'package:client/screens/home/main_background.dart';
 import 'package:flutter/foundation.dart';
 import '../models/userModel/userLibrary.dart';
 import 'loginScreen.dart';
@@ -20,75 +21,77 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: formKey,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-              top: globals.scaleHeight * 2,
-              bottom: globals.scaleHeight * 2,
-              left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
-              right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              globals.space(),
-              logoWidget("assets/image/logo.png"),
-              globals.space(),
-              const Center(
-                child: FittedBox(
-                  child: Text(
-                    "Szacun Rispekt Library",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
+    return MainBackground(
+      child: Scaffold(
+        body: Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          key: formKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+                top: globals.scaleHeight * 2,
+                bottom: globals.scaleHeight * 2,
+                left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
+                right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                globals.space(),
+                logoWidget("assets/image/logo.png"),
+                globals.space(),
+                const Center(
+                  child: FittedBox(
+                    child: Text(
+                      "Szacun Rispekt Library",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              globals.space(),
-              reusableTextField("Enter username",
-                  Icons.person_outline_outlined, "", _userNameTextController),
-              globals.space(),
-              reusableTextField("Enter Email", Icons.mail_outline_outlined,
-                  "email", _emailTextController),
-              globals.space(),
-              reusableTextField("Enter password", Icons.lock_outline,
-                  "password", _passwordTextController),
-              globals.space(),
-              firebaseButton(context, "Sign Up", () {
-                final isValidForm = formKey.currentState!.validate();
+                globals.space(),
+                reusableTextField("Enter username",
+                    Icons.person_outline_outlined, "", _userNameTextController),
+                globals.space(),
+                reusableTextField("Enter Email", Icons.mail_outline_outlined,
+                    "email", _emailTextController),
+                globals.space(),
+                reusableTextField("Enter password", Icons.lock_outline,
+                    "password", _passwordTextController),
+                globals.space(),
+                firebaseButton(context, "Sign Up", () {
+                  final isValidForm = formKey.currentState!.validate();
 
-                if (isValidForm) {
-                  globals.booksDatabase
-                      .getAuth()!
-                      .createUserWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text)
-                      .then((value) async {
-                    String userID = await globals.userDatabase.getUserID();
-                    UserLibrary newUser = UserLibrary.user(
-                        userID: userID,
-                        userName: _userNameTextController.text,
-                        userMail: _emailTextController.text,
-                        userType: "user");
-                    globals.userDatabase.addUser(newUser);
+                  if (isValidForm) {
+                    globals.booksDatabase
+                        .getAuth()!
+                        .createUserWithEmailAndPassword(
+                            email: _emailTextController.text,
+                            password: _passwordTextController.text)
+                        .then((value) async {
+                      String userID = await globals.userDatabase.getUserID();
+                      UserLibrary newUser = UserLibrary.user(
+                          userID: userID,
+                          userName: _userNameTextController.text,
+                          userMail: _emailTextController.text,
+                          userType: "user");
+                      globals.userDatabase.addUser(newUser);
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MyHomePage()));
-                  }).onError((error, stackTrace) {
-                    dialogTrigger(
-                        context, "Registration failed", error.toString());
-                  });
-                } else {
-                  dialogTrigger(context, "Incorrect data",
-                      "Email address, password or username is incorrect!");
-                }
-              }),
-            ],
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyHomePage()));
+                    }).onError((error, stackTrace) {
+                      dialogTrigger(
+                          context, "Registration failed", error.toString());
+                    });
+                  } else {
+                    dialogTrigger(context, "Incorrect data",
+                        "Email address, password or username is incorrect!");
+                  }
+                }),
+              ],
+            ),
           ),
         ),
       ),

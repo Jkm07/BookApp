@@ -1,4 +1,5 @@
-import 'package:client/screens/homeScreen.dart';
+import 'package:client/screens/home/home_screen.dart';
+import 'package:client/screens/home/main_background.dart';
 import 'package:client/screens/resetPassword.dart';
 import 'package:client/screens/signupScreen.dart';
 import 'package:flutter/foundation.dart';
@@ -20,65 +21,67 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: formKey,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-              top: globals.scaleHeight * 2,
-              bottom: globals.scaleHeight * 2,
-              left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
-              right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              globals.space(),
-              logoWidget("assets/image/logo.png"),
-              globals.space(),
-              const Center(
-                child: FittedBox(
-                  child: Text(
-                    "Szacun Rispekt Library",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
+    return MainBackground(
+      child: Scaffold(
+        body: Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          key: formKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+                top: globals.scaleHeight * 2,
+                bottom: globals.scaleHeight * 2,
+                left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
+                right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                globals.space(),
+                logoWidget("assets/image/logo.png"),
+                globals.space(),
+                const Center(
+                  child: FittedBox(
+                    child: Text(
+                      "Szacun Rispekt Library",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              globals.space(),
-              reusableTextField("Enter email address",
-                  Icons.mail_outline_outlined, "email", _emailTextController),
-              globals.space(),
-              reusableTextField("Enter password", Icons.lock_outline,
-                  "password", _passwordTextController),
-              forgetPassword(context),
-              globals.space(),
-              firebaseButton(context, "Sign In", () {
-                final isValidForm = formKey.currentState!.validate();
+                globals.space(),
+                reusableTextField("Enter email address",
+                    Icons.mail_outline_outlined, "email", _emailTextController),
+                globals.space(),
+                reusableTextField("Enter password", Icons.lock_outline,
+                    "password", _passwordTextController),
+                forgetPassword(context),
+                globals.space(),
+                firebaseButton(context, "Sign In", () {
+                  final isValidForm = formKey.currentState!.validate();
 
-                if (isValidForm) {
-                  globals.booksDatabase
-                      .getAuth()!
-                      .signInWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text)
-                      .then((value) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => const MyHomePage())));
-                  }).onError((error, stackTrace) {
-                    dialogTrigger(context, "Login failed", error.toString());
-                  });
-                } else {
-                  dialogTrigger(context, "Incorrect data",
-                      "Email address or password is incorrect!");
-                }
-              }),
-              signUpOption(context),
-            ],
+                  if (isValidForm) {
+                    globals.booksDatabase
+                        .getAuth()!
+                        .signInWithEmailAndPassword(
+                            email: _emailTextController.text,
+                            password: _passwordTextController.text)
+                        .then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => const MyHomePage())));
+                    }).onError((error, stackTrace) {
+                      dialogTrigger(context, "Login failed", error.toString());
+                    });
+                  } else {
+                    dialogTrigger(context, "Incorrect data",
+                        "Email address or password is incorrect!");
+                  }
+                }),
+                signUpOption(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -95,8 +98,8 @@ Widget logoWidget(String imageName) {
   );
 }
 
-TextFormField reusableTextField(String text, IconData icon,
-    String fieldType, TextEditingController controller) {
+TextFormField reusableTextField(String text, IconData icon, String fieldType,
+    TextEditingController controller) {
   return TextFormField(
     controller: controller,
     obscureText: fieldType == "password",
