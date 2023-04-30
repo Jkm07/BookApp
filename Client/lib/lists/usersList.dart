@@ -2,10 +2,27 @@ import 'package:client/screens/userDetails.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
+import '../globals.dart';
+import '../models/libraryModel/library.dart';
 import '../models/userModel/userLibrary.dart';
 
 class UsersList extends StatefulWidget {
-  const UsersList({Key? key}) : super(key: key);
+  UsersList(
+      {Key? key,
+      required this.search,
+      required this.sort,
+      required this.userType,
+      required this.screenType,
+      this.callBack,
+      this.library})
+      : super(key: key);
+
+  String search;
+  String sort;
+  String userType;
+  String screenType;
+  Function? callBack;
+  Library? library;
 
   @override
   State<UsersList> createState() => _UsersListState();
@@ -70,10 +87,38 @@ class _UsersListState extends State<UsersList> {
                   ],
                 ),
               ),
-              const Icon(
-                Icons.arrow_back_ios_new_outlined,
-                color: Colors.white,
-              ),
+              if (widget.screenType == "view") ...[
+                const Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: Colors.white,
+                ),
+              ] else if (widget.screenType == "add") ...[
+                GestureDetector(
+                  onTap: () => widget.callBack!(user.userID),
+                  child: Container(
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.green,
+                    ),
+                  ),
+                ),
+              ] else if (widget.screenType == "edit") ...[
+                GestureDetector(
+                  onTap: () => widget.callBack!(user.userID, widget.library!.librarianList.contains(user.userID)),
+                  child: Container(
+                    child: widget.library!.librarianList.contains(user.userID) ?
+                    const Icon(
+                      Icons.remove_circle_outline,
+                      color: Colors.red,
+                    )
+                    :
+                    const Icon(
+                      Icons.add,
+                      color: Colors.green,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ),
@@ -84,7 +129,7 @@ class _UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: globals.userDatabase.getUsers(),
+        future: widget.screenType == "view" ? userDatabase.getUsers(widget.search, widget.sort, widget.userType) : userDatabase.getLibrarians(widget.search, widget.sort, widget.userType, widget.library),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(

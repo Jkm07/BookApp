@@ -1,4 +1,5 @@
 import 'package:client/screens/addLibrary.dart';
+import 'package:client/screens/librariesScreen.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:client/screens/usersScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,9 +51,9 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
               ),
               child: Image.asset(
-                user.userType == "librarian"
-                    ? "assets/image/librarian.png"
-                    : "assets/image/reader.png",
+                user.userType == "user"
+                    ? "assets/image/reader.png"
+                    : "assets/image/librarian.png",
                 fit: BoxFit.fitHeight,
               ),
             ),
@@ -109,11 +110,11 @@ class _AccountScreenState extends State<AccountScreen> {
           "Manage users",
           Icons.person_outline_outlined,
           () => Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const UsersScreen()))),
+              MaterialPageRoute(builder: ((context) => UsersScreen(search: "", sort: 'default', userType: 'All', screenType: "view", )))),
         ),
         globals.space(),
         textIconButton(
-            context, "Manage libraries", Icons.holiday_village_outlined, () {}),
+            context, "Manage libraries", Icons.holiday_village_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => LibrariesScreen(search: "", sort: "Default", filter: "All") ))),),
         globals.space(),
         textIconButton(
           context,
@@ -137,13 +138,6 @@ class _AccountScreenState extends State<AccountScreen> {
         textIconButton(context, "Change email address",
             Icons.mail_outline_outlined, () {}),
         globals.space(),
-        textIconButton(
-          context,
-          "Manage users",
-          Icons.person_outline_outlined,
-          () => Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const UsersScreen()))),
-        ),
         globals.space(),
         textIconButton(
             context, "Manage books", Icons.menu_book_outlined, () {}),

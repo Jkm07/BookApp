@@ -1,16 +1,53 @@
 import 'package:client/lists/usersList.dart';
+import 'package:client/menuItems/filterSortRow.dart';
+import 'package:client/menuItems/searchBar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:client/globals.dart' as globals;
+import '../globals.dart';
+import '../models/libraryModel/library.dart';
 
 class UsersScreen extends StatefulWidget {
-  const UsersScreen({Key? key}) : super(key: key);
+  UsersScreen(
+      {Key? key,
+      this.callBack,
+      required this.search,
+      required this.sort,
+      required this.userType,
+      required this.screenType,
+        this.library,
+      })
+      : super(key: key);
+
+  String search;
+  String sort;
+  String userType;
+  String screenType;
+  Function? callBack;
+  Library? library;
 
   @override
   State<UsersScreen> createState() => _UsersScreenState();
 }
 
 class _UsersScreenState extends State<UsersScreen> {
+  late TextEditingController controller;
+
+  late List<String> filterList;
+  List<String> sortList = ["Default", "Username: alphabetically"];
+
+  @override
+  void initState() {
+    super.initState();
+    filterList = widget.screenType == "view" ? ["All", "user", "librarian"] : ["librarian"];
+    controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,15 +65,47 @@ class _UsersScreenState extends State<UsersScreen> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
-            top: globals.scaleHeight * 2,
-            bottom: globals.scaleHeight * 2,
-            left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
-            right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
+            top: scaleHeight * 2,
+            bottom: scaleHeight * 2,
+            left: kIsWeb ? scaleWidthWeb : scaleWidthApp,
+            right: kIsWeb ? scaleWidthWeb : scaleWidthApp),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            globals.space(),
-            const UsersList(),
+            SearchBar(
+              controller: controller,
+              callback: (String newSearch) {
+                setState(() {
+                  widget.search = newSearch;
+                });
+              },
+            ),
+            space(),
+            FilterSortRow(
+                filterType: "UserType",
+                filter: widget.userType,
+                sort: widget.sort,
+                filterList: filterList,
+                sortList: sortList,
+                filterIcon: Icons.person_outline_outlined,
+                sortIcon: Icons.abc_outlined,
+                filterOnTap: (String value) {
+                  setState(() {
+                    widget.userType = value;
+                  });
+                },
+                sortOnTap: (String value) {
+                  widget.sort = value;
+                }),
+            space(),
+            UsersList(
+              search: widget.search,
+              sort: widget.sort,
+              userType: widget.userType,
+              screenType: widget.screenType,
+              callBack: widget.callBack,
+              library: widget.library,
+            ),
           ],
         ),
       ),

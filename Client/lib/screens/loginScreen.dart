@@ -48,10 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               globals.space(),
-              reusableTextFormField("Enter email address",
+              reusableTextField("Enter email address",
                   Icons.mail_outline_outlined, "email", _emailTextController),
               globals.space(),
-              reusableTextFormField("Enter password", Icons.lock_outline,
+              reusableTextField("Enter password", Icons.lock_outline,
                   "password", _passwordTextController),
               forgetPassword(context),
               globals.space(),
@@ -95,7 +95,7 @@ Widget logoWidget(String imageName) {
   );
 }
 
-TextFormField reusableTextFormField(String text, IconData icon,
+TextFormField reusableTextField(String text, IconData icon,
     String fieldType, TextEditingController controller) {
   return TextFormField(
     controller: controller,

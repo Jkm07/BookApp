@@ -44,7 +44,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 ),
               ),
               globals.space(),
-              reusableTextFormField("Enter Email", Icons.mail_outline_outlined,
+              reusableTextField("Enter Email", Icons.mail_outline_outlined,
                   "email", _emailTextController),
               globals.space(),
               firebaseButton(context, "Reset Password", () {

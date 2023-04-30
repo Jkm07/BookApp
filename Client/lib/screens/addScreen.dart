@@ -363,6 +363,7 @@ class _BookCreatorState extends State<BookCreator> {
                         quantity: quantity.text,
                         images: imageUrls);
                     await globals.booksDatabase.addBook(book);
+                    Navigator.pop(context);
                     //dialogTrigger(context);
                   }
                 },

@@ -10,6 +10,7 @@ class Library with _$Library {
 
   factory Library.library({
     //common
+    required String libraryID,
     required String name,
     required String address,
     required List<String> librarianList,

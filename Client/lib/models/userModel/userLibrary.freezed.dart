@@ -22,13 +22,9 @@ UserLibrary _$UserLibraryFromJson(Map<String, dynamic> json) {
 mixin _$UserLibrary {
 //common
   String get userID => throw _privateConstructorUsedError;
-
   String get userName => throw _privateConstructorUsedError;
-
   String get userMail => throw _privateConstructorUsedError;
-
   String get userType => throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -36,7 +32,6 @@ mixin _$UserLibrary {
         user,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
@@ -52,13 +47,11 @@ mixin _$UserLibrary {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(userLibrary value) user,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(userLibrary value)? user,
@@ -90,9 +83,9 @@ class _$UserLibraryCopyWithImpl<$Res, $Val extends UserLibrary>
     implements $UserLibraryCopyWith<$Res> {
   _$UserLibraryCopyWithImpl(this._value, this._then);
 
-// ignore: unused_field
+  // ignore: unused_field
   final $Val _value;
-// ignore: unused_field
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')

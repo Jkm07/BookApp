@@ -1,7 +1,9 @@
 import 'package:client/databases/authorsDatabase.dart';
+import 'package:client/databases/librariesDatabase.dart';
 import 'package:client/databases/loansDatabase.dart';
 import 'package:client/databases/publishersDatabase.dart';
 import 'package:client/databases/userDatabase.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'databases/booksDatabase.dart';
 
@@ -10,6 +12,8 @@ UserDatabase userDatabase = UserDatabase();
 LoansDatabase loansDatabase = LoansDatabase();
 PublisherDatabase publisherDatabase = PublisherDatabase();
 AuthorsDatabase authorsDatabase = AuthorsDatabase();
+LibraryDatabase libraryDatabase = LibraryDatabase();
+
 final pixelRatio =
     MediaQueryData.fromWindow(WidgetsBinding.instance.window).devicePixelRatio;
 final scaleHeight =
@@ -18,6 +22,12 @@ final scaleWidthWeb =
     WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 5;
 final scaleWidthApp =
     WidgetsBinding.instance.window.physicalSize.width / pixelRatio / 20;
+
+EdgeInsetsGeometry paddingGlobal = EdgeInsets.only(
+    top: scaleHeight * 2,
+    bottom: scaleHeight * 2,
+    left: kIsWeb ? scaleWidthWeb : scaleWidthApp,
+    right: kIsWeb ? scaleWidthWeb : scaleWidthApp);
 
 Widget space([double? value]) {
   return SizedBox(

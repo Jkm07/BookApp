@@ -137,7 +137,7 @@ class _UserDetailsState extends State<UserDetails> {
                       ),
                       child: DropdownButton<String>(
                           isExpanded: true,
-                          iconSize: 35,
+                          iconSize: 30,
                           icon: const Icon(
                             Icons.arrow_drop_down_circle_outlined,
                           ),
@@ -164,10 +164,12 @@ class _UserDetailsState extends State<UserDetails> {
                             });
                           }),
                     ),
+                    globals.space(),
                     GestureDetector(
                       onTap: () {},
                       child: universalContainer(
-                          "", "Delete account", globals.scaleHeight * 3,
+                          "Delete account", "",
+                          globals.scaleHeight * 3,
                           color: Theme.of(context).colorScheme.error),
                     ),
                   ],

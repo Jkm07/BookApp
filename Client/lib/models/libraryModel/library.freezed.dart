@@ -21,45 +21,39 @@ Library _$LibraryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Library {
 //common
+  String get libraryID => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-
   String get address => throw _privateConstructorUsedError;
-
   List<String> get librarianList => throw _privateConstructorUsedError;
-
   Map<String, String> get booksAndQuantity =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name, String address,
+    required TResult Function(String libraryID, String name, String address,
             List<String> librarianList, Map<String, String> booksAndQuantity)
         library,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String name, String address, List<String> librarianList,
-            Map<String, String> booksAndQuantity)?
+    TResult? Function(String libraryID, String name, String address,
+            List<String> librarianList, Map<String, String> booksAndQuantity)?
         library,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name, String address, List<String> librarianList,
-            Map<String, String> booksAndQuantity)?
+    TResult Function(String libraryID, String name, String address,
+            List<String> librarianList, Map<String, String> booksAndQuantity)?
         library,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(libraryModel value) library,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(libraryModel value)? library,
@@ -82,7 +76,8 @@ abstract class $LibraryCopyWith<$Res> {
       _$LibraryCopyWithImpl<$Res, Library>;
   @useResult
   $Res call(
-      {String name,
+      {String libraryID,
+      String name,
       String address,
       List<String> librarianList,
       Map<String, String> booksAndQuantity});
@@ -93,20 +88,25 @@ class _$LibraryCopyWithImpl<$Res, $Val extends Library>
     implements $LibraryCopyWith<$Res> {
   _$LibraryCopyWithImpl(this._value, this._then);
 
-// ignore: unused_field
+  // ignore: unused_field
   final $Val _value;
-// ignore: unused_field
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? libraryID = null,
     Object? name = null,
     Object? address = null,
     Object? librarianList = null,
     Object? booksAndQuantity = null,
   }) {
     return _then(_value.copyWith(
+      libraryID: null == libraryID
+          ? _value.libraryID
+          : libraryID // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -135,7 +135,8 @@ abstract class _$$libraryModelCopyWith<$Res> implements $LibraryCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String name,
+      {String libraryID,
+      String name,
       String address,
       List<String> librarianList,
       Map<String, String> booksAndQuantity});
@@ -152,12 +153,17 @@ class __$$libraryModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? libraryID = null,
     Object? name = null,
     Object? address = null,
     Object? librarianList = null,
     Object? booksAndQuantity = null,
   }) {
     return _then(_$libraryModel(
+      libraryID: null == libraryID
+          ? _value.libraryID
+          : libraryID // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -182,7 +188,8 @@ class __$$libraryModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$libraryModel extends libraryModel {
   _$libraryModel(
-      {required this.name,
+      {required this.libraryID,
+      required this.name,
       required this.address,
       required final List<String> librarianList,
       required final Map<String, String> booksAndQuantity})
@@ -195,6 +202,8 @@ class _$libraryModel extends libraryModel {
 
 //common
   @override
+  final String libraryID;
+  @override
   final String name;
   @override
   final String address;
@@ -202,7 +211,7 @@ class _$libraryModel extends libraryModel {
   @override
   List<String> get librarianList {
     if (_librarianList is EqualUnmodifiableListView) return _librarianList;
-// ignore: implicit_dynamic_type
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_librarianList);
   }
 
@@ -210,13 +219,13 @@ class _$libraryModel extends libraryModel {
   @override
   Map<String, String> get booksAndQuantity {
     if (_booksAndQuantity is EqualUnmodifiableMapView) return _booksAndQuantity;
-// ignore: implicit_dynamic_type
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_booksAndQuantity);
   }
 
   @override
   String toString() {
-    return 'Library.library(name: $name, address: $address, librarianList: $librarianList, booksAndQuantity: $booksAndQuantity)';
+    return 'Library.library(libraryID: $libraryID, name: $name, address: $address, librarianList: $librarianList, booksAndQuantity: $booksAndQuantity)';
   }
 
   @override
@@ -224,6 +233,8 @@ class _$libraryModel extends libraryModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$libraryModel &&
+            (identical(other.libraryID, libraryID) ||
+                other.libraryID == libraryID) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.address, address) || other.address == address) &&
             const DeepCollectionEquality()
@@ -236,6 +247,7 @@ class _$libraryModel extends libraryModel {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      libraryID,
       name,
       address,
       const DeepCollectionEquality().hash(_librarianList),
@@ -250,33 +262,34 @@ class _$libraryModel extends libraryModel {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String name, String address,
+    required TResult Function(String libraryID, String name, String address,
             List<String> librarianList, Map<String, String> booksAndQuantity)
         library,
   }) {
-    return library(name, address, librarianList, booksAndQuantity);
+    return library(libraryID, name, address, librarianList, booksAndQuantity);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String name, String address, List<String> librarianList,
-            Map<String, String> booksAndQuantity)?
+    TResult? Function(String libraryID, String name, String address,
+            List<String> librarianList, Map<String, String> booksAndQuantity)?
         library,
   }) {
-    return library?.call(name, address, librarianList, booksAndQuantity);
+    return library?.call(
+        libraryID, name, address, librarianList, booksAndQuantity);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name, String address, List<String> librarianList,
-            Map<String, String> booksAndQuantity)?
+    TResult Function(String libraryID, String name, String address,
+            List<String> librarianList, Map<String, String> booksAndQuantity)?
         library,
     required TResult orElse(),
   }) {
     if (library != null) {
-      return library(name, address, librarianList, booksAndQuantity);
+      return library(libraryID, name, address, librarianList, booksAndQuantity);
     }
     return orElse();
   }
@@ -319,7 +332,8 @@ class _$libraryModel extends libraryModel {
 
 abstract class libraryModel extends Library {
   factory libraryModel(
-      {required final String name,
+      {required final String libraryID,
+      required final String name,
       required final String address,
       required final List<String> librarianList,
       required final Map<String, String> booksAndQuantity}) = _$libraryModel;
@@ -329,6 +343,8 @@ abstract class libraryModel extends Library {
       _$libraryModel.fromJson;
 
   @override //common
+  String get libraryID;
+  @override
   String get name;
   @override
   String get address;

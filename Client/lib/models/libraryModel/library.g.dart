@@ -8,6 +8,7 @@ part of 'library.dart';
 
 _$libraryModel _$$libraryModelFromJson(Map<String, dynamic> json) =>
     _$libraryModel(
+      libraryID: json['libraryID'] as String,
       name: json['name'] as String,
       address: json['address'] as String,
       librarianList: (json['librarianList'] as List<dynamic>)
@@ -19,6 +20,7 @@ _$libraryModel _$$libraryModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$libraryModelToJson(_$libraryModel instance) =>
     <String, dynamic>{
+      'libraryID': instance.libraryID,
       'name': instance.name,
       'address': instance.address,
       'librarianList': instance.librarianList,
