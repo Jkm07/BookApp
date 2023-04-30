@@ -67,7 +67,7 @@ class _AddLibraryState extends State<AddLibrary> {
                   addressController, "Enter library address"),
               space(),
               reusableContainer( widget.library == null ? "Add librarians" : "Edit librarians" ,widget.library == null ? () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen( callBack: (String value) { librariansID.add(value); print(librariansID.length); }, search: "", sort: "Default", userType: "librarian", screenType: "add", ) ))) :
-                  () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen( library: widget.library, callBack: (String value, bool remove) { if (remove) { librariansID.remove(value); } else {librariansID.add(value); } print(librariansID.length); }, search: "", sort: "Default", userType: "librarian", screenType: "edit", ) ))), Theme.of(context).primaryColor ),
+                  () => Navigator.push(context, MaterialPageRoute(builder: ((context) => UsersScreen( library: widget.library, callBack: (String value, bool remove) { if (remove) { librariansID.remove(value); } else {librariansID.add(value); } print(librariansID.length); setState(() {}); }, search: "", sort: "Default", userType: "librarian", screenType: "edit", ) ))), Theme.of(context).primaryColor ),
               reusableButton(context, widget.library == null ? "Add library" : "Edit library", () async {
                 final isValidForm = formKey.currentState!.validate();
 

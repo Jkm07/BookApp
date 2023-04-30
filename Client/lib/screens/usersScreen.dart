@@ -35,11 +35,15 @@ class _UsersScreenState extends State<UsersScreen> {
   late List<String> filterList;
   List<String> sortList = ["Default", "Username: alphabetically"];
 
+  Library? _library;
+
   @override
   void initState() {
     super.initState();
     filterList = widget.screenType == "view" ? ["All", "user", "librarian"] : ["librarian"];
     controller = TextEditingController();
+    _library = widget.library;
+
   }
 
   @override
