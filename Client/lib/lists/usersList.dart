@@ -29,11 +29,22 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
+
+  List<UserLibrary>? _userList;
+  Library? _library;
+
+  @override
+  void initState(){
+    _library = widget.library;
+    getList();
+  }
+
   Widget userItemList(UserLibrary user) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context,
+      onTap: () async {
+        await Navigator.push(context,
             MaterialPageRoute(builder: (context) => UserDetails(user: user)));
+
       },
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -104,18 +115,33 @@ class _UsersListState extends State<UsersList> {
                 ),
               ] else if (widget.screenType == "edit") ...[
                 GestureDetector(
-                  onTap: () => widget.callBack!(user.userID, widget.library!.librarianList.contains(user.userID)),
+                  onTap: () async {
+                    if(_library!.librarianList.contains(user.userID)){
+                      var newList = _library!.librarianList.toList();
+                      newList.remove(user.userID);
+                      await libraryDatabase.updateLibrary(_library!.copyWith(librarianList: newList));
+                      setState(() {
+                        _library = _library!.copyWith(librarianList: newList);
+                      });
+                    }else{
+                      var newList = _library!.librarianList.toList();
+                      newList.add(user.userID);
+                      await libraryDatabase.updateLibrary(_library!.copyWith(librarianList: newList));
+                      setState(() {
+                        _library = _library!.copyWith(librarianList: newList);
+                      });
+                    }
+                  },
                   child: Container(
-                    child: widget.library!.librarianList.contains(user.userID) ?
-                    const Icon(
-                      Icons.remove_circle_outline,
-                      color: Colors.red,
-                    )
-                    :
-                    const Icon(
-                      Icons.add,
-                      color: Colors.green,
-                    ),
+                    child: _library!.librarianList.contains(user.userID)
+                        ? const Icon(
+                            Icons.remove_circle_outline,
+                            color: Colors.red,
+                          )
+                        : const Icon(
+                            Icons.add,
+                            color: Colors.green,
+                          ),
                   ),
                 ),
               ],
@@ -126,25 +152,58 @@ class _UsersListState extends State<UsersList> {
     );
   }
 
+  getList() async {
+    setState(() {
+      _userList = null;
+    });
+    if(widget.screenType == "view"){
+      final result = await userDatabase.getUsers(widget.search, widget.sort, widget.userType);
+      setState(() {
+        _userList = result;
+      });
+    } else{
+      final result = await userDatabase.getLibrarians(widget.search, widget.sort, widget.userType, widget.library);
+      setState(() {
+        _userList = result;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: widget.screenType == "view" ? userDatabase.getUsers(widget.search, widget.sort, widget.userType) : userDatabase.getLibrarians(widget.search, widget.sort, widget.userType, widget.library),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.separated(
-              itemCount: snapshot.data!.length,
-              separatorBuilder: (context, index) {
-                return globals.space();
-              },
-              itemBuilder: (context, index) {
-                return userItemList(snapshot.data![index]);
-              },
-              shrinkWrap: true,
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
+
+    if(_userList == null){
+      return const Center(child: CircularProgressIndicator());
+    }else{
+        return ListView.separated(
+          itemCount: _userList!.length,
+          separatorBuilder: (context, index) {
+            return globals.space();
+          },
+          itemBuilder: (context, index) {
+            return userItemList(_userList![index]);
+          },
+          shrinkWrap: true,
+        );
+    }
+
+    // return FutureBuilder(
+    //     future:
+    //     builder: (context, snapshot) {
+    //       if (snapshot.hasData) {
+    //         return ListView.separated(
+    //           itemCount: snapshot.data!.length,
+    //           separatorBuilder: (context, index) {
+    //             return globals.space();
+    //           },
+    //           itemBuilder: (context, index) {
+    //             return userItemList(snapshot.data![index]);
+    //           },
+    //           shrinkWrap: true,
+    //         );
+    //       } else {
+    //         return const Center(child: CircularProgressIndicator());
+    //       }
+    //     });
   }
 }
