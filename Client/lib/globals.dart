@@ -40,3 +40,5 @@ Widget spaceWidth(double value) {
     width: value,
   );
 }
+
+void Function(Widget) setScreen = (Widget w)  => {};
