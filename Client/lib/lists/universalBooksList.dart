@@ -1,6 +1,6 @@
 import 'package:client/screens/bookDetails.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:text_scroll/text_scroll.dart';
 import '../globals.dart' as globals;
 import '../models/authorModel/author.dart';
 import '../models/bookModel/book.dart';
@@ -32,16 +32,10 @@ class _UniversalBooksListState extends State<UniversalBooksList> {
             widget.filterType, widget.value, widget.search, widget.sort),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return GridView.builder(
+            return ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: snapshot.data!.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: kIsWeb ? 4 : 2,
-                crossAxisSpacing: MediaQuery.of(context).size.width * 0.02,
-                mainAxisSpacing: MediaQuery.of(context).size.height * 0.02,
-                childAspectRatio: 0.6,
-              ),
               itemBuilder: (context, index) =>
                   BookElement(book: snapshot.data![index]),
             );
@@ -82,23 +76,6 @@ class _BookElementState extends State<BookElement> {
     return publisher;
   }
 
-  Container universalContainer(String text, bool bold) {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.03,
-        decoration: BoxDecoration(
-            color: Colors.black,
-            border: Border.all(width: 1, color: Colors.grey)),
-        child: Center(
-          child: Text(
-            text,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: Colors.white, fontWeight: bold ? FontWeight.bold : null),
-            textAlign: TextAlign.center,
-          ),
-        ));
-  }
-
   late double scaleHeight;
   late double scaleWidthApp;
   late double scaleWidthWeb;
@@ -115,35 +92,36 @@ class _BookElementState extends State<BookElement> {
         future: getParameters(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return InkWell(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => BookDetailsScreen(
-                          book: widget.book,
-                          publisher: publisher,
-                          authors: authors)))),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                          ),
-                          image: DecorationImage(
-                              image: NetworkImage(widget.book.images[0]),
-                              fit: BoxFit.cover),
-                        ),
-                      ),
-                    ),
-                  ),
-                  universalContainer(widget.book.title, true),
-                  universalContainer(authors[0].authorName, false),
-                  universalContainer(widget.book.category, false),
-                ],
+            return Container(
+              margin: const EdgeInsets.only(bottom: 15),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.black,
+                        spreadRadius: 1,
+                        blurRadius: 7,
+                        offset: Offset(0, 1))
+                  ]),
+              child: ListTile(
+                leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(5.0),
+                    child: Image(
+                      image: NetworkImage(widget.book.images[0]),
+                    )),
+                title: Text(widget.book.title),
+                subtitle: TextScroll(
+                  widget.book.description,
+                  velocity: const Velocity(pixelsPerSecond: Offset(40, 0)),
+                ),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => BookDetailsScreen(
+                            book: widget.book,
+                            publisher: publisher,
+                            authors: authors)))),
               ),
             );
           } else {
