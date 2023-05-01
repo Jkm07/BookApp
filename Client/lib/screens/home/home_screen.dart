@@ -18,12 +18,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  Widget currentScreen = const BookCreator();
+  Widget currentScreen = BookCreator();
 
   void _navigationBarChange(int index) {
     switch (index) {
       case 0:
-        return global.setScreen(const BookCreator());
+        return global.setScreen(BookCreator());
       case 1:
         return global.setScreen(const SearchScreen());
       case 2:

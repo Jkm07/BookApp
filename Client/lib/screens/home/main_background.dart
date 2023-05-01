@@ -64,7 +64,7 @@ class _MainBackground extends State<MainBackground>
       ],
     ).animate(_controller);
 
-    _controller.repeat();
+    //_controller.repeat();
   }
 
   @override
