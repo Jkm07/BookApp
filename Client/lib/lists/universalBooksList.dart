@@ -1,4 +1,4 @@
-import 'package:client/screens/bookDetails.dart';
+import 'package:client/screens/book/book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
 import '../globals.dart' as globals;
