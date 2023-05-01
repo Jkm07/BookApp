@@ -109,19 +109,22 @@ class _BookElementState extends State<BookElement> {
                     borderRadius: BorderRadius.circular(5.0),
                     child: Image(
                       image: NetworkImage(widget.book.images[0]),
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
                     )),
                 title: Text(widget.book.title),
                 subtitle: TextScroll(
                   widget.book.description,
                   velocity: const Velocity(pixelsPerSecond: Offset(40, 0)),
                 ),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => BookDetailsScreen(
-                            book: widget.book,
-                            publisher: publisher,
-                            authors: authors)))),
+                onTap: () => globals.setScreen(BookDetailsScreen(
+                    book: widget.book, publisher: publisher, authors: authors)),
               ),
             );
           } else {

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import '../addScreen.dart';
+import 'package:client/globals.dart' as global;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -17,19 +18,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  final List<Widget> _pages = [
-    const BookCreator(),
-    const SearchScreen(),
-    const LoginScreen(),
-    const AccountScreen()
-  ];
-
-  var _currentPage = 0;
+  Widget currentScreen = const BookCreator();
 
   void _navigationBarChange(int index) {
-    setState(() {
-      _currentPage = index;
-    });
+    switch (index) {
+      case 0:
+        return global.setScreen(const BookCreator());
+      case 1:
+        return global.setScreen(const SearchScreen());
+      case 2:
+        return global.setScreen(const LoginScreen());
+      case 3:
+        return global.setScreen(const AccountScreen());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    global.setScreen = (Widget screen) => setState(() {
+          currentScreen = screen;
+        });
   }
 
   @override
@@ -63,6 +72,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 GButton(icon: Icons.person, text: "Ustawienia"),
               ]),
         ),
-        body: MainBackground(child: _pages[_currentPage]));
+        body: MainBackground(child: currentScreen));
   }
 }
