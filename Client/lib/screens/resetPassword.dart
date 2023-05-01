@@ -1,3 +1,4 @@
+import 'package:client/screens/home/main_background.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,52 +17,57 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: formKey,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-              top: globals.scaleHeight * 2,
-              bottom: globals.scaleHeight * 2,
-              left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
-              right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              globals.space(),
-              logoWidget("assets/image/logo.png"),
-              globals.space(),
-              const Center(
-                child: FittedBox(
-                  child: Text(
-                    "Szacun Rispekt Library",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
+    return MainBackground(
+      child: Scaffold(
+        body: Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          key: formKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+                top: globals.scaleHeight * 2,
+                bottom: globals.scaleHeight * 2,
+                left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
+                right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                globals.space(),
+                logoWidget("assets/image/logo.png"),
+                globals.space(),
+                const Center(
+                  child: FittedBox(
+                    child: Text(
+                      "Szacun Rispekt Library",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              globals.space(),
-              reusableTextField("Enter Email", Icons.mail_outline_outlined,
-                  "email", _emailTextController),
-              globals.space(),
-              firebaseButton(context, "Reset Password", () {
-                final isValidForm = formKey.currentState!.validate();
+                globals.space(),
+                reusableTextField("Enter Email", Icons.mail_outline_outlined,
+                    "email", _emailTextController),
+                globals.space(),
+                firebaseButton(context, "Reset Password", () {
+                  final isValidForm = formKey.currentState!.validate();
 
-                if (isValidForm) {
-                  globals.booksDatabase
-                      .getAuth()!
-                      .sendPasswordResetEmail(email: _emailTextController.text)
-                      .then((value) => dialogTrigger(context, "Reset Password",
-                          "Password reset email has been sent to the provided email address!"))
-                      .then((value) => Navigator.of(context).pop());
-                } else {
-                  dialogTrigger(context, "Email issue", "Incorrect Email");
-                }
-              }),
-            ],
+                  if (isValidForm) {
+                    globals.booksDatabase
+                        .getAuth()!
+                        .sendPasswordResetEmail(
+                            email: _emailTextController.text)
+                        .then((value) => dialogTrigger(
+                            context,
+                            "Reset Password",
+                            "Password reset email has been sent to the provided email address!"))
+                        .then((value) => Navigator.of(context).pop());
+                  } else {
+                    dialogTrigger(context, "Email issue", "Incorrect Email");
+                  }
+                }),
+              ],
+            ),
           ),
         ),
       ),

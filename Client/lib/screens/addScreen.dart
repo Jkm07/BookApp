@@ -1,23 +1,28 @@
+import 'package:client/models/publisherModel/publisher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
-import '../globals.dart' as globals;
+import '../globals.dart';
+import '../menuItems/authorTextFormField.dart';
+import '../menuItems/gridItemImage.dart';
+import '../menuItems/reusableTextFormField.dart';
 import '../models/bookModel/book.dart';
 
 class BookCreator extends StatefulWidget {
-  const BookCreator({super.key});
+  BookCreator({super.key, this.book});
+
+  Book? book;
 
   @override
-  State<BookCreator> createState() => _BookCreatorState();
+  State<BookCreator> createState() => BookCreatorState();
 }
 
-class _BookCreatorState extends State<BookCreator> {
+class BookCreatorState extends State<BookCreator> {
+
   final formKey = GlobalKey<FormState>();
   late String bookID;
-  late TextEditingController authorsController;
   late TextEditingController title;
-  late TextEditingController author;
   late TextEditingController numberOfPages;
   late TextEditingController coverType;
   late TextEditingController category;
@@ -29,38 +34,45 @@ class _BookCreatorState extends State<BookCreator> {
   late TextEditingController yearPublication;
   late TextEditingController quantity;
   late TextEditingController description;
-  List<Uint8List> imagesWeb = [];
+  static late List<String> authorsList;
+  late List<Uint8List> imagesWeb;
   List<String> imageUrls = [];
-  static List<String> authorsList = [""];
-  late double scaleHeight;
-  late double scaleWidthApp;
-  late double scaleWidthWeb;
+
+  Publisher? publisher;
+
+  void getData() async{
+    publisher = await publisherDatabase.getPublisher(widget.book!.publisherID);
+  }
 
   @override
   void initState() {
     super.initState();
 
-    bookID = const Uuid().v4();
-    title = TextEditingController();
-    author = TextEditingController();
-    numberOfPages = TextEditingController();
-    coverType = TextEditingController();
-    category = TextEditingController();
-    ISBN = TextEditingController();
-    language = TextEditingController();
-    publishedDate = TextEditingController();
-    publisherName = TextEditingController();
-    issueNumber = TextEditingController();
-    yearPublication = TextEditingController();
-    quantity = TextEditingController();
-    description = TextEditingController();
-    authorsController = TextEditingController();
+    loansDatabase.getAllUserLoans();
+    if(widget.book != null){
+      getData();
+    }
+
+    bookID = widget.book == null ? const Uuid().v4() : widget.book!.bookID;
+    authorsList = [""];
+    imagesWeb = [];
+    title = TextEditingController(text: widget.book?.title);
+    numberOfPages = TextEditingController(text: widget.book?.numberOfPages);
+    coverType = TextEditingController(text: widget.book?.coverType);
+    category = TextEditingController(text: widget.book?.category);
+    ISBN = TextEditingController(text: widget.book?.ISBN);
+    language = TextEditingController(text: widget.book?.language);
+    publishedDate = TextEditingController(text: widget.book?.publishedDate);
+    publisherName = TextEditingController(text: publisher?.publisherName);
+    issueNumber = TextEditingController(text: widget.book?.issueNumber);
+    yearPublication = TextEditingController(text: widget.book?.yearPublication);
+    quantity = TextEditingController(text: widget.book?.quantity);
+    description = TextEditingController(text: widget.book?.description);
   }
 
   @override
   void dispose() {
     title.dispose();
-    author.dispose();
     numberOfPages.dispose();
     coverType.dispose();
     category.dispose();
@@ -72,56 +84,7 @@ class _BookCreatorState extends State<BookCreator> {
     yearPublication.dispose();
     quantity.dispose();
     description.dispose();
-    authorsController.dispose();
     super.dispose();
-  }
-
-  List<Widget> getAuthors() {
-    List<Widget> authorsTextFields = [];
-    for (int i = 0; i < authorsList.length; i++) {
-      authorsTextFields.add(Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Row(
-          children: [
-            Expanded(child: AuthorTextFormFields(i)),
-            const SizedBox(
-              width: 16,
-            ),
-            _addRemoveButton(i == authorsList.length - 1, i),
-          ],
-        ),
-      ));
-    }
-    return authorsTextFields;
-  }
-
-  Widget _addRemoveButton(bool add, int index) {
-    return InkWell(
-      onTap: () {
-        if (add) {
-          authorsList.insert(index, "");
-        } else {
-          authorsList.removeAt(index);
-        }
-        setState(() {});
-      },
-      child: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          color: (add) ? Colors.green : Colors.red,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Icon(
-            (add) ? Icons.add_box_rounded : Icons.highlight_remove_outlined),
-      ),
-    );
-  }
-
-  Widget space([double? value]) {
-    return SizedBox(
-      height: value ?? scaleHeight,
-    );
   }
 
   Future getMultipleImages() async {
@@ -132,35 +95,17 @@ class _BookCreatorState extends State<BookCreator> {
     setState(() {
       imagesWeb = imagesWeb..addAll(images);
     });
-
-    imageUrls = await globals.booksDatabase.uploadImages(imagesWeb, bookID);
   }
 
   @override
   Widget build(BuildContext context) {
-    scaleHeight = MediaQuery.of(context).size.height * 0.02;
-    scaleWidthWeb = MediaQuery.of(context).size.width / 5;
-    scaleWidthApp = MediaQuery.of(context).size.width / 20;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {},
-          child: const Icon(
-            Icons.bookmark_add_outlined,
-          ),
-        ),
-        title: const Text("Add book"),
-      ),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.05,
-              bottom: MediaQuery.of(context).size.height * 0.05,
-              left: kIsWeb ? scaleWidthWeb : scaleWidthApp,
-              right: kIsWeb ? scaleWidthWeb : scaleWidthApp),
+          padding: paddingGlobal,
           child: Column(
             children: [
               TextButton(
@@ -192,11 +137,15 @@ class _BookCreatorState extends State<BookCreator> {
                             crossAxisCount: 2,
                             crossAxisSpacing:
                                 MediaQuery.of(context).size.width * 0.02,
-                            // mainAxisSpacing: 11,
                             childAspectRatio: 1,
                           ),
                           itemBuilder: (context, index) =>
-                              GridElement(image: imagesWeb[index])),
+                              GridElement(image: imagesWeb[index], index: index, onTap: (int index) => {
+                                setState(() {
+                                  imagesWeb.removeAt(index);
+                                })
+                              },),
+                      ),
                     )
                   : const Center(
                       child: FittedBox(
@@ -220,9 +169,17 @@ class _BookCreatorState extends State<BookCreator> {
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                 )),
               ),
-              ...getAuthors(),
+              ...getAuthors(authorsList, (bool add, int index) {
+                  if (add) {
+                    authorsList.insert(index, "");
+                  } else {
+                    authorsList.removeAt(index);
+                  }
+                  setState(() {});
+                }
+              ),
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.04,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
@@ -285,7 +242,7 @@ class _BookCreatorState extends State<BookCreator> {
                   Icons.title_outlined, issueNumber, "Enter issue number"),
               space(),
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.04,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
@@ -335,15 +292,15 @@ class _BookCreatorState extends State<BookCreator> {
                   }
 
                   if (isValidForm) {
-                    //final uid = globals.userDatabase.getUserID();
+                    imageUrls = await booksDatabase.uploadImages(imagesWeb, bookID);
                     String publisherID = "";
                     List<String> authorsID = [];
 
                     for (int i = 0; i < authorsList.length; i++) {
-                      authorsID.add(await globals.booksDatabase
+                      authorsID.add(await booksDatabase
                           .checkAndAddAuthor(authorsList[i]));
                     }
-                    publisherID = await globals.booksDatabase
+                    publisherID = await booksDatabase
                         .checkAndAddPublisher(publisherName.text);
 
                     final book = Book.book(
@@ -362,7 +319,7 @@ class _BookCreatorState extends State<BookCreator> {
                         description: description.text,
                         quantity: quantity.text,
                         images: imageUrls);
-                    await globals.booksDatabase.addBook(book);
+                    await booksDatabase.addBook(book);
                     Navigator.pop(context);
                     //dialogTrigger(context);
                   }
@@ -376,7 +333,7 @@ class _BookCreatorState extends State<BookCreator> {
                   }),
                 ),
                 child: Text(
-                  "Add book",
+                  widget.book == null ? "Add book" : "Edit book",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.background,
@@ -389,124 +346,4 @@ class _BookCreatorState extends State<BookCreator> {
       ),
     );
   }
-}
-
-class GridElement extends StatefulWidget {
-  const GridElement({super.key, required this.image, this.onTap});
-
-  final Uint8List image;
-  final Function()? onTap;
-
-  @override
-  State<GridElement> createState() => _GridElementState();
-}
-
-class _GridElementState extends State<GridElement> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: widget.onTap,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(15),
-                ),
-                image: DecorationImage(
-                    image: MemoryImage(widget.image), fit: BoxFit.cover),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class AuthorTextFormFields extends StatefulWidget {
-  final int index;
-
-  AuthorTextFormFields(this.index);
-
-  @override
-  State<AuthorTextFormFields> createState() => _AuthorTextFormFieldsState();
-}
-
-class _AuthorTextFormFieldsState extends State<AuthorTextFormFields> {
-  late TextEditingController nameController;
-
-  @override
-  void initState() {
-    super.initState();
-    nameController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      nameController.text = _BookCreatorState.authorsList[widget.index];
-    });
-
-    return TextFormField(
-      controller: nameController,
-      enableSuggestions: true,
-      autocorrect: true,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return "This field can't be empty";
-        } else {
-          return null;
-        }
-      },
-      onChanged: (v) => _BookCreatorState.authorsList[widget.index] = v,
-      decoration: InputDecoration(
-        icon: const Icon(Icons.person_add_alt_1),
-        hintText: "Enter author",
-        labelText: "Author",
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 3),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary, width: 5),
-        ),
-      ),
-    );
-  }
-}
-
-TextFormField reusableTextFormField(BuildContext context, String label,
-    IconData icon, TextEditingController controller, String hintText) {
-  return TextFormField(
-    controller: controller,
-    enableSuggestions: true,
-    autocorrect: true,
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return "This field can't be empty";
-      } else {
-        return null;
-      }
-    },
-    decoration: InputDecoration(
-      icon: Icon(icon),
-      hintText: hintText,
-      labelText: label,
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(width: 3),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide:
-            BorderSide(color: Theme.of(context).colorScheme.primary, width: 5),
-      ),
-    ),
-  );
 }
