@@ -27,6 +27,11 @@ class _SearchScreenState extends State<SearchScreen> {
     value = widget.category;
     search = widget.search;
     sort = widget.sort;
+    searchController.addListener(() {
+      setState((){
+        search = searchController.text;
+      });
+    });
   }
 
   dynamic value = "All";
@@ -121,6 +126,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     enableSuggestions: true,
                     autocorrect: true,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.background,
                       prefixIcon: const Icon(Icons.search_outlined),
                       suffixIcon: searchController.text.isNotEmpty
                           ? GestureDetector(
@@ -130,7 +137,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             )
                           : null,
                       hintText: "Search something...",
+                      hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
                       labelText: "Search",
+                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(width: 2),
                       ),
@@ -167,6 +176,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: InputDecorator(
                         decoration: InputDecoration(
                           filled: true,
+                          fillColor: Theme.of(context).colorScheme.background,
                           isCollapsed: true,
                           labelStyle: const TextStyle(fontSize: 18),
                           labelText: "Filter by",
@@ -182,8 +192,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               : "$selectedItem: " + value is Author
                                   ? value.authorName
                                   : value),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18, color: Theme.of(context).colorScheme.primary),
                         ))),
                       ),
                     ),
@@ -255,6 +265,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: InputDecorator(
                         decoration: InputDecoration(
                           filled: true,
+                          fillColor: Theme.of(context).colorScheme.background,
                           isCollapsed: true,
                           labelStyle: const TextStyle(fontSize: 18),
                           labelText: "Sort by",
@@ -266,8 +277,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: FittedBox(
                                 child: Text(
                           sort,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style:  TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18, color: Theme.of(context).colorScheme.primary),
                         ))),
                       ),
                     ),
