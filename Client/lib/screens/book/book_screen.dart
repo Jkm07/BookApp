@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../../globals.dart';
 import '../../models/authorModel/author.dart';
 import '../../models/bookModel/book.dart';
+import '../../models/libraryModel/library.dart';
 import '../../models/publisherModel/publisher.dart';
+import '../../models/userModel/userLibrary.dart';
 import 'book_details.dart';
 
 class BookDetailsScreen extends StatefulWidget {
@@ -24,6 +27,23 @@ class BookDetailsScreen extends StatefulWidget {
 class _BookDetailsScreenState extends State<BookDetailsScreen> {
   var pixelRatio = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
       .devicePixelRatio;
+
+  late TextEditingController quantityController;
+  late UserLibrary user;
+  Library? library;
+
+  @override
+  void initState(){
+    getData();
+    quantityController = new TextEditingController(text: "0");
+  }
+
+  getData() async {
+    user = await userDatabase.getCurrentUser();
+    if(user.userType == "librarian"){
+      library = await libraryDatabase.getUserLibrary(user.userID);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -30,13 +30,11 @@ class UsersList extends StatefulWidget {
 
 class _UsersListState extends State<UsersList> {
 
-  List<UserLibrary>? _userList;
   Library? _library;
 
   @override
   void initState(){
     _library = widget.library;
-    getList();
   }
 
   Widget userItemList(UserLibrary user) {
@@ -152,58 +150,26 @@ class _UsersListState extends State<UsersList> {
     );
   }
 
-  getList() async {
-    setState(() {
-      _userList = null;
-    });
-    if(widget.screenType == "view"){
-      final result = await userDatabase.getUsers(widget.search, widget.sort, widget.userType);
-      setState(() {
-        _userList = result;
-      });
-    } else{
-      final result = await userDatabase.getLibrarians(widget.search, widget.sort, widget.userType, widget.library);
-      setState(() {
-        _userList = result;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-
-    if(_userList == null){
-      return const Center(child: CircularProgressIndicator());
-    }else{
-        return ListView.separated(
-          itemCount: _userList!.length,
-          separatorBuilder: (context, index) {
-            return globals.space();
-          },
-          itemBuilder: (context, index) {
-            return userItemList(_userList![index]);
-          },
-          shrinkWrap: true,
-        );
-    }
-
-    // return FutureBuilder(
-    //     future:
-    //     builder: (context, snapshot) {
-    //       if (snapshot.hasData) {
-    //         return ListView.separated(
-    //           itemCount: snapshot.data!.length,
-    //           separatorBuilder: (context, index) {
-    //             return globals.space();
-    //           },
-    //           itemBuilder: (context, index) {
-    //             return userItemList(snapshot.data![index]);
-    //           },
-    //           shrinkWrap: true,
-    //         );
-    //       } else {
-    //         return const Center(child: CircularProgressIndicator());
-    //       }
-    //     });
+    return FutureBuilder(
+        future: widget.screenType == "view" ? userDatabase.getUsers(widget.search, widget.sort, widget.userType) :
+            userDatabase.getLibrarians(widget.search, widget.sort, widget.userType, widget.library),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.separated(
+              itemCount: snapshot.data!.length,
+              separatorBuilder: (context, index) {
+                return globals.space();
+              },
+              itemBuilder: (context, index) {
+                return userItemList(snapshot.data![index]);
+              },
+              shrinkWrap: true,
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 }

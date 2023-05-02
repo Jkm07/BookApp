@@ -10,7 +10,7 @@ class SpacerColumn extends SizedBox {
 }
 
 class BookDetails extends StatelessWidget {
-  const BookDetails(
+  BookDetails(
       {Key? key,
       required this.book,
       required this.publisher,

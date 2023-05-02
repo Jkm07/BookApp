@@ -54,6 +54,8 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //print("Users screen");
+
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -99,7 +101,9 @@ class _UsersScreenState extends State<UsersScreen> {
                   });
                 },
                 sortOnTap: (String value) {
-                  widget.sort = value;
+                  setState(() {
+                    widget.sort = value;
+                  });
                 }),
             space(),
             UsersList(

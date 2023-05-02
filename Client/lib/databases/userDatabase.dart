@@ -173,7 +173,8 @@ class UserDatabase {
 
     //add current librarians
     if( library != null ) {
-      result = new List.from(result)..addAll(await getLibraryLibrarians(library.librarianList));
+      final lib = await libraryDatabase.getLibrary(library.libraryID);
+      result = new List.from(result)..addAll(await getLibraryLibrarians( lib.librarianList ));
     }
 
     //searching
@@ -184,6 +185,7 @@ class UserDatabase {
     {
       users.sort( (a, b) => a.userName.toLowerCase().compareTo(b.userName.toLowerCase()));
     }
+    result = result.toSet().toList();
 
     return result;
   }

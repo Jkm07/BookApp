@@ -48,7 +48,6 @@ class BookCreatorState extends State<BookCreator> {
   void initState() {
     super.initState();
 
-    loansDatabase.getAllUserLoans();
     if(widget.book != null){
       getData();
     }

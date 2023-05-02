@@ -24,9 +24,12 @@ class _LibrariesListState extends State<LibrariesList> {
 
   Widget libraryItemList(Library library) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context,
+      onTap: () async {
+        await Navigator.push(context,
             MaterialPageRoute(builder: (context) => AddLibrary(library: library,) ));
+        setState(() {
+
+        });
       },
       child: Container(
         padding: const EdgeInsets.all(10),
