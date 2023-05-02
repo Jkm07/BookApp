@@ -31,10 +31,14 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   late TextEditingController quantityController;
   late UserLibrary user;
   Library? library;
+  List<Library>? bookAvailable;
 
   @override
   void initState(){
+    //do zwrocenia listy bibliotek gdzie ksiazka jest dostepna, tylko gdy przeglada librarian
     getData();
+
+    //do deklaracji dostepnosci ksiazki
     quantityController = new TextEditingController(text: "0");
   }
 
@@ -42,6 +46,9 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     user = await userDatabase.getCurrentUser();
     if(user.userType == "librarian"){
       library = await libraryDatabase.getUserLibrary(user.userID);
+      if(library != null){
+        bookAvailable = await libraryDatabase.getLibrariesWhereBookIsAvail(widget.book.bookID);
+      }
     }
   }
 

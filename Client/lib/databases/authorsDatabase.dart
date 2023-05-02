@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:uuid/uuid.dart';
-import '../globals.dart' as globals;
+import '../globals.dart';
 import '../models/authorModel/author.dart';
 
 class AuthorsDatabase {
   Future createLoanList() async {
-    String userID = await globals.userDatabase.getUserID();
+    String userID = await userDatabase.getUserID();
     await FirebaseFirestore.instance
         .collection("loans")
         .doc(const Uuid().v4())

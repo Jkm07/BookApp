@@ -1,4 +1,5 @@
 import 'package:client/screens/addLibrary.dart';
+import 'package:client/screens/myLoansScreen.dart';
 import 'package:client/screens/librariesScreen.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:client/screens/usersScreen.dart';
@@ -122,6 +123,14 @@ class _AccountScreenState extends State<AccountScreen> {
           Icons.home_filled,
           () => Navigator.push(context,
               MaterialPageRoute(builder: ((context) => const AddLibrary()))),
+        ),
+        globals.space(),
+        textIconButton(
+          context,
+          "My loans",
+          Icons.home_filled,
+              () => Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => const MyLoansScreen()))),
         ),
         globals.space(),
       ],

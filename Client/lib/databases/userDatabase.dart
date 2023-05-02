@@ -4,7 +4,6 @@ import 'dart:async';
 import '../globals.dart';
 import '../models/libraryModel/library.dart';
 import '../models/userModel/userLibrary.dart';
-import '../globals.dart' as globals;
 
 class UserDatabase {
   Future<String> getUserID() async {
@@ -24,7 +23,7 @@ class UserDatabase {
   }
 
   addUser(UserLibrary user) async {
-    await globals.booksDatabase
+    await booksDatabase
         .getFirestore()!
         .collection("users")
         .doc(user.userID)
@@ -32,7 +31,7 @@ class UserDatabase {
   }
 
   updateUser(UserLibrary user) async {
-    await globals.booksDatabase
+    await booksDatabase
         .getFirestore()!
         .collection("users")
         .doc(user.userID)
@@ -40,11 +39,22 @@ class UserDatabase {
   }
 
   deleteUserData(UserLibrary user) async {
-    await globals.booksDatabase
+    await booksDatabase
         .getFirestore()!
         .collection("users")
         .doc(user.userID)
         .delete();
+  }
+
+  refreshUser(String userID) async{
+    final database = booksDatabase.getFirestore()!.collection("users");
+    QuerySnapshot<Map<String, dynamic>>? querySnapshot;
+    querySnapshot = await database.where("userID", isEqualTo: userID).get();
+    final users = querySnapshot.docs
+        .map((doc) => UserLibrary.fromJson(doc.data()))
+        .toList();
+
+    return users[0];
   }
 
   deleteMyAccount() async {
@@ -54,7 +64,7 @@ class UserDatabase {
 
   Future<UserLibrary> getCurrentUser() async {
     String userID = await getUserID();
-    final database = globals.booksDatabase.getFirestore()!.collection("users");
+    final database = booksDatabase.getFirestore()!.collection("users");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
     querySnapshot = await database.where("userID", isEqualTo: userID).get();
 
@@ -66,7 +76,7 @@ class UserDatabase {
   }
 
   changePermissions(String email, String accountType) async {
-    final database = globals.booksDatabase.getFirestore()!.collection("users");
+    final database =booksDatabase.getFirestore()!.collection("users");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
     querySnapshot = await database.where("userMail", isEqualTo: email).get();
 
@@ -80,7 +90,7 @@ class UserDatabase {
           userName: user[0].userName,
           userMail: user[0].userMail,
           userType: accountType);
-      await globals.booksDatabase
+      await booksDatabase
           .getFirestore()!
           .collection("users")
           .doc(updatedUser.userID)
@@ -89,7 +99,7 @@ class UserDatabase {
   }
 
   Future<List<UserLibrary>> getLibraryLibrarians(List<String> librariansID ) async{
-    final database = globals.booksDatabase.getFirestore()!.collection("users");
+    final database = booksDatabase.getFirestore()!.collection("users");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 
     querySnapshot = await database.where("userType", isEqualTo: "librarian").get();
@@ -110,7 +120,7 @@ class UserDatabase {
   }
 
   Future<List<UserLibrary>> getUsers(String search, String sort, String userType) async {
-    final database = globals.booksDatabase.getFirestore()!.collection("users");
+    final database = booksDatabase.getFirestore()!.collection("users");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 
     if( userType == "All" ){
@@ -138,7 +148,7 @@ class UserDatabase {
   }
 
   Future<List<UserLibrary>> getLibrarians(String search, String sort, String userType, Library? library) async {
-    final database = globals.booksDatabase.getFirestore()!.collection("users");
+    final database = booksDatabase.getFirestore()!.collection("users");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 
     if( userType == "All" ){
@@ -188,17 +198,5 @@ class UserDatabase {
     result = result.toSet().toList();
 
     return result;
-  }
-
-  getUser(String mail) async {
-    final database = globals.booksDatabase.getFirestore()!.collection("users");
-    QuerySnapshot<Map<String, dynamic>>? querySnapshot;
-    querySnapshot = await database.where("userMail", isEqualTo: mail).get();
-
-    final users = querySnapshot.docs
-        .map((doc) => UserLibrary.fromJson(doc.data()))
-        .toList();
-
-    return users[0];
   }
 }

@@ -17,6 +17,18 @@ class LibraryDatabase{
     await FirebaseFirestore.instance.collection("libraries").doc(library.libraryID).delete();
   }
 
+  Future<List<Library>> getLibrariesWhereBookIsAvail(String bookID) async{
+    List<Library> libraries = await getLibraries("", "", "All");
+    List<Library> result = [];
+
+    for(int i = 0; i < libraries.length; i++){
+      if( libraries[i].booksAndQuantity.containsKey(bookID) && int.parse(libraries[i].booksAndQuantity[bookID]!) > 0 ){
+        result.add(libraries[i]);
+      }
+    }
+    return result;
+  }
+
   Future<void> updateBookQuantity(String librarianID, String quantity, String bookID) async{
     final database = booksDatabase.getFirestore()!.collection("libraries");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;

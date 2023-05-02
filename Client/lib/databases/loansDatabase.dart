@@ -2,13 +2,12 @@ import 'package:client/models/loanElement/loan.dart';
 import 'package:client/models/loanModel/loan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import '../globals.dart' as globals;
 import '../globals.dart';
 
 class LoansDatabase {
 
   Future<List<LoanElement>> getAllUserLoans() async {
-    String userID = await globals.userDatabase.getUserID();
+    String userID = await userDatabase.getUserID();
     var documentSnapshot = await FirebaseFirestore.instance
         .collection("loansList")
         .doc(userID)
@@ -21,8 +20,8 @@ class LoansDatabase {
   }
 
   Future createLoanRecordForUser() async {
-    String userID = await globals.userDatabase.getUserID();
-    await globals.booksDatabase
+    String userID = await userDatabase.getUserID();
+    await booksDatabase
         .getFirestore()!
         .collection("loansList")
         .doc(userID)
@@ -30,10 +29,10 @@ class LoansDatabase {
   }
 
   Future updateLoanList(List<LoanElement> newList) async{
-    String userID = await globals.userDatabase.getUserID();
+    String userID = await userDatabase.getUserID();
     final jsonList = newList.map((e) => e.toJson()).toList();
 
-    await globals.booksDatabase
+    await booksDatabase
         .getFirestore()!
     .collection("loansList")
     .doc(userID)
@@ -43,8 +42,8 @@ class LoansDatabase {
   }
 
   Future cleanLoanList() async {
-    String userID = await globals.userDatabase.getUserID();
-    await globals.booksDatabase
+    String userID = await userDatabase.getUserID();
+    await booksDatabase
         .getFirestore()!
         .collection("loansList")
         .doc(userID)

@@ -1,4 +1,3 @@
-import 'package:universal_io/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -45,6 +44,16 @@ class BooksDatabase{
     }
 
     return _firestore;
+  }
+
+  Future getBookByID(String bookID) async{
+    final database = getFirestore()!.collection("books");
+    QuerySnapshot<Map<String, dynamic>>? querySnapshot;
+    querySnapshot = await database.where("bookID", isEqualTo: bookID).get();
+    final books = querySnapshot.docs
+        .map((doc) => Book.fromJson(doc.data()))
+        .toList();
+    return books[0];
   }
 
   Future <List<Book>> getBooksFromCategory(String filterType, String value, String search, String sort) async

@@ -42,7 +42,9 @@ class _UsersListState extends State<UsersList> {
       onTap: () async {
         await Navigator.push(context,
             MaterialPageRoute(builder: (context) => UserDetails(user: user)));
+        setState(() {
 
+        });
       },
       child: Container(
         padding: const EdgeInsets.all(10),

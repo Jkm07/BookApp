@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:client/globals.dart' as globals;
+import '../globals.dart';
 import '../models/userModel/userLibrary.dart';
 
 class UserDetails extends StatefulWidget {
@@ -30,7 +30,7 @@ class _UserDetailsState extends State<UserDetails> {
   }
 
   getParameters() async {
-    user = await globals.userDatabase.getUser(widget.user.userMail);
+    user = await userDatabase.refreshUser(widget.user.userID);
   }
 
   Widget universalContainer(String header, String text, double height,
@@ -64,12 +64,7 @@ class _UserDetailsState extends State<UserDetails> {
         body: LayoutBuilder(builder: (context, constraints) {
           if (loadedData) {
             return SingleChildScrollView(
-              padding: EdgeInsets.only(
-                  top: globals.scaleHeight * 2,
-                  bottom: globals.scaleHeight * 2,
-                  left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
-                  right:
-                      kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
+              padding: paddingGlobal,
               child: SizedBox(
                 width: double.infinity,
                 child: Column(
@@ -79,8 +74,8 @@ class _UserDetailsState extends State<UserDetails> {
                     Container(
                       padding: const EdgeInsets.all(5),
                       height: kIsWeb
-                          ? globals.scaleHeight * 12
-                          : globals.scaleHeight * 7,
+                          ? scaleHeight * 12
+                          : scaleHeight * 7,
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 2,
@@ -101,8 +96,8 @@ class _UserDetailsState extends State<UserDetails> {
                     Container(
                       padding: const EdgeInsets.all(5),
                       width: kIsWeb
-                          ? globals.scaleHeight * 12
-                          : globals.scaleHeight * 7,
+                          ? scaleHeight * 12
+                          : scaleHeight * 7,
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 2,
@@ -119,13 +114,13 @@ class _UserDetailsState extends State<UserDetails> {
                                 fontWeight: FontWeight.w500, fontSize: 18),
                           )),
                     ),
-                    globals.space(),
+                    space(),
                     universalContainer(
-                        "UserID", user.userID, globals.scaleHeight * 3),
-                    globals.space(),
+                        "UserID", user.userID, scaleHeight * 3),
+                    space(),
                     universalContainer(
-                        "Email", user.userMail, globals.scaleHeight * 3),
-                    globals.space(),
+                        "Email", user.userMail, scaleHeight * 3),
+                    space(),
                     Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
@@ -156,7 +151,7 @@ class _UserDetailsState extends State<UserDetails> {
                                   ))
                               .toList(),
                           onChanged: (item) async {
-                            await globals.userDatabase
+                            await userDatabase
                                 .changePermissions(widget.user.userMail, item!);
                             await getParameters();
                             setState(() {
@@ -164,12 +159,12 @@ class _UserDetailsState extends State<UserDetails> {
                             });
                           }),
                     ),
-                    globals.space(),
+                    space(),
                     GestureDetector(
                       onTap: () {},
                       child: universalContainer(
                           "Delete account", "",
-                          globals.scaleHeight * 3,
+                          scaleHeight * 3,
                           color: Theme.of(context).colorScheme.error),
                     ),
                   ],
