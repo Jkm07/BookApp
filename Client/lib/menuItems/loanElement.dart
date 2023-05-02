@@ -38,64 +38,83 @@ class _LoanListElementState extends State<LoanListElement> {
     if (loaded == false) {
       return const Center(child: CircularProgressIndicator());
     } else {
-      return Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.black,
-              width: 2,
+      return Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(20))),
+            child: SizedBox(
+              height: scaleHeight * 4,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: Image.network(
+                      book.images[0],
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                  spaceWidth(kIsWeb ? scaleHeight * 3 : scaleHeight),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        FittedBox(
+                            child: Text(
+                          book.title,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 17,
+                              overflow: TextOverflow.ellipsis),
+                        )),
+                        FittedBox(
+                            child: Text(
+                          "From: ${library.name}",
+                          style: const TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              overflow: TextOverflow.ellipsis),
+                        )),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    library.booksAndQuantity.containsKey(book.bookID)
+                        ? "Available: ${library.booksAndQuantity[book.bookID]!}"
+                        : "Book is not available",
+                  )
+                ],
+              ),
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
-        child: SizedBox(
-          height: scaleHeight * 4,
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: Image.network(
-                  book.images[0],
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              spaceWidth(kIsWeb ? scaleHeight * 3 : scaleHeight),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    FittedBox(
-                        child: Text(
-                      book.title,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 20,
-                          overflow: TextOverflow.ellipsis),
-                    )),
-                    FittedBox(
-                        child: Text(
-                      "From: ${library.name}",
-                      style: const TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 16,
-                          overflow: TextOverflow.ellipsis),
-                    )),
-                  ],
-                ),
-              ),
-              Text(
-                library.booksAndQuantity.containsKey(book.bookID)
-                    ? "Quantity: ${library.booksAndQuantity[book.bookID]!}"
-                    : "Book is not available",
-              )
-            ],
           ),
-        ),
+          Positioned(
+            right: 5,
+            top: 5,
+            child: GestureDetector(
+              onTap: () async {
+                String userID = await userDatabase.getUserID();
+                await loansDatabase.deleteBookOnLoanList(book.bookID, library.libraryID);
+                widget.callBack();
+              },
+              child: Icon(
+                Icons.remove_circle_outline,
+                color: Colors.red,
+              ),
+            ),
+          ),
+        ],
       );
     }
   }
