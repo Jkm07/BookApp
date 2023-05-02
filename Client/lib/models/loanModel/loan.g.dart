@@ -9,15 +9,19 @@ part of 'loan.dart';
 _$loan _$$loanFromJson(Map<String, dynamic> json) => _$loan(
       loanID: json['loanID'] as String,
       bookID: json['bookID'] as String,
-      customerID: json['customerID'] as String,
+      libraryID: json['libraryID'] as String,
+      userID: json['userID'] as String,
       loanDate: json['loanDate'] as String,
       endDate: json['endDate'] as String,
+      extended: json['extended'] as bool,
     );
 
 Map<String, dynamic> _$$loanToJson(_$loan instance) => <String, dynamic>{
       'loanID': instance.loanID,
       'bookID': instance.bookID,
-      'customerID': instance.customerID,
+      'libraryID': instance.libraryID,
+      'userID': instance.userID,
       'loanDate': instance.loanDate,
       'endDate': instance.endDate,
+      'extended': instance.extended,
     };
