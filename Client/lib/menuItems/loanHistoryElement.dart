@@ -1,3 +1,4 @@
+import 'package:client/screens/loanDetails.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,14 +8,16 @@ import '../models/libraryModel/library.dart';
 import '../models/loanModel/loan.dart';
 
 class LoanHistoryElement extends StatefulWidget {
-  LoanHistoryElement(
-      {Key? key,
-      required this.loan,
-      required this.screenType,})
-      : super(key: key);
+  LoanHistoryElement({
+    Key? key,
+    required this.loan,
+    required this.screenType,
+    required this.callBack,
+  }) : super(key: key);
 
   Loan loan;
   String screenType;
+  Function callBack;
 
   @override
   State<LoanHistoryElement> createState() => _LoanHistoryElementState();
@@ -45,12 +48,20 @@ class _LoanHistoryElementState extends State<LoanHistoryElement> {
     } else {
       return GestureDetector(
         onTap: () {
-
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => LoanDetails(
+                      loan: widget.loan,
+                      book: book,
+                      library: library,
+                      screenType: widget.screenType,
+                      callBack: widget.callBack,))));
         },
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-              color: widget.loan.ended == true ? Colors.grey : Colors.white,
+              color: widget.loan.ended == true ? Colors.red : Colors.green,
               border: Border.all(
                 color: Colors.black,
                 width: 2,
@@ -89,7 +100,7 @@ class _LoanHistoryElementState extends State<LoanHistoryElement> {
                           child: Text(
                         "From: ${library.name}",
                         style: const TextStyle(
-                            color: Colors.grey,
+                            color: Colors.white,
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
                             overflow: TextOverflow.ellipsis),

@@ -134,6 +134,14 @@ class _AccountScreenState extends State<AccountScreen> {
               MaterialPageRoute(builder: ((context) => const MyLoansScreen()))),
         ),
         globals.space(),
+        textIconButton(
+          context,
+          "Loans history",
+          Icons.home_filled,
+              () => Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => LoanHistory(screenType: "user")))),
+        ),
+        globals.space(),
 
       ],
     );

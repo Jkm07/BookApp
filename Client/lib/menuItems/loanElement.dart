@@ -1,4 +1,5 @@
 import 'package:client/models/libraryModel/library.dart';
+import 'package:client/screens/loginScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../globals.dart';
@@ -91,10 +92,28 @@ class _LoanListElementState extends State<LoanListElement> {
                     ),
                   ),
                   Text(
-                    library.booksAndQuantity.containsKey(book.bookID)
+                    int.parse(library.booksAndQuantity[book.bookID]!) > 0
                         ? "Available: ${library.booksAndQuantity[book.bookID]!}"
-                        : "Book is not available",
-                  )
+                        : "Not available",
+                  ),
+                  TextButton(
+                      onPressed: () async {
+                        bool validation = await loansDatabase.validateLoan(
+                            widget.loanElement, library, book);
+                        if (validation) {
+                          await loansDatabase.createLoan(book, library);
+                          await loansDatabase.deleteBookOnLoanList(book.bookID, library.libraryID);
+                          dialogTrigger(context, "Book has been borrowed",
+                              "Please, pick up your book in ${library.name} address: ${library.address}");
+                        } else {
+                          dialogTrigger(context, "Can not borrow book",
+                              "You can not borrow ${book.title} from: ${library.name} because it is not available now!");
+                        }
+                        widget.callBack();
+                      },
+                      child: Container(
+                        child: Text("Borrow"),
+                      )),
                 ],
               ),
             ),
@@ -104,8 +123,9 @@ class _LoanListElementState extends State<LoanListElement> {
             top: 5,
             child: GestureDetector(
               onTap: () async {
-                String userID = await userDatabase.getUserID();
-                await loansDatabase.deleteBookOnLoanList(book.bookID, library.libraryID);
+
+                await loansDatabase.deleteBookOnLoanList(
+                    book.bookID, library.libraryID);
                 widget.callBack();
               },
               child: Icon(

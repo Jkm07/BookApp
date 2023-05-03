@@ -30,6 +30,10 @@ class _LoanHistoryListState extends State<LoanHistoryList> {
                 return LoanHistoryElement(
                   loan: snapshot.data![index],
                   screenType: widget.screenType,
+                  callBack: () {
+                    setState(() {
+                    });
+                  },
                 );
               },
               shrinkWrap: true,

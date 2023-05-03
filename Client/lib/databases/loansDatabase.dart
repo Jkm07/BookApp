@@ -26,6 +26,7 @@ class LoansDatabase {
     DateTime loanDate = DateTime.now();
     DateTime endDate = loanDate.add(const Duration(days: 14));
     Loan newLoan = Loan.loan(loanID: Uuid().v4(), bookID: book.bookID, libraryID: library.libraryID, userID: userID, loanDate: loanDate, endDate: endDate, extended: false, ended: false);
+    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(library, book, -1);
     await FirebaseFirestore.instance.collection("loans").doc(newLoan.loanID).set(newLoan.toJson());
   }
 
@@ -34,15 +35,15 @@ class LoansDatabase {
   }
 
   Future extendLoan(Loan loan) async{
-    DateTime endDate = loan.endDate;
-    endDate.add(const Duration(days: 14));
+    DateTime endDate = loan.endDate.add(Duration(days: 14));
     Loan updatedLoan = Loan.loan(loanID: loan.loanID, bookID: loan.bookID, libraryID: loan.libraryID, userID: loan.userID, loanDate: loan.loanDate, endDate: endDate, extended: true, ended: loan.ended);
     updateLoan(updatedLoan);
   }
 
-  Future endLoan(Loan loan) async{
+  Future endLoan(Loan loan, Book book, Library library) async{
     Loan updatedLoan = Loan.loan(loanID: loan.loanID, bookID: loan.bookID, libraryID: loan.libraryID, userID: loan.userID, loanDate: loan.loanDate, endDate: loan.endDate, extended: loan.extended, ended: true);
     updateLoan(updatedLoan);
+    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(library, book, 1);
   }
 
   Future<List<Loan>> getUserLoanHistory() async{
@@ -75,6 +76,14 @@ class LoansDatabase {
 
 
   //Methods for MyLoans
+
+  Future<bool> validateLoan(LoanElement loan, Library library, Book book) async{
+    library = await libraryDatabase.getLibrary(library.libraryID);
+    if(library.booksAndQuantity.containsKey(book.bookID) && int.parse(library.booksAndQuantity[book.bookID]!) > 0){
+      return true;
+    }
+    return false;
+  }
 
   Future<List<LoanElement>> getAllUserLoans() async {
     String userID = await userDatabase.getUserID();
