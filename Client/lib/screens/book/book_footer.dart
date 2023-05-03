@@ -1,15 +1,36 @@
 import 'package:client/models/bookModel/book.dart';
 import 'package:flutter/material.dart';
 import 'text_feature_list.dart';
+import 'book_library_list.dart';
 
 class HorizontalDivider extends SizedBox {
-  const HorizontalDivider({super.key}) : super(height: 8);
+  const HorizontalDivider({super.key}) : super(height: 9);
 }
 
-class BookFooter extends StatelessWidget {
+class BookFooter extends StatefulWidget {
   final Book _book;
 
   const BookFooter(this._book, {super.key});
+
+  @override
+  State<BookFooter> createState() => _BookFooter();
+}
+
+class _BookFooter extends State<BookFooter> {
+
+  void Function()? buttonPointer;
+
+  void borrowBook()
+  {
+    return;
+  }
+
+  void chooseLibrary()
+  {
+    setState((){
+      buttonPointer = borrowBook;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,21 +41,26 @@ class BookFooter extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              flex: 1,
-              child: ActionChip(
-                  avatar: const Icon(
-                    Icons.menu_book_outlined,
-                  ),
-                  label: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text("Borrow"),
-                  ),
-                  labelStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  onPressed: () {}),
+              child: Column(
+                children: [
+                  ActionChip(
+                      avatar: const Icon(
+                        Icons.menu_book_outlined,
+                        size: 20,
+                      ),
+                      label: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 6.0),
+                        child: Text("Borrow"),
+                      ),
+                      labelStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      onPressed: buttonPointer),
+                   LibraryList(chooseLibrary),
+                ],
+              ),
             ),
             const VerticalDivider(
               thickness: 1,
@@ -45,15 +71,15 @@ class BookFooter extends StatelessWidget {
                 flex: 1,
                 child: Column(
                   children: [
-                    TextFeatureList("Category", _book.category),
+                    TextFeatureList("Category", widget._book.category),
                     const HorizontalDivider(),
-                    TextFeatureList("Cover type", _book.coverType),
+                    TextFeatureList("Cover type", widget._book.coverType),
                     const HorizontalDivider(),
-                    TextFeatureList("Issue number", _book.issueNumber),
+                    TextFeatureList("Issue number", widget._book.issueNumber),
                     const HorizontalDivider(),
-                    TextFeatureList("Quantity", _book.quantity),
+                    TextFeatureList("Quantity", widget._book.quantity),
                     const HorizontalDivider(),
-                    TextFeatureList("ISBN", _book.ISBN),
+                    TextFeatureList("ISBN", widget._book.ISBN),
                     const HorizontalDivider(),
                   ],
                 )),
