@@ -1,4 +1,6 @@
+import 'package:client/globals.dart';
 import 'package:client/models/bookModel/book.dart';
+import 'package:client/models/libraryModel/library.dart';
 import 'package:flutter/material.dart';
 import 'text_feature_list.dart';
 import 'book_library_list.dart';
@@ -17,18 +19,28 @@ class BookFooter extends StatefulWidget {
 }
 
 class _BookFooter extends State<BookFooter> {
-
   void Function()? buttonPointer;
 
-  void borrowBook()
-  {
+  Library? chosenLibrary;
+
+  Future<List<Library>> getLibraries() async {
+    return await libraryDatabase
+        .getLibrariesWhereBookIsAvail(widget._book.bookID);
+  }
+
+  void borrowBook() {
+    loansDatabase.addBookToLoanList(
+        widget._book.bookID, chosenLibrary!.libraryID);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Success. You added book to your borrow list")));
+
     return;
   }
 
-  void chooseLibrary()
-  {
-    setState((){
-      buttonPointer = borrowBook;
+  void chooseLibrary(Library? library) {
+    setState(() {
+      chosenLibrary = library;
+      buttonPointer = library == null ? null : borrowBook;
     });
   }
 
@@ -58,7 +70,16 @@ class _BookFooter extends State<BookFooter> {
                           fontWeight: FontWeight.bold),
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       onPressed: buttonPointer),
-                   LibraryList(chooseLibrary),
+                  FutureBuilder(
+                      future: getLibraries(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return LibraryList(snapshot.data!, chooseLibrary);
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      })
                 ],
               ),
             ),
