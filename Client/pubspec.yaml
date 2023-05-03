@@ -51,6 +51,7 @@ dependencies:
   carousel_slider: ^4.2.1
   google_nav_bar: ^5.0.6
   text_scroll: ^0.2.0
+  selectable_list: ^0.1.1
 
 dev_dependencies:
   flutter_test:

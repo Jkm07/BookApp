@@ -124,7 +124,7 @@ class LibraryDatabase{
         .map((doc) => Library.fromJson(doc.data()))
         .toList();
 
-    return libraries[0];
+    return libraries.isEmpty ? null : libraries[0];
   }
 
 }

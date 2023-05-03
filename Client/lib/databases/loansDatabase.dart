@@ -1,5 +1,4 @@
 import 'package:client/models/loanElement/loan.dart';
-import 'package:client/models/loanModel/loan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';

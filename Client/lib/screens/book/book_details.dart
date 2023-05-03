@@ -10,15 +10,16 @@ class SpacerColumn extends SizedBox {
 }
 
 class BookDetails extends StatelessWidget {
-  BookDetails(
+  final Book book;
+  final Publisher publisher;
+  final List<Author> authors;
+
+  const BookDetails(
       {Key? key,
       required this.book,
       required this.publisher,
       required this.authors})
       : super(key: key);
-  final Book book;
-  final Publisher publisher;
-  final List<Author> authors;
 
   @override
   Widget build(BuildContext context) {

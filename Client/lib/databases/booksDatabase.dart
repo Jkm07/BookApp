@@ -9,126 +9,101 @@ import '../models/authorModel/author.dart';
 import '../models/bookModel/book.dart';
 import '../models/publisherModel/publisher.dart';
 
-class BooksDatabase{
-
+class BooksDatabase {
   static FirebaseStorage? _storage = null;
   static FirebaseAuth? _auth = null;
   static FirebaseFirestore? _firestore = null;
 
-  FirebaseStorage? getStorage ()
-  {
-    if( _storage == null )
-    {
+  FirebaseStorage? getStorage() {
+    if (_storage == null) {
       _storage = FirebaseStorage.instance;
     }
 
     return _storage;
   }
 
-  FirebaseAuth? getAuth ()
-  {
-    if ( _auth == null )
-    {
+  FirebaseAuth? getAuth() {
+    if (_auth == null) {
       _auth = FirebaseAuth.instance;
     }
 
     return _auth;
   }
 
-  FirebaseFirestore? getFirestore ()
-  {
-    if ( _firestore == null )
-    {
-
+  FirebaseFirestore? getFirestore() {
+    if (_firestore == null) {
       _firestore = FirebaseFirestore.instance;
     }
 
     return _firestore;
   }
 
-  Future getBookByID(String bookID) async{
+  Future getBookByID(String bookID) async {
     final database = getFirestore()!.collection("books");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
     querySnapshot = await database.where("bookID", isEqualTo: bookID).get();
-    final books = querySnapshot.docs
-        .map((doc) => Book.fromJson(doc.data()))
-        .toList();
+    final books =
+        querySnapshot.docs.map((doc) => Book.fromJson(doc.data())).toList();
     return books[0];
   }
 
-  Future <List<Book>> getBooksFromCategory(String filterType, String value, String search, String sort) async
-  {
-    final database = getFirestore()!.collection("books");
-    QuerySnapshot<Map<String, dynamic>>? querySnapshot;
+  Future<List<Book>> getBooksFromCategory(
+      String filterType, String value, String search, String sort) async {
+    Query<Map<String, dynamic>> database = getFirestore()!.collection("books");
 
-    if( filterType == "None" )
-    {
-      querySnapshot = await database.get();
+    if (filterType == "None") {
     }
-    else if( filterType == "Categories" )
-    {
-      if( value == "All" )
-      {
-        querySnapshot = await database.get();
+    else if (filterType == "Categories") {
+      if (value == "All") {
+      } else {
+        database = database.where("category", isEqualTo: value);
       }
-      else
-      {
-        querySnapshot = await database.where("category", isEqualTo: value).get();
-      }
-    }
-    else if ( filterType == "Authors" )
-    {
-      querySnapshot = await database.where("authorsID", arrayContains: value).get();
+    } else if (filterType == "Authors") {
+        database = database.where("authorsID", arrayContains: value);
     }
 
-    final books = querySnapshot!.docs
-        .map((doc) => Book.fromJson(doc.data()))
-        .toList();
-
-    //searching
-    if( search != "" ) books.removeWhere((item) => !(item.title.toLowerCase() + item.category.toLowerCase()).contains(search.toLowerCase()));
-
-    //sort
-    if( sort == "Title: alphabetically" )
-    {
-      books.sort( (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
-    }
-    else if ( sort == "Author: alphabetically" )
-    {
+    if (sort == "Title: alphabetically") {
+      database = database.orderBy("title");
+    } else if (sort == "Author: alphabetically") {
       //books.sort( (a, b) => b.productPrice.compareTo(a.productPrice));
     }
+
+    var reply = await database.get();
+
+    final books = reply.docs.map((doc) => Book.fromJson(doc.data())).toList();
+
+    if( search != "" ) books.removeWhere((item) => !(item.title.toLowerCase() + item.category.toLowerCase()).contains(search.toLowerCase()));
 
     return books;
   }
 
-  Future<List<String>> getCategories() async{
+  Future<List<String>> getCategories() async {
     List<String> categories = ["All"];
     var documentSnapshot = await getFirestore()!.collection("books").get();
 
-    for( int i = 0; i < documentSnapshot.docs.length; i++ )
-    {
-      categories.add( documentSnapshot.docs[i].data()!["category"] );
+    for (int i = 0; i < documentSnapshot.docs.length; i++) {
+      categories.add(documentSnapshot.docs[i].data()["category"]);
     }
 
     categories = categories.toSet().toList();
     return categories;
   }
 
-  Future<List<String>> uploadImages( List<Uint8List> imageFiles, String nameBookID ) async
-  {
+  Future<List<String>> uploadImages(
+      List<Uint8List> imageFiles, String nameBookID) async {
     List<String> imageUrls = [];
 
-    for ( int i = 0; i < imageFiles.length; i++ )
-    {
-      try
-      {
-        final ref = getStorage()!.ref().child("images").child( nameBookID + " " + DateTime.now().toString());
+    for (int i = 0; i < imageFiles.length; i++) {
+      try {
+        final ref = getStorage()!
+            .ref()
+            .child("images")
+            .child(nameBookID + " " + DateTime.now().toString());
         var fileBytes = await imageFiles[i];
-        await ref.putData(fileBytes, SettableMetadata(contentType: 'image/jpeg'));
+        await ref.putData(
+            fileBytes, SettableMetadata(contentType: 'image/jpeg'));
         imageUrls.add(await ref.getDownloadURL());
-      }
-      catch(error)
-      {
+      } catch (error) {
         print(error);
       }
     }
@@ -136,39 +111,40 @@ class BooksDatabase{
     return imageUrls;
   }
 
-  Future<String> checkAndAddAuthor( String authorName ) async{
+  Future<String> checkAndAddAuthor(String authorName) async {
     String authorID = "";
     bool found = false;
     final database = getFirestore()?.collection("authors");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
     querySnapshot = await database!.get();
 
-    final authors = querySnapshot.docs
-        .map((doc) => Author.fromJson(doc.data()))
-        .toList();
+    final authors =
+        querySnapshot.docs.map((doc) => Author.fromJson(doc.data())).toList();
 
     String editedName = authorName.replaceAll(' ', '').toLowerCase();
-    for( int i = 0; i < authors.length; i++ )
-    {
-      if( authors[i].authorName.replaceAll(' ', '').toLowerCase() == editedName )
-        {
-          found = true;
-          authorID = authors[i].authorID;
-          break;
-        }
+    for (int i = 0; i < authors.length; i++) {
+      if (authors[i].authorName.replaceAll(' ', '').toLowerCase() ==
+          editedName) {
+        found = true;
+        authorID = authors[i].authorID;
+        break;
+      }
     }
 
-    if ( !found )
-    {
+    if (!found) {
       authorID = Uuid().v4();
-      Author newAuthor = Author.author(authorID: authorID, authorName: authorName);
-      await getFirestore()!.collection("authors").doc(newAuthor.authorID).set(newAuthor.toJson());
+      Author newAuthor =
+          Author.author(authorID: authorID, authorName: authorName);
+      await getFirestore()!
+          .collection("authors")
+          .doc(newAuthor.authorID)
+          .set(newAuthor.toJson());
     }
 
     return authorID;
   }
 
-  Future<String> checkAndAddPublisher( String publisherName ) async{
+  Future<String> checkAndAddPublisher(String publisherName) async {
     String publisherID = "";
     bool found = false;
     final database = getFirestore()?.collection("publishers");
@@ -180,36 +156,43 @@ class BooksDatabase{
         .toList();
 
     String editedName = publisherName.replaceAll(' ', '').toLowerCase();
-    for( int i = 0; i < publishers.length; i++ )
-    {
-      if( publishers[i].publisherName.replaceAll(' ', '').toLowerCase() == editedName )
-      {
+    for (int i = 0; i < publishers.length; i++) {
+      if (publishers[i].publisherName.replaceAll(' ', '').toLowerCase() ==
+          editedName) {
         found = true;
         publisherID = publishers[i].publisherID;
         break;
       }
     }
 
-    if ( !found )
-    {
+    if (!found) {
       publisherID = Uuid().v4();
-      Publisher newPublisher = Publisher.publisher(publisherID: publisherID, publisherName: publisherName);
-      await getFirestore()!.collection("publishers").doc(newPublisher.publisherID).set(newPublisher.toJson());
+      Publisher newPublisher = Publisher.publisher(
+          publisherID: publisherID, publisherName: publisherName);
+      await getFirestore()!
+          .collection("publishers")
+          .doc(newPublisher.publisherID)
+          .set(newPublisher.toJson());
     }
 
     return publisherID;
   }
 
-  Future<void> updateBook( Book book ) async{
-    await getFirestore()!.collection("books").doc(book.bookID).update(book.toJson());
+  Future<void> updateBook(Book book) async {
+    await getFirestore()!
+        .collection("books")
+        .doc(book.bookID)
+        .update(book.toJson());
   }
 
-  Future<void> addBook( Book book) async{
-    await getFirestore()!.collection("books").doc(book.bookID).set(book.toJson());
+  Future<void> addBook(Book book) async {
+    await getFirestore()!
+        .collection("books")
+        .doc(book.bookID)
+        .set(book.toJson());
   }
 
-  Future<void> deleteBook( Book book ) async{
+  Future<void> deleteBook(Book book) async {
     await getFirestore()!.collection("books").doc(book.bookID).delete();
   }
-
 }
