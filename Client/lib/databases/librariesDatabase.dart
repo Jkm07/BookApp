@@ -113,7 +113,7 @@ class LibraryDatabase{
     return libraries[0];
   }
 
-  Future<Library> getUserLibrary(String userID) async {
+  Future<Library?> getUserLibrary(String userID) async {
     final database = booksDatabase.getFirestore()!.collection("libraries");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 

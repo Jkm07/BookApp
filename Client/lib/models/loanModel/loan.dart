@@ -14,9 +14,10 @@ class Loan with _$Loan {
     required String bookID,
     required String libraryID,
     required String userID,
-    required String loanDate,
-    required String endDate,
+    required DateTime loanDate,
+    required DateTime endDate,
     required bool extended,
+    required bool ended,
 
     // depends on post type
   }) = loan;

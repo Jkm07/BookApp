@@ -1,4 +1,5 @@
 import 'package:client/screens/addLibrary.dart';
+import 'package:client/screens/loanHistory.dart';
 import 'package:client/screens/myLoansScreen.dart';
 import 'package:client/screens/librariesScreen.dart';
 import 'package:client/screens/loginScreen.dart';
@@ -133,14 +134,7 @@ class _AccountScreenState extends State<AccountScreen> {
               MaterialPageRoute(builder: ((context) => const MyLoansScreen()))),
         ),
         globals.space(),
-        textIconButton(
-          context,
-          "Loans history",
-          Icons.home_filled,
-              () => Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const MyLoansScreen()))),
-        ),
-        globals.space(),
+
       ],
     );
   }
@@ -159,6 +153,14 @@ class _AccountScreenState extends State<AccountScreen> {
         textIconButton(
             context, "Manage books", Icons.menu_book_outlined, () {}),
         globals.space(),
+        textIconButton(
+          context,
+          "Loans history",
+          Icons.home_filled,
+              () => Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => LoanHistory(screenType: "librarian")))),
+        ),
+        globals.space(),
       ],
     );
   }
@@ -175,6 +177,14 @@ class _AccountScreenState extends State<AccountScreen> {
             Icons.mail_outline_outlined, () {}),
         globals.space(),
         textIconButton(context, "My loans", Icons.list_alt_rounded, () {}),
+        globals.space(),
+        textIconButton(
+          context,
+          "Loans history",
+          Icons.home_filled,
+              () => Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => LoanHistory(screenType: "user")))),
+        ),
         globals.space(),
         textIconButton(
             context, "Delete account", Icons.restore_from_trash_outlined, () {

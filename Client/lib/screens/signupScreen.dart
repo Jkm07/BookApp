@@ -1,10 +1,10 @@
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/home/main_background.dart';
 import 'package:flutter/foundation.dart';
+import '../globals.dart';
 import '../models/userModel/userLibrary.dart';
 import 'loginScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:client/globals.dart' as globals;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -27,17 +27,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           key: formKey,
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-                top: globals.scaleHeight * 2,
-                bottom: globals.scaleHeight * 2,
-                left: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp,
-                right: kIsWeb ? globals.scaleWidthWeb : globals.scaleWidthApp),
+            padding: paddingGlobal,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                globals.space(),
+                space(),
                 logoWidget("assets/image/logo.png"),
-                globals.space(),
+                space(),
                 const Center(
                   child: FittedBox(
                     child: Text(
@@ -49,33 +45,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                globals.space(),
+                space(),
                 reusableTextField("Enter username",
                     Icons.person_outline_outlined, "", _userNameTextController),
-                globals.space(),
+                space(),
                 reusableTextField("Enter Email", Icons.mail_outline_outlined,
                     "email", _emailTextController),
-                globals.space(),
+                space(),
                 reusableTextField("Enter password", Icons.lock_outline,
                     "password", _passwordTextController),
-                globals.space(),
+                space(),
                 firebaseButton(context, "Sign Up", () {
                   final isValidForm = formKey.currentState!.validate();
 
                   if (isValidForm) {
-                    globals.booksDatabase
+                    booksDatabase
                         .getAuth()!
                         .createUserWithEmailAndPassword(
                             email: _emailTextController.text,
                             password: _passwordTextController.text)
                         .then((value) async {
-                      String userID = await globals.userDatabase.getUserID();
+                      String userID = await userDatabase.getUserID();
                       UserLibrary newUser = UserLibrary.user(
                           userID: userID,
                           userName: _userNameTextController.text,
                           userMail: _emailTextController.text,
                           userType: "user");
-                      globals.userDatabase.addUser(newUser);
+                      userDatabase.addUser(newUser);
+                      loansDatabase.createLoanRecordForUser();
 
                       Navigator.push(
                           context,
