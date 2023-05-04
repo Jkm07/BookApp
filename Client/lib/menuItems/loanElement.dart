@@ -49,7 +49,7 @@ class _LoanListElementState extends State<LoanListElement> {
                   color: Colors.black,
                   width: 2,
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(20))),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: SizedBox(
               height: scaleHeight * 4,
               width: double.infinity,
@@ -91,46 +91,56 @@ class _LoanListElementState extends State<LoanListElement> {
                       ],
                     ),
                   ),
-                  Text(
-                    int.parse(library.booksAndQuantity[book.bookID]!) > 0
-                        ? "Available: ${library.booksAndQuantity[book.bookID]!}"
-                        : "Not available",
-                  ),
-                  TextButton(
-                      onPressed: () async {
-                        bool validation = await loansDatabase.validateLoan(
-                            widget.loanElement, library, book);
-                        if (validation) {
-                          await loansDatabase.createLoan(book, library);
-                          await loansDatabase.deleteBookOnLoanList(book.bookID, library.libraryID);
-                          dialogTrigger(context, "Book has been borrowed",
-                              "Please, pick up your book in ${library.name} address: ${library.address}");
-                        } else {
-                          dialogTrigger(context, "Can not borrow book",
-                              "You can not borrow ${book.title} from: ${library.name} because it is not available now!");
-                        }
-                        widget.callBack();
-                      },
-                      child: Container(
-                        child: Text("Borrow"),
-                      )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                    Text(
+                      int.parse(library.booksAndQuantity[book.bookID]!) > 0
+                          ? "Available: ${library.booksAndQuantity[book.bookID]!}"
+                          : "Not available",
+                    ),
+                    TextButton(
+                        onPressed: () async {
+                          bool validation = await loansDatabase.validateLoan(
+                              widget.loanElement, library, book);
+                          if (validation) {
+                            await loansDatabase.createLoan(book, library);
+                            await loansDatabase.deleteBookOnLoanList(book.bookID, library.libraryID);
+                            dialogTrigger(context, "Book has been borrowed",
+                                "Please, pick up your book in ${library.name} address: ${library.address}");
+                          } else {
+                            dialogTrigger(context, "Can not borrow book",
+                                "You can not borrow ${book.title} from: ${library.name} because it is not available now!");
+                          }
+                          widget.callBack();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(3),
+                          color: Colors.black,
+                          child: Text("Borrow"),
+                        )),
+                  ],),
                 ],
               ),
             ),
           ),
           Positioned(
-            right: 5,
-            top: 5,
+            right: -5,
+            top: -5,
             child: GestureDetector(
               onTap: () async {
-
                 await loansDatabase.deleteBookOnLoanList(
                     book.bookID, library.libraryID);
                 widget.callBack();
               },
-              child: Icon(
-                Icons.remove_circle_outline,
-                color: Colors.red,
+              child: Container(
+                color: Colors.black,
+                child: Icon(
+                  Icons.remove_circle_outline,
+                  color: Colors.red,
+                ),
               ),
             ),
           ),

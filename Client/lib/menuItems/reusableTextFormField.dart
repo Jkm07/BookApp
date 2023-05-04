@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 TextFormField reusableTextFormField(BuildContext context, String label,
-    IconData icon, TextEditingController controller, String hintText) {
+    IconData icon, TextEditingController controller, String hintText, [TextInputType? inputType, List<TextInputFormatter>? inputFormatter] ) {
   return TextFormField(
     controller: controller,
     enableSuggestions: true,
     autocorrect: true,
+    keyboardType: inputType,
+    inputFormatters: inputFormatter,
     validator: (value) {
       if (value == null || value.isEmpty) {
         return "This field can't be empty";
