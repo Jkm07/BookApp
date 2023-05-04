@@ -8,6 +8,12 @@ class MyLoansScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: const Icon(
+          Icons.list,
+        ),
+        title: const Text("My loans"),
+      ),
       body: SingleChildScrollView(
         padding: paddingGlobal,
         child: const LoanElementList(),

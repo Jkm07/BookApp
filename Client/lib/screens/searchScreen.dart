@@ -1,6 +1,7 @@
 import 'package:client/screens/CategoriesList.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../globals.dart';
 import '../lists/universalBooksList.dart';
 import '../models/authorModel/author.dart';
 
@@ -46,18 +47,6 @@ class _SearchScreenState extends State<SearchScreen> {
   late double scaleWidthApp;
   late double scaleWidthWeb;
   TextEditingController searchController = TextEditingController();
-
-  Widget space([double? value]) {
-    return SizedBox(
-      height: value ?? scaleHeight,
-    );
-  }
-
-  Widget spaceWidth(double value) {
-    return SizedBox(
-      width: value,
-    );
-  }
 
   Widget returnSorts(BuildContext context) {
     return ListView.separated(
@@ -111,11 +100,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(
-            kIsWeb ? scaleWidthWeb : scaleWidthApp,
-            MediaQuery.of(context).size.height * 0.05,
-            kIsWeb ? scaleWidthWeb : scaleWidthApp,
-            MediaQuery.of(context).size.height * 0.05),
+        padding: paddingGlobal,
         child: Column(
           children: [
             Row(
@@ -157,7 +142,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      final result = await showDialog(
+                      var result = await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return CategoriesList(

@@ -1,6 +1,7 @@
 import 'package:client/models/publisherModel/publisher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../globals.dart';
@@ -204,7 +205,7 @@ class BookCreatorState extends State<BookCreator> {
                   Icons.language_outlined, language, "Enter language"),
               space(),
               reusableTextFormField(context, "Quantity",
-                  Icons.shopping_cart_outlined, quantity, "Enter quantity"),
+                  Icons.shopping_cart_outlined, quantity, "Enter quantity", TextInputType.number, [FilteringTextInputFormatter.digitsOnly]),
               space(),
               reusableTextFormField(context, "Cover type", Icons.book,
                   coverType, "Enter cover type"),
@@ -214,7 +215,7 @@ class BookCreatorState extends State<BookCreator> {
                   "Number of pages",
                   Icons.bookmarks_rounded,
                   numberOfPages,
-                  "Enter number of pages"),
+                  "Enter number of pages", TextInputType.number, [FilteringTextInputFormatter.digitsOnly]),
               space(),
               reusableTextFormField(
                   context,
@@ -238,7 +239,7 @@ class BookCreatorState extends State<BookCreator> {
                   "Enter publication year"),
               space(),
               reusableTextFormField(context, "Issue number",
-                  Icons.title_outlined, issueNumber, "Enter issue number"),
+                  Icons.title_outlined, issueNumber, "Enter issue number", TextInputType.number, [FilteringTextInputFormatter.digitsOnly]),
               space(),
               Container(
                 width: double.infinity,

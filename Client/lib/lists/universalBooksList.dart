@@ -1,7 +1,8 @@
+import 'package:client/models/userModel/userLibrary.dart';
 import 'package:client/screens/book/book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
-import '../globals.dart' as globals;
+import '../globals.dart';
 import '../models/authorModel/author.dart';
 import '../models/bookModel/book.dart';
 import '../models/publisherModel/publisher.dart';
@@ -28,7 +29,7 @@ class _UniversalBooksListState extends State<UniversalBooksList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Book>>(
-        future: globals.booksDatabase.getBooksFromCategory(
+        future: booksDatabase.getBooksFromCategory(
             widget.filterType, widget.value, widget.search, widget.sort),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -62,17 +63,14 @@ class _BookElementState extends State<BookElement> {
     //getParameters();
   }
 
-  Widget space([double? value]) {
-    return SizedBox(
-      height: value ?? scaleHeight,
-    );
-  }
+  late UserLibrary user;
 
   Future<Publisher> getParameters() async {
+    user = await userDatabase.getCurrentUser();
     authors =
-        await (globals.authorsDatabase.getAuthorsList(widget.book.authorsID));
+        await (authorsDatabase.getAuthorsList(widget.book.authorsID));
     publisher =
-        await (globals.publisherDatabase.getPublisher(widget.book.publisherID));
+        await (publisherDatabase.getPublisher(widget.book.publisherID));
     return publisher;
   }
 
@@ -123,8 +121,8 @@ class _BookElementState extends State<BookElement> {
                   widget.book.description,
                   velocity: const Velocity(pixelsPerSecond: Offset(40, 0)),
                 ),
-                onTap: () => globals.setScreen(BookDetailsScreen(
-                    book: widget.book, authors: authors)),
+                onTap: () => setScreen(BookDetailsScreen(
+                    book: widget.book, authors: authors, user: user,)),
               ),
             );
           } else {

@@ -1,3 +1,4 @@
+import 'package:client/models/userModel/userLibrary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -6,10 +7,15 @@ import '../../models/bookModel/book.dart';
 import 'book_details.dart';
 
 class BookDetailsScreen extends StatefulWidget {
-  const BookDetailsScreen({Key? key, required this.book, required this.authors})
+  const BookDetailsScreen(
+      {Key? key,
+      required this.book,
+      required this.authors,
+      required this.user})
       : super(key: key);
   final Book book;
   final List<Author> authors;
+  final UserLibrary user;
 
   @override
   State<BookDetailsScreen> createState() => _BookDetailsScreenState();
