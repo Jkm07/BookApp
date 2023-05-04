@@ -23,6 +23,7 @@ class _LoanListElementState extends State<LoanListElement> {
           global.libraryDatabase.getLibrary(widget.loanElement.libraryID),
           global.booksDatabase.getBookByID(widget.loanElement.bookID),
           global.authorsDatabase.getAuthorsByBookId(widget.loanElement.bookID),
+          global.userDatabase.getCurrentUser(),
         ]),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -69,7 +70,7 @@ class _LoanListElementState extends State<LoanListElement> {
                     subtitle: Text(
                         '${snapshot.data![0].name}\n${snapshot.data![0].address}'),
                     onTap: () => global.setScreen(BookDetailsScreen(
-                        book: snapshot.data![1], authors: snapshot.data![2])),
+                        book: snapshot.data![1], authors: snapshot.data![2], user: snapshot.data![3])),
                   ),
                 ),
               ),
