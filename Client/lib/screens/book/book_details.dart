@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/authorModel/author.dart';
 import '../../models/bookModel/book.dart';
-import '../../models/publisherModel/publisher.dart';
 import 'book_brief.dart';
 import 'book_footer.dart';
 
@@ -11,14 +10,9 @@ class SpacerColumn extends SizedBox {
 
 class BookDetails extends StatelessWidget {
   final Book book;
-  final Publisher publisher;
   final List<Author> authors;
 
-  const BookDetails(
-      {Key? key,
-      required this.book,
-      required this.publisher,
-      required this.authors})
+  const BookDetails({Key? key, required this.book, required this.authors})
       : super(key: key);
 
   @override

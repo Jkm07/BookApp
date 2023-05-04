@@ -21,12 +21,12 @@ class LoansDatabase {
     return loans[0];
   }
 
-  Future createLoan(Book book, Library library,) async{
+  Future createLoan(String bookId, String libraryId) async{
     String userID = await userDatabase.getUserID();
     DateTime loanDate = DateTime.now();
     DateTime endDate = loanDate.add(const Duration(days: 14));
-    Loan newLoan = Loan.loan(loanID: Uuid().v4(), bookID: book.bookID, libraryID: library.libraryID, userID: userID, loanDate: loanDate, endDate: endDate, extended: false, ended: false);
-    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(library, book, -1);
+    Loan newLoan = Loan.loan(loanID: Uuid().v4(), bookID: bookId, libraryID: libraryId, userID: userID, loanDate: loanDate, endDate: endDate, extended: false, ended: false);
+    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(libraryId, bookId, -1);
     await FirebaseFirestore.instance.collection("loans").doc(newLoan.loanID).set(newLoan.toJson());
   }
 
@@ -43,7 +43,7 @@ class LoansDatabase {
   Future endLoan(Loan loan, Book book, Library library) async{
     Loan updatedLoan = Loan.loan(loanID: loan.loanID, bookID: loan.bookID, libraryID: loan.libraryID, userID: loan.userID, loanDate: loan.loanDate, endDate: loan.endDate, extended: loan.extended, ended: true);
     updateLoan(updatedLoan);
-    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(library, book, 1);
+    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(library.libraryID, book.bookID, 1);
   }
 
   Future<List<Loan>> getUserLoanHistory() async{
@@ -76,14 +76,6 @@ class LoansDatabase {
 
 
   //Methods for MyLoans
-
-  Future<bool> validateLoan(LoanElement loan, Library library, Book book) async{
-    library = await libraryDatabase.getLibrary(library.libraryID);
-    if(library.booksAndQuantity.containsKey(book.bookID) && int.parse(library.booksAndQuantity[book.bookID]!) > 0){
-      return true;
-    }
-    return false;
-  }
 
   Future<List<LoanElement>> getAllUserLoans() async {
     String userID = await userDatabase.getUserID();
@@ -162,6 +154,22 @@ class LoansDatabase {
       }
     }
     return false;
+  }
+
+  Future<int> validateLoan(LoanElement loan) async{
+    final library = await libraryDatabase.getLibrary(loan.libraryID);
+    if(library.booksAndQuantity.containsKey(loan.bookID)){
+      return int.parse(library.booksAndQuantity[loan.bookID]!);
+    }
+    return 0;
+  }
+
+  Future acceptBorrowList(List<LoanElement> loans) async
+  {
+    for(var loan in loans){
+      await createLoan(loan.bookID, loan.libraryID);
+    }
+    await cleanLoanList();
   }
 
 }

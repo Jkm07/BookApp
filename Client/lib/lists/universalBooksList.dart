@@ -124,7 +124,7 @@ class _BookElementState extends State<BookElement> {
                   velocity: const Velocity(pixelsPerSecond: Offset(40, 0)),
                 ),
                 onTap: () => globals.setScreen(BookDetailsScreen(
-                    book: widget.book, publisher: publisher, authors: authors)),
+                    book: widget.book, authors: authors)),
               ),
             );
           } else {

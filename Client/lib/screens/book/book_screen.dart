@@ -3,18 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../models/authorModel/author.dart';
 import '../../models/bookModel/book.dart';
-import '../../models/publisherModel/publisher.dart';
 import 'book_details.dart';
 
 class BookDetailsScreen extends StatefulWidget {
-  const BookDetailsScreen(
-      {Key? key,
-      required this.book,
-      required this.publisher,
-      required this.authors})
+  const BookDetailsScreen({Key? key, required this.book, required this.authors})
       : super(key: key);
   final Book book;
-  final Publisher publisher;
   final List<Author> authors;
 
   @override
@@ -27,7 +21,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final scaleHeight =
         WidgetsBinding.instance.window.physicalSize.height / pixelRatio * 0.02;
 
@@ -40,10 +33,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             vertical: kIsWeb ? scaleHeight * 3 : scaleHeight),
         child: Stack(
           children: [
-            BookDetails(
-                book: widget.book,
-                publisher: widget.publisher,
-                authors: widget.authors),
+            BookDetails(book: widget.book, authors: widget.authors),
             CarouselSlider(
                 items: widget.book.images
                     .map(

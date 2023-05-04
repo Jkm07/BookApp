@@ -1,6 +1,7 @@
 import 'package:client/screens/accountScreen.dart';
 import 'package:client/screens/home/main_background.dart';
 import 'package:client/screens/loginScreen.dart';
+import 'package:client/screens/myLoansScreen.dart';
 import 'package:client/screens/searchScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,25 +19,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  Widget currentScreen = BookCreator();
+  Widget currentScreen = const MyLoansScreen();
+  String title = "Your books";
 
   void _navigationBarChange(int index) {
     switch (index) {
       case 0:
-        return global.setScreen(BookCreator());
+        return global.setScreen(const MyLoansScreen(), title: "Your books");
       case 1:
-        return global.setScreen(const SearchScreen());
+        return global.setScreen(const SearchScreen(),title: "Borrow books");
       case 2:
-        return global.setScreen(const LoginScreen());
+        return global.setScreen(const LoginScreen(), title: "Libraries");
       case 3:
-        return global.setScreen(const AccountScreen());
+        return global.setScreen(const AccountScreen(), title: "Settings");
     }
   }
 
   @override
   void initState() {
     super.initState();
-    global.setScreen = (Widget screen) => setState(() {
+    global.setScreen = (Widget screen, {String? title}) => setState(() {
+          this.title = title ?? this.title;
           currentScreen = screen;
         });
   }
@@ -53,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               Icons.menu_book_outlined,
             ),
           ),
-          title: const Text("Szacun Rispekt"),
+          title: Text(title),
         ),
         bottomNavigationBar: Container(
           color: Theme.of(context).colorScheme.secondary,

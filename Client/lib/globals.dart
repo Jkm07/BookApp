@@ -41,4 +41,4 @@ Widget spaceWidth(double value) {
   );
 }
 
-void Function(Widget) setScreen = (Widget w)  => {};
+void Function(Widget, {String? title}) setScreen = (Widget w, {String? title})  => {};
