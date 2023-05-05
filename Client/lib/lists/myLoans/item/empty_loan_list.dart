@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter/src/foundation/constants.dart';
 
 class EmptyLoanList extends StatelessWidget {
   const EmptyLoanList({super.key});
@@ -16,9 +17,10 @@ class EmptyLoanList extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.primary),
         ),
-        Lottie.network(
-          "https://assets5.lottiefiles.com/packages/lf20_hl5n0bwb.json",
-        )
+        if (!kIsWeb)
+          Lottie.network(
+            "https://assets5.lottiefiles.com/packages/lf20_hl5n0bwb.json",
+          )
       ],
     );
   }
