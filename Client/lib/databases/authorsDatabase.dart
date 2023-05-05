@@ -5,13 +5,6 @@ import '../globals.dart';
 import '../models/authorModel/author.dart';
 
 class AuthorsDatabase {
-  Future createLoanList() async {
-    String userID = await userDatabase.getUserID();
-    await FirebaseFirestore.instance
-        .collection("loans")
-        .doc(const Uuid().v4())
-        .set({"userID": userID, "booksID": []});
-  }
 
   Future<List<Author>> getAllAuthors() async {
     var querySnapshot =
@@ -36,6 +29,24 @@ class AuthorsDatabase {
           querySnapshot.docs.map((doc) => Author.fromJson(doc.data())).toList();
 
       authors = authors..addAll(author);
+    }
+
+    return authors;
+  }
+
+  Future<List<String>> getAuthorsStringName(List<String> authorsID) async {
+    List<String> authors = [];
+
+    for (int i = 0; i < authorsID.length; i++) {
+      var querySnapshot = await FirebaseFirestore.instance
+          .collection("authors")
+          .where("authorID", isEqualTo: authorsID[i])
+          .get();
+
+      final author =
+      querySnapshot.docs.map((doc) => Author.fromJson(doc.data())).toList();
+
+      authors.add(author[0].authorName);
     }
 
     return authors;

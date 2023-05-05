@@ -14,6 +14,31 @@ class UserDatabase {
     return uid;
   }
 
+  Future changeUsername(String newUsername) async{
+    var currentUser = FirebaseAuth.instance.currentUser;
+    final database = booksDatabase.getFirestore()!.collection("users");
+    QuerySnapshot<Map<String, dynamic>>? querySnapshot;
+    querySnapshot = await database.where("userID", isEqualTo: currentUser?.uid).get();
+    final users = querySnapshot.docs
+        .map((doc) => UserLibrary.fromJson(doc.data())).toList();
+
+    if(users.isNotEmpty){
+      final user = users[0];
+      final updatedUser = UserLibrary.user(userID: user.userID, userName: newUsername, userMail: user.userMail, userType: user.userType);
+      await updateUser(updatedUser);
+    }
+  }
+
+  Future changeEmail(String newEmail) async{
+    var user = FirebaseAuth.instance.currentUser;
+    await user?.updateEmail(newEmail);
+  }
+
+  Future changePassword(String newPassword) async{
+    var user = FirebaseAuth.instance.currentUser;
+    await user?.updatePassword(newPassword);
+  }
+
   getMail() async {
     String? mailAddress;
     final FirebaseAuth auth = FirebaseAuth.instance;

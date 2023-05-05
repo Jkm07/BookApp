@@ -1,5 +1,6 @@
 import 'package:client/models/loanElement/loan.dart';
 import 'package:client/models/loanModel/loan.dart';
+import 'package:client/models/userModel/userLibrary.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
@@ -40,6 +41,10 @@ class LoansDatabase {
     updateLoan(updatedLoan);
   }
 
+  Future deleteLoanHistory(UserLibrary user) async{
+    await FirebaseFirestore.instance.collection("loans").doc(user.userID).delete();
+  }
+
   Future endLoan(Loan loan, Book book, Library library) async{
     Loan updatedLoan = Loan.loan(loanID: loan.loanID, bookID: loan.bookID, libraryID: loan.libraryID, userID: loan.userID, loanDate: loan.loanDate, endDate: loan.endDate, extended: loan.extended, ended: true);
     updateLoan(updatedLoan);
@@ -76,6 +81,10 @@ class LoansDatabase {
 
 
   //Methods for MyLoans
+
+  Future deleteMyLoans(UserLibrary user) async{
+    await FirebaseFirestore.instance.collection("loansList").doc(user.userID).delete();
+  }
 
   Future<bool> validateLoan(LoanElement loan, Library library, Book book) async{
     library = await libraryDatabase.getLibrary(library.libraryID);

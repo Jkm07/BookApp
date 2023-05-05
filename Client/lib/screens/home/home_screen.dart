@@ -1,4 +1,4 @@
-import 'package:client/screens/accountScreen.dart';
+import 'package:client/screens/accountScreen/accountScreen.dart';
 import 'package:client/screens/home/main_background.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:client/screens/searchScreen.dart';
