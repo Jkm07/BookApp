@@ -1,5 +1,5 @@
 import 'package:client/globals.dart';
-import 'package:client/lists/loanElementList.dart';
+import 'package:client/lists/myLoans/loan_list.dart';
 import 'package:flutter/material.dart';
 
 class MyLoansScreen extends StatelessWidget {

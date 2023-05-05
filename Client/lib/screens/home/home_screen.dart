@@ -6,7 +6,6 @@ import 'package:client/screens/searchScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import '../addScreen.dart';
 import 'package:client/globals.dart' as global;
 
 class MyHomePage extends StatefulWidget {
@@ -20,16 +19,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget currentScreen = const MyLoansScreen();
-  String title = "Your books";
+  String title = "Wish list";
 
   void _navigationBarChange(int index) {
     switch (index) {
       case 0:
-        return global.setScreen(const MyLoansScreen(), title: "Your books");
+        return global.setScreen(const MyLoansScreen(), title: "Wish list");
       case 1:
-        return global.setScreen(const SearchScreen(),title: "Borrow books");
+        return global.setScreen(const SearchScreen(), title: "Search book");
       case 2:
-        return global.setScreen(const LoginScreen(), title: "Libraries");
+        return global.setScreen(const LoginScreen(), title: "Loans");
       case 3:
         return global.setScreen(const AccountScreen(), title: "Settings");
     }
@@ -69,10 +68,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               onTabChange: _navigationBarChange,
               gap: 9,
               tabs: const [
-                GButton(icon: Icons.menu_book, text: "Wypożycz"),
-                GButton(icon: Icons.search, text: "Przeglądaj"),
-                GButton(icon: Icons.other_houses, text: "Biblioteki"),
-                GButton(icon: Icons.person, text: "Ustawienia"),
+                GButton(icon: Icons.list_alt, text: "Wish list"),
+                GButton(icon: Icons.search, text: "Search"),
+                GButton(icon: Icons.my_library_books, text: "Loans"),
+                GButton(icon: Icons.person, text: "Settings"),
               ]),
         ),
         body: MainBackground(child: currentScreen));

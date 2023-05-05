@@ -1,7 +1,7 @@
 import 'package:client/screens/book/book_screen.dart';
 import 'package:flutter/material.dart';
-import '../globals.dart' as global;
-import '../models/loanElement/loan.dart';
+import '../../../globals.dart' as global;
+import '../../../models/loanElement/loan.dart';
 
 class LoanListElement extends StatefulWidget {
   const LoanListElement(
@@ -70,7 +70,9 @@ class _LoanListElementState extends State<LoanListElement> {
                     subtitle: Text(
                         '${snapshot.data![0].name}\n${snapshot.data![0].address}'),
                     onTap: () => global.setScreen(BookDetailsScreen(
-                        book: snapshot.data![1], authors: snapshot.data![2], user: snapshot.data![3])),
+                        book: snapshot.data![1],
+                        authors: snapshot.data![2],
+                        user: snapshot.data![3])),
                   ),
                 ),
               ),
