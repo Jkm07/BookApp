@@ -52,6 +52,8 @@ dependencies:
   google_nav_bar: ^5.0.6
   text_scroll: ^0.2.0
   selectable_list: ^0.1.1
+  confetti: ^0.7.0
+  lottie: ^2.3.2
 
 dev_dependencies:
   flutter_test:

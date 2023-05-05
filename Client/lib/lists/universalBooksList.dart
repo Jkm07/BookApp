@@ -60,6 +60,7 @@ class _BookElementState extends State<BookElement> {
   @override
   void initState() {
     super.initState();
+    //getParameters();
   }
 
   late UserLibrary user;
@@ -121,7 +122,7 @@ class _BookElementState extends State<BookElement> {
                   velocity: const Velocity(pixelsPerSecond: Offset(40, 0)),
                 ),
                 onTap: () => setScreen(BookDetailsScreen(
-                    book: widget.book, publisher: publisher, authors: authors, user: user,)),
+                    book: widget.book, authors: authors, user: user,)),
               ),
             );
           } else {

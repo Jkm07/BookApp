@@ -74,22 +74,20 @@ class LibraryDatabase {
     }
   }
 
-  Future<void> updateBookQuantityWhenBorrowOrEnded(
-      Library library, Book book, int value) async {
+  Future<void> updateBookQuantityWhenBorrowOrEnded(String libraryID, String bookID, int value) async{
     final database = booksDatabase.getFirestore()!.collection("libraries");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 
-    querySnapshot =
-        await database.where("libraryID", isEqualTo: library.libraryID).get();
-    var libraries =
-        querySnapshot.docs.map((doc) => Library.fromJson(doc.data())).toList();
+    querySnapshot = await database.where( "libraryID", isEqualTo: libraryID ).get();
+    var libraries = querySnapshot.docs
+        .map((doc) => Library.fromJson(doc.data()))
+        .toList();
 
     if (libraries.isNotEmpty) {
       var library = libraries[0];
       Map<String, String> bookQuantity = Map.of(library.booksAndQuantity);
-      if (bookQuantity.containsKey(book.bookID)) {
-        bookQuantity[book.bookID] =
-            (int.parse(bookQuantity[book.bookID]!) + value).toString();
+      if(bookQuantity.containsKey(bookID)){
+        bookQuantity[bookID] = (int.parse(bookQuantity[bookID]!) + value).toString();
       }
 
       Library updatedLibrary = Library.library(

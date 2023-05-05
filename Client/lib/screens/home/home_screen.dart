@@ -1,11 +1,11 @@
 import 'package:client/screens/accountScreen/accountScreen.dart';
 import 'package:client/screens/home/main_background.dart';
 import 'package:client/screens/loginScreen.dart';
+import 'package:client/screens/myLoansScreen.dart';
 import 'package:client/screens/searchScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import '../addScreen.dart';
 import 'package:client/globals.dart' as global;
 
 class MyHomePage extends StatefulWidget {
@@ -18,25 +18,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  Widget currentScreen = BookCreator();
+  Widget currentScreen = const MyLoansScreen();
+  String title = "Wish list";
 
   void _navigationBarChange(int index) {
     switch (index) {
       case 0:
-        return global.setScreen(BookCreator());
+        return global.setScreen(const MyLoansScreen(), title: "Wish list");
       case 1:
-        return global.setScreen(const SearchScreen());
+        return global.setScreen(const SearchScreen(), title: "Search book");
       case 2:
-        return global.setScreen(const LoginScreen());
+        return global.setScreen(const LoginScreen(), title: "Loans");
       case 3:
-        return global.setScreen(const AccountScreen());
+        return global.setScreen(const AccountScreen(), title: "Settings");
     }
   }
 
   @override
   void initState() {
     super.initState();
-    global.setScreen = (Widget screen) => setState(() {
+    global.setScreen = (Widget screen, {String? title}) => setState(() {
+          this.title = title ?? this.title;
           currentScreen = screen;
         });
   }
@@ -53,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               Icons.menu_book_outlined,
             ),
           ),
-          title: const Text("Szacun Rispekt"),
+          title: Text(title),
         ),
         bottomNavigationBar: Container(
           color: Theme.of(context).colorScheme.secondary,
@@ -66,10 +68,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               onTabChange: _navigationBarChange,
               gap: 9,
               tabs: const [
-                GButton(icon: Icons.menu_book, text: "Wypożycz"),
-                GButton(icon: Icons.search, text: "Przeglądaj"),
-                GButton(icon: Icons.other_houses, text: "Biblioteki"),
-                GButton(icon: Icons.person, text: "Ustawienia"),
+                GButton(icon: Icons.list_alt, text: "Wish list"),
+                GButton(icon: Icons.search, text: "Search"),
+                GButton(icon: Icons.my_library_books, text: "Loans"),
+                GButton(icon: Icons.person, text: "Settings"),
               ]),
         ),
         body: MainBackground(child: currentScreen));
