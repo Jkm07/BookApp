@@ -1,6 +1,6 @@
 import 'package:client/screens/accountScreen/accountScreen.dart';
 import 'package:client/screens/home/main_background.dart';
-import 'package:client/screens/loginScreen.dart';
+import 'package:client/screens/loanHistory.dart';
 import 'package:client/screens/myLoansScreen.dart';
 import 'package:client/screens/searchScreen.dart';
 import 'package:flutter/foundation.dart';
@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       case 1:
         return global.setScreen(const SearchScreen(), title: "Search book");
       case 2:
-        return global.setScreen(const LoginScreen(), title: "Loans");
+        return global.setScreen(LoanHistory(screenType: 'user'), title: "Loans");
       case 3:
         return global.setScreen(const AccountScreen(), title: "Settings");
     }

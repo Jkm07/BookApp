@@ -59,6 +59,8 @@ class _LoanElementListState extends State<LoanElementList> {
                 Column(
                   children: [
                     ListView.separated(
+                      primary: false,
+                      shrinkWrap: true,
                       itemCount: snapshot.data!.length,
                       separatorBuilder: (context, index) {
                         return space();
@@ -85,7 +87,6 @@ class _LoanElementListState extends State<LoanElementList> {
                               quantity: _quantities[index]),
                         );
                       },
-                      shrinkWrap: true,
                     ),
                     const Divider(),
                     snapshot.data!.isNotEmpty
