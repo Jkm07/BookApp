@@ -3,7 +3,7 @@ import 'package:client/screens/accountScreen/textButton.dart';
 import 'package:flutter/material.dart';
 
 import '../../globals.dart';
-import '../loanHistory.dart';
+import '../historyLoan/loan_history_user.dart';
 
 Widget userList(BuildContext context, UserLibrary user) {
   return Column(
@@ -15,7 +15,7 @@ Widget userList(BuildContext context, UserLibrary user) {
         "Loans history",
         Icons.home_filled,
             () => Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => LoanHistory(screenType: "user")))),
+            MaterialPageRoute(builder: ((context) => const LoanHistoryUser()))),
       ),
       space(),
       textIconButton(

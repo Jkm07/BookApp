@@ -54,6 +54,8 @@ dependencies:
   selectable_list: ^0.1.1
   confetti: ^0.7.0
   lottie: ^2.3.2
+  grouped_list: ^5.1.2
+  collection: ^1.17.0
 
 dev_dependencies:
   flutter_test:

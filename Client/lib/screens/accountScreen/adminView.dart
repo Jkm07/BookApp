@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../globals.dart';
 import '../addLibrary.dart';
 import '../librariesScreen.dart';
-import '../loanHistory.dart';
+import '../historyLoan/loan_history_user.dart';
 import '../myLoansScreen.dart';
 import '../usersScreen.dart';
 
@@ -43,7 +43,7 @@ Widget adminList(BuildContext context) {
         "Loans history",
         Icons.home_filled,
             () => Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => LoanHistory(screenType: "user")))),
+            MaterialPageRoute(builder: ((context) => const LoanHistoryUser()))),
       ),
       space(),
 
