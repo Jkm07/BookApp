@@ -9,81 +9,115 @@ import '../models/bookModel/book.dart';
 import '../models/libraryModel/library.dart';
 
 class LoansDatabase {
-
   //Methods for LoanHistory
-  Future<Loan> getLoanByID(String loanID) async{
+  Future<Loan> getLoanByID(String loanID) async {
     final database = FirebaseFirestore.instance.collection("loans");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
     querySnapshot = await database.where("loanID", isEqualTo: loanID).get();
 
-    final loans = querySnapshot.docs
-        .map((doc) => Loan.fromJson(doc.data()))
-        .toList();
+    final loans =
+        querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
     return loans[0];
   }
 
-  Future createLoan(String bookId, String libraryId) async{
+  Future createLoan(String bookId, String libraryId) async {
     String userID = await userDatabase.getUserID();
     DateTime loanDate = DateTime.now();
     DateTime endDate = loanDate.add(const Duration(days: 14));
-    Loan newLoan = Loan.loan(loanID: Uuid().v4(), bookID: bookId, libraryID: libraryId, userID: userID, loanDate: loanDate, endDate: endDate, extended: false, ended: false);
-    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(libraryId, bookId, -1);
-    await FirebaseFirestore.instance.collection("loans").doc(newLoan.loanID).set(newLoan.toJson());
+    Loan newLoan = Loan.loan(
+        loanID: Uuid().v4(),
+        bookID: bookId,
+        libraryID: libraryId,
+        userID: userID,
+        loanDate: loanDate,
+        endDate: endDate,
+        extended: false,
+        ended: false);
+    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(
+        libraryId, bookId, -1);
+    await FirebaseFirestore.instance
+        .collection("loans")
+        .doc(newLoan.loanID)
+        .set(newLoan.toJson());
   }
 
-  Future updateLoan(Loan loan) async{
-    await FirebaseFirestore.instance.collection("loans").doc(loan.loanID).update(loan.toJson());
+  Future updateLoan(Loan loan) async {
+    await FirebaseFirestore.instance
+        .collection("loans")
+        .doc(loan.loanID)
+        .update(loan.toJson());
   }
 
-  Future extendLoan(Loan loan) async{
+  Future extendLoan(Loan loan) async {
     DateTime endDate = loan.endDate.add(Duration(days: 14));
-    Loan updatedLoan = Loan.loan(loanID: loan.loanID, bookID: loan.bookID, libraryID: loan.libraryID, userID: loan.userID, loanDate: loan.loanDate, endDate: endDate, extended: true, ended: loan.ended);
+    Loan updatedLoan = Loan.loan(
+        loanID: loan.loanID,
+        bookID: loan.bookID,
+        libraryID: loan.libraryID,
+        userID: loan.userID,
+        loanDate: loan.loanDate,
+        endDate: endDate,
+        extended: true,
+        ended: loan.ended);
     updateLoan(updatedLoan);
   }
 
-  Future deleteLoanHistory(UserLibrary user) async{
-    await FirebaseFirestore.instance.collection("loans").doc(user.userID).delete();
+  Future deleteLoanHistory(UserLibrary user) async {
+    await FirebaseFirestore.instance
+        .collection("loans")
+        .doc(user.userID)
+        .delete();
   }
 
-  Future endLoan(Loan loan, Book book, Library library) async{
-    Loan updatedLoan = Loan.loan(loanID: loan.loanID, bookID: loan.bookID, libraryID: loan.libraryID, userID: loan.userID, loanDate: loan.loanDate, endDate: loan.endDate, extended: loan.extended, ended: true);
+  Future endLoan(Loan loan, Book book, Library library) async {
+    Loan updatedLoan = Loan.loan(
+        loanID: loan.loanID,
+        bookID: loan.bookID,
+        libraryID: loan.libraryID,
+        userID: loan.userID,
+        loanDate: loan.loanDate,
+        endDate: loan.endDate,
+        extended: loan.extended,
+        ended: true);
     updateLoan(updatedLoan);
-    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(library.libraryID, book.bookID, 1);
+    await libraryDatabase.updateBookQuantityWhenBorrowOrEnded(
+        library.libraryID, book.bookID, 1);
   }
 
-  Future<List<Loan>> getUserLoanHistory() async{
+  Future<List<Loan>> getUserLoanHistory() async {
     String userID = await userDatabase.getUserID();
     final database = FirebaseFirestore.instance.collection("loans");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
     querySnapshot = await database.where("userID", isEqualTo: userID).get();
 
-    final loans = querySnapshot.docs
-        .map((doc) => Loan.fromJson(doc.data()))
-        .toList();
+    final loans =
+        querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
     return loans;
   }
 
-  Future<List<Loan>> getLibraryLoans() async{
+  Future<List<Loan>> getLibraryLoans() async {
     String librarianID = await userDatabase.getUserID();
     Library? library = await libraryDatabase.getUserLibrary(librarianID);
 
-    if(library != null){
+    if (library != null) {
       final database = FirebaseFirestore.instance.collection("loans");
       QuerySnapshot<Map<String, dynamic>>? querySnapshot;
-      querySnapshot = await database.where("libraryID", isEqualTo: library.libraryID).get();
-      final loans = querySnapshot.docs
-          .map((doc) => Loan.fromJson(doc.data()))
-          .toList();
+      querySnapshot =
+          await database.where("libraryID", isEqualTo: library.libraryID).get();
+      final loans =
+          querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
       return loans;
     }
     return [];
   }
 
-
   //Methods for MyLoans
 
-  Future deleteMyLoans(UserLibrary user) async{
-    await FirebaseFirestore.instance.collection("loansList").doc(user.userID).delete();
+  Future deleteMyLoans(UserLibrary user) async {
+    await FirebaseFirestore.instance
+        .collection("loansList")
+        .doc(user.userID)
+        .delete();
   }
 
   Future<List<LoanElement>> getAllUserLoans() async {
@@ -94,7 +128,9 @@ class LoansDatabase {
         .get();
 
     final loanList = documentSnapshot.get("loanList");
-    final loans = loanList.map<LoanElement>((element) => LoanElement.fromJson(element)).toList();
+    final loans = loanList
+        .map<LoanElement>((element) => LoanElement.fromJson(element))
+        .toList();
 
     return loans;
   }
@@ -108,17 +144,15 @@ class LoansDatabase {
         .set({"loanList": []});
   }
 
-  Future updateLoanList(List<LoanElement> newList) async{
+  Future updateLoanList(List<LoanElement> newList) async {
     String userID = await userDatabase.getUserID();
     final jsonList = newList.map((e) => e.toJson()).toList();
 
     await booksDatabase
         .getFirestore()!
-    .collection("loansList")
-    .doc(userID)
-    .set({
-      "loanList": jsonList
-    });
+        .collection("loansList")
+        .doc(userID)
+        .set({"loanList": jsonList});
   }
 
   Future cleanLoanList() async {
@@ -132,53 +166,58 @@ class LoansDatabase {
 
   Future addBookToLoanList(String bookID, String libraryID) async {
     List<LoanElement> loans = await getAllUserLoans();
-    if(!(await checkBookOnLoanList(bookID, libraryID))){
-      LoanElement newLoan = LoanElement.loan(bookID: bookID, libraryID: libraryID, quantity: "1");
+    if (!(await checkBookOnLoanList(bookID, libraryID))) {
+      LoanElement newLoan =
+          LoanElement.loan(bookID: bookID, libraryID: libraryID, quantity: "1");
       loans.add(newLoan);
       updateLoanList(loans);
     }
   }
 
-  Future deleteBookOnLoanList(String bookID, String libraryID) async{
+  Future deleteBookOnLoanList(String bookID, String libraryID) async {
     List<LoanElement> loans = await getAllUserLoans();
     int? index;
-    for(int i = 0; i < loans.length; i++){
-      if(loans[i].bookID == bookID && loans[i].libraryID == libraryID){
+    for (int i = 0; i < loans.length; i++) {
+      if (loans[i].bookID == bookID && loans[i].libraryID == libraryID) {
         index = i;
         break;
       }
     }
 
-    if(index != null){
+    if (index != null) {
       loans.removeAt(index);
     }
     updateLoanList(loans);
   }
 
-  Future checkBookOnLoanList(String bookID, String libraryID) async{
+  Future checkBookOnLoanList(String bookID, String libraryID) async {
     List<LoanElement> loans = await getAllUserLoans();
-    for(int i = 0; i < loans.length; i++){
-      if(loans[i].bookID == bookID && loans[i].libraryID == libraryID){
+    for (int i = 0; i < loans.length; i++) {
+      if (loans[i].bookID == bookID && loans[i].libraryID == libraryID) {
         return true;
       }
     }
     return false;
   }
 
-  Future<int> validateLoan(LoanElement loan) async{
+  Future<int> validateLoan(LoanElement loan) async {
     final library = await libraryDatabase.getLibrary(loan.libraryID);
-    if(library.booksAndQuantity.containsKey(loan.bookID)){
+    if (library.booksAndQuantity.containsKey(loan.bookID)) {
       return int.parse(library.booksAndQuantity[loan.bookID]!);
     }
     return 0;
   }
 
-  Future acceptBorrowList(List<LoanElement> loans) async
-  {
-    for(var loan in loans){
+  Future<bool> acceptBorrowList(List<LoanElement> loans) async {
+    // for (var loan in loans) {
+    //   if (await validateLoan(loan) <= 0) return false;
+    // }
+
+    for (var loan in loans) {
       await createLoan(loan.bookID, loan.libraryID);
     }
-    await cleanLoanList();
-  }
 
+    await cleanLoanList();
+    return true;
+  }
 }

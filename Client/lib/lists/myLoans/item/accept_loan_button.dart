@@ -8,11 +8,13 @@ class AcceptLoanButton extends StatelessWidget {
   final void Function() reset;
 
   void clickButton(BuildContext context) async {
-    await global.loansDatabase.acceptBorrowList(loans);
+    bool isSuccess = await global.loansDatabase.acceptBorrowList(loans);
     reset();
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Success. You added book to your borrow list")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(isSuccess
+              ? "Success. You added book to your borrow list"
+              : "Fail. Try again")));
     }
   }
 
