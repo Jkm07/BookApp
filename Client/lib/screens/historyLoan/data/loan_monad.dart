@@ -30,8 +30,23 @@ class LoanMonad {
   }
 
   Color colorOfLoan(BuildContext context) {
-    if (loan.ended) return Colors.grey;
-    if (loan.endDate.isBefore(DateTime.now())) return Theme.of(context).colorScheme.error;
+    if (loan.ended) return Theme.of(context).colorScheme.surface;
+    if (loan.endDate.isBefore(DateTime.now()))
+      return Theme.of(context).colorScheme.error;
     return Theme.of(context).colorScheme.background;
+  }
+
+  Color colorOfText(BuildContext context) {
+    if (loan.ended) return Theme.of(context).colorScheme.background;
+    if (loan.endDate.isBefore(DateTime.now()))
+      return Theme.of(context).colorScheme.background;
+    return Theme.of(context).colorScheme.primary;
+  }
+
+  String getStatusOfLoan() {
+    if (loan.ended) return "Ended";
+    if (loan.endDate.isBefore(DateTime.now())) return "Overdue";
+    if (loan.extended) return "Extended";
+    return "Current";
   }
 }

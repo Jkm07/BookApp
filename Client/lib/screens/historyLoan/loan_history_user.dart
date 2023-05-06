@@ -29,11 +29,11 @@ class _LoanHistoryUserState extends State<LoanHistoryUser> {
     Iterable<Loan> loanFilter = loans;
     if (!current) {
       loanFilter = loanFilter
-          .where((l) => !l.ended && l.endDate.isBefore(DateTime.now()));
+          .where((l) => l.ended || l.endDate.isBefore(DateTime.now()));
     }
     if (!overdue) {
-      loanFilter = loanFilter
-          .where((l) => !l.ended && l.endDate.isAfter(DateTime.now()));
+      loanFilter =
+          loanFilter.where((l) => l.ended || l.endDate.isAfter(DateTime.now()));
     }
     loans = loanFilter.toList();
 
@@ -70,7 +70,7 @@ class _LoanHistoryUserState extends State<LoanHistoryUser> {
                           (f) => setState(() {
                                 current = f!;
                               }),
-                          Theme.of(context).colorScheme.primary),
+                          Theme.of(context).colorScheme.secondary),
                       FilterCheckBox(
                           overdue,
                           "Overdue",
@@ -84,7 +84,7 @@ class _LoanHistoryUserState extends State<LoanHistoryUser> {
                           (f) => setState(() {
                                 ended = f!;
                               }),
-                          Theme.of(context).colorScheme.secondary)
+                          Theme.of(context).colorScheme.surface)
                     ],
                   ),
                   Expanded(
@@ -110,7 +110,7 @@ class _LoanHistoryUserState extends State<LoanHistoryUser> {
                             thickness: 1,
                           ),
                           itemBuilder: (context, element) =>
-                              LoanHistoryItem(element),
+                              LoanHistoryItem(element, null, null),
                         ),
                       ),
                     ),

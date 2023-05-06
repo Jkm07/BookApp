@@ -23,17 +23,17 @@ class _LoanHistoryLibrarianState extends State<LoanHistoryLibrarian> {
   bool ended = false;
 
   Future<List<LoanMonad>> getLoansGroup() async {
-    var loans = await loansDatabase.getUserLoanHistory(
+    var loans = await loansDatabase.getLibraryLoans(
         current: current, overdue: overdue, ended: ended);
 
     Iterable<Loan> loanFilter = loans;
     if (!current) {
       loanFilter = loanFilter
-          .where((l) => !l.ended && l.endDate.isBefore(DateTime.now()));
+          .where((l) => l.ended || l.endDate.isBefore(DateTime.now()));
     }
     if (!overdue) {
-      loanFilter = loanFilter
-          .where((l) => !l.ended && l.endDate.isAfter(DateTime.now()));
+      loanFilter =
+          loanFilter.where((l) => l.ended || l.endDate.isAfter(DateTime.now()));
     }
     loans = loanFilter.toList();
 
@@ -49,6 +49,31 @@ class _LoanHistoryLibrarianState extends State<LoanHistoryLibrarian> {
           loan, library?.library, book?.book, user?.user));
     }
     return out;
+  }
+
+  void extendLoan(LoanMonad loanMonad) async {
+    var loan = await loansDatabase.getLoanByID(loanMonad.loan.loanID);
+    if (!loan.extended) {
+      await loansDatabase.extendLoan(loan);
+    }
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(!loan.extended
+              ? "Success. You extended a loan"
+              : "Fail. Try again")));
+    }
+  }
+
+  void endLoan(LoanMonad loanMonad) async {
+    var loan = await loansDatabase.getLoanByID(loanMonad.loan.loanID);
+    if (!loan.ended) {
+      await loansDatabase.endLoan(loan, loanMonad.book, loanMonad.library);
+    }
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              !loan.ended ? "Success. You ended a loan" : "Fail. Try again")));
+    }
   }
 
   @override
@@ -84,7 +109,7 @@ class _LoanHistoryLibrarianState extends State<LoanHistoryLibrarian> {
                           (f) => setState(() {
                                 ended = f!;
                               }),
-                          Theme.of(context).colorScheme.secondary)
+                          Theme.of(context).colorScheme.surface)
                     ],
                   ),
                   Expanded(
@@ -109,7 +134,7 @@ class _LoanHistoryLibrarianState extends State<LoanHistoryLibrarian> {
                             thickness: 1,
                           ),
                           itemBuilder: (context, element) =>
-                              LoanHistoryItem(element),
+                              LoanHistoryItem(element, extendLoan, endLoan),
                         ),
                       ),
                     ),

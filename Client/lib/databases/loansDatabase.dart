@@ -84,15 +84,17 @@ class LoansDatabase {
         library.libraryID, book.bookID, 1);
   }
 
-  Future<List<Loan>> getUserLoanHistory({bool current = true, bool overdue = true, bool ended = true}) async {
+  Future<List<Loan>> getUserLoanHistory(
+      {bool current = true, bool overdue = true, bool ended = true}) async {
     String userID = await userDatabase.getUserID();
     final database = FirebaseFirestore.instance.collection("loans");
 
-
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
     var queryFilters = database.where("userID", isEqualTo: userID);
-    if(!current && !overdue) queryFilters = queryFilters.where("ended", isEqualTo: true);
-    if(!ended) queryFilters = queryFilters.where("ended", isEqualTo: false);
+    if (!current && !overdue) {
+      queryFilters = queryFilters.where("ended", isEqualTo: true);
+    }
+    if (!ended) queryFilters = queryFilters.where("ended", isEqualTo: false);
 
     querySnapshot = await queryFilters.get();
     final loans =
@@ -100,15 +102,23 @@ class LoansDatabase {
     return loans;
   }
 
-  Future<List<Loan>> getLibraryLoans({bool current = true, bool overdue = true, bool ended = true}) async {
+  Future<List<Loan>> getLibraryLoans(
+      {bool current = true, bool overdue = true, bool ended = true}) async {
     String librarianID = await userDatabase.getUserID();
     Library? library = await libraryDatabase.getUserLibrary(librarianID);
 
     if (library != null) {
       final database = FirebaseFirestore.instance.collection("loans");
+
       QuerySnapshot<Map<String, dynamic>>? querySnapshot;
-      querySnapshot =
-          await database.where("libraryID", isEqualTo: library.libraryID).get();
+      var queryFilters =
+          database.where("libraryID", isEqualTo: library.libraryID);
+      if (!current && !overdue) {
+        queryFilters = queryFilters.where("ended", isEqualTo: true);
+      }
+      if (!ended) queryFilters = queryFilters.where("ended", isEqualTo: false);
+
+      querySnapshot = await queryFilters.get();
       final loans =
           querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
       return loans;
