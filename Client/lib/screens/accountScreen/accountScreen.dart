@@ -3,7 +3,6 @@ import 'package:client/screens/accountScreen/userInfo.dart';
 import 'package:client/screens/accountScreen/userView.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../globals.dart';
 import '../../models/userModel/userLibrary.dart';
@@ -53,26 +52,22 @@ class _AccountScreenState extends State<AccountScreen> {
                     context,
                     "Change username",
                     Icons.abc_outlined,
-                        () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => ChangeUsernameScreen())))),
+                    () => setScreen(ChangeUsernameScreen(),
+                        title: "Change Username")),
                 space(),
                 textIconButton(
                     context,
                     "Change password",
                     Icons.lock_outline,
-                        () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => ChangePasswordScreen())))),
+                    () => setScreen(ChangePasswordScreen(),
+                        title: "Change Password")),
                 space(),
                 textIconButton(
                     context,
                     "Change email address",
                     Icons.mail_outline_outlined,
-                        () => Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => ChangeEmailScreen())))),
+                    () =>
+                        setScreen(ChangeEmailScreen(), title: "Change E-mail")),
                 space(),
                 if (user.userType == "admin") ...[
                   adminList(context),

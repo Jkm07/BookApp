@@ -1,6 +1,9 @@
+import 'package:client/models/userModel/userLibrary.dart';
 import 'package:client/screens/accountScreen/accountScreen.dart';
+import 'package:client/screens/addScreen.dart';
+import 'package:client/screens/historyLoan/loan_history_librarian.dart';
+import 'package:client/screens/historyLoan/loan_history_user.dart';
 import 'package:client/screens/home/main_background.dart';
-import 'package:client/screens/historyLoan/loan_history.dart';
 import 'package:client/screens/myLoansScreen.dart';
 import 'package:client/screens/searchScreen.dart';
 import 'package:flutter/foundation.dart';
@@ -9,29 +12,62 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:client/globals.dart' as global;
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({
-    super.key,
-  });
+  final UserLibrary user;
+
+  const MyHomePage({super.key, required this.user});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  Widget currentScreen = const MyLoansScreen();
-  String title = "Wish list";
+  bool isLibrarian = false;
+  Widget currentScreen = const LoanHistoryUser();
+  String title = "";
 
-  void _navigationBarChange(int index) {
+  void _navigationBarChangeUser(int index) {
     switch (index) {
       case 0:
-        return global.setScreen(const MyLoansScreen(), title: "Wish list");
+        return global.setScreen(const LoanHistoryUser(), title: "My Loans");
       case 1:
-        return global.setScreen(const SearchScreen(), title: "Search book");
+        return global.setScreen(const MyLoansScreen(), title: "Wish list");
       case 2:
-        return global.setScreen(const LoanHistory(), title: "Loans");
+        return global.setScreen(const SearchScreen(), title: "Search book");
       case 3:
         return global.setScreen(const AccountScreen(), title: "Settings");
     }
+  }
+
+  void _navigationBarChangeLibrarian(int index) {
+    switch (index) {
+      case 0:
+        return global.setScreen(const LoanHistoryLibrarian(),
+            title: "Library loans");
+      case 1:
+        return global.setScreen(BookCreator(), title: "Add book");
+      case 2:
+        return global.setScreen(const SearchScreen(), title: "Search book");
+      case 3:
+        return global.setScreen(const AccountScreen(), title: "Settings");
+    }
+  }
+
+  List<GButton> _buttonsUser() {
+    return [
+      const GButton(icon: Icons.my_library_books, text: "My loans"),
+      const GButton(icon: Icons.list_alt, text: "Wish list"),
+      const GButton(icon: Icons.search, text: "Search"),
+      const GButton(icon: Icons.person, text: "Settings")
+    ];
+  }
+
+  List<GButton> _buttonsLibrarian() {
+    return [
+      const GButton(icon: Icons.my_library_books, text: "Library loans"),
+      const GButton(icon: Icons.menu_book_sharp, text: "Add book"),
+      const GButton(icon: Icons.search, text: "Search"),
+      const GButton(icon: Icons.person, text: "Settings")
+    ];
   }
 
   @override
@@ -41,6 +77,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           this.title = title ?? this.title;
           currentScreen = screen;
         });
+    isLibrarian = global.isLibrarian(widget.user);
+    currentScreen =
+        isLibrarian ? const LoanHistoryLibrarian() : const LoanHistoryUser();
+    title = isLibrarian ? "Library loans" : "My Loans";
   }
 
   @override
@@ -65,14 +105,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               backgroundColor: Theme.of(context).colorScheme.secondary,
               color: Theme.of(context).colorScheme.background,
               activeColor: Theme.of(context).colorScheme.primary,
-              onTabChange: _navigationBarChange,
+              onTabChange: isLibrarian
+                  ? _navigationBarChangeLibrarian
+                  : _navigationBarChangeUser,
               gap: 9,
-              tabs: const [
-                GButton(icon: Icons.list_alt, text: "Wish list"),
-                GButton(icon: Icons.search, text: "Search"),
-                GButton(icon: Icons.my_library_books, text: "Loans"),
-                GButton(icon: Icons.person, text: "Settings"),
-              ]),
+              tabs: isLibrarian ? _buttonsLibrarian() : _buttonsUser()),
         ),
         body: MainBackground(child: currentScreen));
   }

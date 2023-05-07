@@ -29,22 +29,17 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-
   Library? _library;
 
   @override
-  void initState(){
+  void initState() {
     _library = widget.library;
   }
 
   Widget userItemList(UserLibrary user) {
     return GestureDetector(
-      onTap: () async {
-        await Navigator.push(context,
-            MaterialPageRoute(builder: (context) => UserDetails(user: user)));
-        setState(() {
-
-        });
+      onTap: () {
+        globals.setScreen(UserDetails(user: user));
       },
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -116,17 +111,19 @@ class _UsersListState extends State<UsersList> {
               ] else if (widget.screenType == "edit") ...[
                 GestureDetector(
                   onTap: () async {
-                    if(_library!.librarianList.contains(user.userID)){
+                    if (_library!.librarianList.contains(user.userID)) {
                       var newList = _library!.librarianList.toList();
                       newList.remove(user.userID);
-                      await libraryDatabase.updateLibrary(_library!.copyWith(librarianList: newList));
+                      await libraryDatabase.updateLibrary(
+                          _library!.copyWith(librarianList: newList));
                       setState(() {
                         _library = _library!.copyWith(librarianList: newList);
                       });
-                    }else{
+                    } else {
                       var newList = _library!.librarianList.toList();
                       newList.add(user.userID);
-                      await libraryDatabase.updateLibrary(_library!.copyWith(librarianList: newList));
+                      await libraryDatabase.updateLibrary(
+                          _library!.copyWith(librarianList: newList));
                       setState(() {
                         _library = _library!.copyWith(librarianList: newList);
                       });
@@ -155,8 +152,10 @@ class _UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: widget.screenType == "view" ? userDatabase.getUsers(widget.search, widget.sort, widget.userType) :
-            userDatabase.getLibrarians(widget.search, widget.sort, widget.userType, widget.library),
+        future: widget.screenType == "view"
+            ? userDatabase.getUsers(widget.search, widget.sort, widget.userType)
+            : userDatabase.getLibrarians(
+                widget.search, widget.sort, widget.userType, widget.library),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(

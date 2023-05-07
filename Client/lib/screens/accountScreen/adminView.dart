@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import '../../globals.dart';
 import '../addLibrary.dart';
 import '../librariesScreen.dart';
-import '../historyLoan/loan_history_user.dart';
-import '../myLoansScreen.dart';
 import '../usersScreen.dart';
 
 Widget adminList(BuildContext context) {
@@ -15,38 +13,32 @@ Widget adminList(BuildContext context) {
         context,
         "Manage users",
         Icons.person_outline_outlined,
-            () => Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => UsersScreen(search: "", sort: 'default', userType: 'All', screenType: "view", )))),
+        () => setScreen(
+            UsersScreen(
+              search: "",
+              sort: 'default',
+              userType: 'All',
+              screenType: "view",
+            ),
+            title: "Manage Users"),
       ),
       space(),
       textIconButton(
-        context, "Manage libraries", Icons.holiday_village_outlined, () => Navigator.push(context, MaterialPageRoute(builder: ((context) => LibrariesScreen(search: "", sort: "Default", filter: "All") ))),),
+        context,
+        "Manage libraries",
+        Icons.holiday_village_outlined,
+        () => setScreen(
+            LibrariesScreen(search: "", sort: "Default", filter: "All"),
+            title: "Manage libraries"),
+      ),
       space(),
       textIconButton(
         context,
         "Add library",
         Icons.home_filled,
-            () => Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const AddLibrary()))),
+        () => setScreen(const AddLibrary(), title: "Add library"),
       ),
       space(),
-      textIconButton(
-        context,
-        "My loans",
-        Icons.home_filled,
-            () => Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const MyLoansScreen()))),
-      ),
-      space(),
-      textIconButton(
-        context,
-        "Loans history",
-        Icons.home_filled,
-            () => Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const LoanHistoryUser()))),
-      ),
-      space(),
-
     ],
   );
 }

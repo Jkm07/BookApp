@@ -47,15 +47,13 @@ class _AddLibraryState extends State<AddLibrary> {
         _library = null;
       });
       _library = await libraryDatabase.getLibrary(widget.library!.libraryID);
-      setState(() {
-
-      });
+      setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if( widget.library == null || _library != null ){
+    if (widget.library == null || _library != null) {
       return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -74,19 +72,18 @@ class _AddLibraryState extends State<AddLibrary> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                reusableTextFormField(context, "Library name", Icons.abc_outlined,
-                    nameController, "Enter library name"),
+                reusableTextFormField(context, "Library name",
+                    Icons.abc_outlined, nameController, "Enter library name"),
                 space(),
                 reusableTextFormField(context, "Address", Icons.home,
                     addressController, "Enter library address"),
                 space(),
                 reusableContainer(
-                    widget.library == null ? "Add librarians" : "Edit librarians",
                     widget.library == null
-                        ? () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => UsersScreen(
+                        ? "Add librarians"
+                        : "Edit librarians",
+                    widget.library == null
+                        ? () => setScreen(UsersScreen(
                               callBack: (String value) {
                                 librariansID.add(value);
                                 print(librariansID.length);
@@ -95,65 +92,59 @@ class _AddLibraryState extends State<AddLibrary> {
                               sort: "Default",
                               userType: "librarian",
                               screenType: "add",
-                            ))))
-                        : () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => UsersScreen(
-                                library: _library,
-                                callBack: (String value, bool remove) {
-                                  if (remove) {
-                                    librariansID.remove(value);
-                                  } else {
-                                    librariansID.add(value);
-                                  }
-                                  print(librariansID.length);
-                                  setState(() {});
-                                },
-                                search: "",
-                                sort: "Default",
-                                userType: "librarian",
-                                screenType: "edit",
-                              ))));
-                      refresh();
-                    },
+                            ))
+                        : () => setScreen(UsersScreen(
+                              library: _library,
+                              callBack: (String value, bool remove) {
+                                if (remove) {
+                                  librariansID.remove(value);
+                                } else {
+                                  librariansID.add(value);
+                                }
+                                print(librariansID.length);
+                                setState(() {});
+                              },
+                              search: "",
+                              sort: "Default",
+                              userType: "librarian",
+                              screenType: "edit",
+                            )),
                     Theme.of(context).primaryColor),
                 reusableButton(context,
                     widget.library == null ? "Add library" : "Edit library",
-                        () async {
-                      final isValidForm = formKey.currentState!.validate();
+                    () async {
+                  final isValidForm = formKey.currentState!.validate();
 
-                      if (isValidForm) {
-                        if (widget.library == null) {
-                          librariansID = librariansID.toSet().toList();
-                          Library newLibrary = Library.library(
-                              name: nameController.text,
-                              address: addressController.text,
-                              librarianList: librariansID,
-                              booksAndQuantity: map,
-                              libraryID: Uuid().v4());
-                          await libraryDatabase.addLibrary(newLibrary);
-                        } else {
-                          librariansID = _library!.librarianList;
-                          Library newLibrary = Library.library(
-                              libraryID: widget.library!.libraryID,
-                              name: nameController.text,
-                              address: addressController.text,
-                              librarianList: librariansID,
-                              booksAndQuantity: widget.library!.booksAndQuantity);
-                          await libraryDatabase.updateLibrary(newLibrary);
-                        }
+                  if (isValidForm) {
+                    if (widget.library == null) {
+                      librariansID = librariansID.toSet().toList();
+                      Library newLibrary = Library.library(
+                          name: nameController.text,
+                          address: addressController.text,
+                          librarianList: librariansID,
+                          booksAndQuantity: map,
+                          libraryID: Uuid().v4());
+                      await libraryDatabase.addLibrary(newLibrary);
+                    } else {
+                      librariansID = _library!.librarianList;
+                      Library newLibrary = Library.library(
+                          libraryID: widget.library!.libraryID,
+                          name: nameController.text,
+                          address: addressController.text,
+                          librarianList: librariansID,
+                          booksAndQuantity: widget.library!.booksAndQuantity);
+                      await libraryDatabase.updateLibrary(newLibrary);
+                    }
 
-                        Navigator.pop(context);
-                      }
-                    }),
+                    Navigator.pop(context);
+                  }
+                }),
               ],
             ),
           ),
         ),
       );
-    }else{
+    } else {
       return const Center(child: CircularProgressIndicator());
     }
   }

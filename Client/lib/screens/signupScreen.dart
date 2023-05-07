@@ -77,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const MyHomePage()));
+                              builder: (context) => MyHomePage(user: newUser)));
                     }).onError((error, stackTrace) {
                       dialogTrigger(
                           context, "Registration failed", error.toString());

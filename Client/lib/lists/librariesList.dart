@@ -21,15 +21,12 @@ class LibrariesList extends StatefulWidget {
 }
 
 class _LibrariesListState extends State<LibrariesList> {
-
   Widget libraryItemList(Library library) {
     return GestureDetector(
-      onTap: () async {
-        await Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddLibrary(library: library,) ));
-        setState(() {
-
-        });
+      onTap: () {
+        setScreen(AddLibrary(
+          library: library,
+        ));
       },
       child: Container(
         padding: const EdgeInsets.all(10),

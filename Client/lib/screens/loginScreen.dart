@@ -66,11 +66,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         .signInWithEmailAndPassword(
                             email: _emailTextController.text,
                             password: _passwordTextController.text)
-                        .then((value) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => const MyHomePage())));
+                        .then((value) async {
+                      var user = await globals.userDatabase.getCurrentUser();
+                      if (context.mounted) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    MyHomePage(user: user))));
+                      }
                     }).onError((error, stackTrace) {
                       dialogTrigger(context, "Login failed", error.toString());
                     });
