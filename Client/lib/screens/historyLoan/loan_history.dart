@@ -12,7 +12,7 @@ class LoanHistory extends StatelessWidget {
         future: global.userDatabase.getCurrentUser(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data!.userType == "librarian") {
+            if (global.isLibrarian(snapshot.data!)) {
               return const LoanHistoryLibrarian();
             } else {
               return const LoanHistoryUser();

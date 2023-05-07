@@ -1,3 +1,4 @@
+import 'package:client/models/userModel/userLibrary.dart';
 import 'package:flutter/material.dart';
 import '../../models/authorModel/author.dart';
 import '../../models/bookModel/book.dart';
@@ -11,13 +12,16 @@ class SpacerColumn extends SizedBox {
 class BookDetails extends StatelessWidget {
   final Book book;
   final List<Author> authors;
+  final UserLibrary user;
 
-  const BookDetails({Key? key, required this.book, required this.authors})
+  const BookDetails(
+      {Key? key, required this.book, required this.authors, required this.user})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 10,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
         side: BorderSide(
@@ -54,7 +58,7 @@ class BookDetails extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 18),
               ),
-              BookFooter(book),
+              BookFooter(book: book, user: user),
               const SpacerColumn(),
             ],
           ),

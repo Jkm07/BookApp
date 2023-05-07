@@ -8,10 +8,7 @@ import 'book_details.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   const BookDetailsScreen(
-      {Key? key,
-      required this.book,
-      required this.authors,
-      required this.user})
+      {Key? key, required this.book, required this.authors, required this.user})
       : super(key: key);
   final Book book;
   final List<Author> authors;
@@ -39,7 +36,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             vertical: kIsWeb ? scaleHeight * 3 : scaleHeight),
         child: Stack(
           children: [
-            BookDetails(book: widget.book, authors: widget.authors),
+            BookDetails(
+                book: widget.book, authors: widget.authors, user: widget.user),
             CarouselSlider(
                 items: widget.book.images
                     .map(

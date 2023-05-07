@@ -67,10 +67,8 @@ class _BookElementState extends State<BookElement> {
 
   Future<Publisher> getParameters() async {
     user = await userDatabase.getCurrentUser();
-    authors =
-        await (authorsDatabase.getAuthorsList(widget.book.authorsID));
-    publisher =
-        await (publisherDatabase.getPublisher(widget.book.publisherID));
+    authors = await (authorsDatabase.getAuthorsList(widget.book.authorsID));
+    publisher = await (publisherDatabase.getPublisher(widget.book.publisherID));
     return publisher;
   }
 
@@ -121,8 +119,18 @@ class _BookElementState extends State<BookElement> {
                   widget.book.description,
                   velocity: const Velocity(pixelsPerSecond: Offset(40, 0)),
                 ),
+                trailing: isLibrarian(user)
+                    ? IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {},
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                    : null,
                 onTap: () => setScreen(BookDetailsScreen(
-                    book: widget.book, authors: authors, user: user,)),
+                  book: widget.book,
+                  authors: authors,
+                  user: user,
+                )),
               ),
             );
           } else {

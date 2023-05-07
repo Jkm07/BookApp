@@ -3,6 +3,7 @@ import 'package:client/databases/librariesDatabase.dart';
 import 'package:client/databases/loansDatabase.dart';
 import 'package:client/databases/publishersDatabase.dart';
 import 'package:client/databases/userDatabase.dart';
+import 'package:client/models/userModel/userLibrary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'databases/booksDatabase.dart';
@@ -41,4 +42,11 @@ Widget spaceWidth(double value) {
   );
 }
 
-void Function(Widget, {String? title}) setScreen = (Widget w, {String? title})  => {};
+void Function(Widget, {String? title}) setScreen =
+    (Widget w, {String? title}) => {};
+
+bool isAdmin(UserLibrary user) => user.userType == "admin";
+
+bool isLibrarian(UserLibrary user) => user.userType == "librarian";
+
+bool isUser(UserLibrary user) => user.userType == "user";
