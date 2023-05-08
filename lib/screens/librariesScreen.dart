@@ -5,7 +5,9 @@ import '../menuItems/filterSortRow.dart';
 import '../menuItems/searchBar.dart';
 
 class LibrariesScreen extends StatefulWidget {
-  LibrariesScreen({Key? key, required this.search, required this.sort, required this.filter}) : super(key: key);
+  LibrariesScreen(
+      {Key? key, this.search = "", this.sort = "Default", this.filter = "All"})
+      : super(key: key);
 
   String search;
   String sort;
@@ -16,7 +18,6 @@ class LibrariesScreen extends StatefulWidget {
 }
 
 class _LibrariesScreenState extends State<LibrariesScreen> {
-
   late TextEditingController controller;
   List<String> filterList = ["All"];
   List<String> sortList = ["Default", "Name: alphabetically"];
@@ -36,15 +37,6 @@ class _LibrariesScreenState extends State<LibrariesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(
-          Icons.home_filled,
-        ),
-        title: const Text(
-          "Libraries",
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
       body: SingleChildScrollView(
         padding: paddingGlobal,
         child: Column(
@@ -76,7 +68,10 @@ class _LibrariesScreenState extends State<LibrariesScreen> {
                   widget.sort = value;
                 }),
             space(),
-            LibrariesList(search: widget.search, sort: widget.sort, filter: widget.filter),
+            LibrariesList(
+                search: widget.search,
+                sort: widget.sort,
+                filter: widget.filter),
           ],
         ),
       ),

@@ -1,7 +1,8 @@
 import 'package:client/models/userModel/userLibrary.dart';
-import 'package:client/screens/book/book_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:text_scroll/text_scroll.dart';
+import 'package:tuple/tuple.dart';
 import '../globals.dart';
 import '../models/authorModel/author.dart';
 import '../models/bookModel/book.dart';
@@ -126,11 +127,8 @@ class _BookElementState extends State<BookElement> {
                         color: Theme.of(context).colorScheme.primary,
                       )
                     : null,
-                onTap: () => setScreen(BookDetailsScreen(
-                  book: widget.book,
-                  authors: authors,
-                  user: user,
-                )),
+                onTap: () => context.go("/book/details",
+                    extra: Tuple2(widget.book, authors)),
               ),
             );
           } else {

@@ -42,11 +42,11 @@ Widget spaceWidth(double value) {
   );
 }
 
-void Function(Widget, {String? title}) setScreen =
-    (Widget w, {String? title}) => {};
-
 bool isAdmin(UserLibrary user) => user.userType == "admin";
 
 bool isLibrarian(UserLibrary user) => user.userType == "librarian";
 
 bool isUser(UserLibrary user) => user.userType == "user";
+
+UserLibrary currentUser = UserLibrary.user(
+    userID: "-1", userName: "Anon", userMail: "", userType: "user");

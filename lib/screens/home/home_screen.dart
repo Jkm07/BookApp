@@ -1,20 +1,15 @@
-import 'package:client/models/userModel/userLibrary.dart';
-import 'package:client/screens/accountScreen/accountScreen.dart';
-import 'package:client/screens/addScreen.dart';
-import 'package:client/screens/historyLoan/loan_history_librarian.dart';
-import 'package:client/screens/historyLoan/loan_history_user.dart';
 import 'package:client/screens/home/main_background.dart';
-import 'package:client/screens/myLoansScreen.dart';
-import 'package:client/screens/searchScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:client/globals.dart' as global;
 
 class MyHomePage extends StatefulWidget {
-  final UserLibrary user;
+  final Widget child;
+  final String title;
 
-  const MyHomePage({super.key, required this.user});
+  const MyHomePage({super.key, required this.child, required this.title});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -22,33 +17,30 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool isLibrarian = false;
-  Widget currentScreen = const LoanHistoryUser();
-  String title = "";
 
-  void _navigationBarChangeUser(int index) {
+  void _navigationBarChangeUser(BuildContext context, int index) {
     switch (index) {
       case 0:
-        return global.setScreen(const LoanHistoryUser(), title: "My Loans");
+        return context.go("/loans/history/user");
       case 1:
-        return global.setScreen(const MyLoansScreen(), title: "Wish list");
+        return context.go("/wishList");
       case 2:
-        return global.setScreen(const SearchScreen(), title: "Search book");
+        return context.go("/book/search");
       case 3:
-        return global.setScreen(const AccountScreen(), title: "Settings");
+        return context.go("/settings");
     }
   }
 
-  void _navigationBarChangeLibrarian(int index) {
+  void _navigationBarChangeLibrarian(BuildContext context, int index) {
     switch (index) {
       case 0:
-        return global.setScreen(const LoanHistoryLibrarian(),
-            title: "Library loans");
+        return context.go("/loans/history/librarian");
       case 1:
-        return global.setScreen(BookCreator(), title: "Add book");
+        return context.go("/book/create");
       case 2:
-        return global.setScreen(const SearchScreen(), title: "Search book");
+        return context.go("/book/search");
       case 3:
-        return global.setScreen(const AccountScreen(), title: "Settings");
+        return context.go("/settings");
     }
   }
 
@@ -73,14 +65,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    global.setScreen = (Widget screen, {String? title}) => setState(() {
-          this.title = title ?? this.title;
-          currentScreen = screen;
-        });
-    isLibrarian = global.isLibrarian(widget.user);
-    currentScreen =
-        isLibrarian ? const LoanHistoryLibrarian() : const LoanHistoryUser();
-    title = isLibrarian ? "Library loans" : "My Loans";
+
+    isLibrarian = global.isLibrarian(global.currentUser);
   }
 
   @override
@@ -95,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               Icons.menu_book_outlined,
             ),
           ),
-          title: Text(title),
+          title: Text(widget.title),
         ),
         bottomNavigationBar: Container(
           color: Theme.of(context).colorScheme.secondary,
@@ -106,11 +92,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               color: Theme.of(context).colorScheme.background,
               activeColor: Theme.of(context).colorScheme.primary,
               onTabChange: isLibrarian
-                  ? _navigationBarChangeLibrarian
-                  : _navigationBarChangeUser,
+                  ? (index) => _navigationBarChangeLibrarian(context, index)
+                  : (index) => _navigationBarChangeUser(context, index),
               gap: 9,
               tabs: isLibrarian ? _buttonsLibrarian() : _buttonsUser()),
         ),
-        body: MainBackground(child: currentScreen));
+        body: MainBackground(child: widget.child));
   }
 }

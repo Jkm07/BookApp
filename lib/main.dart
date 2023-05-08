@@ -1,8 +1,7 @@
-import 'package:client/screens/loginScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       theme: ThemeData(
         textTheme: Typography.blackRedwoodCity,
         scaffoldBackgroundColor: Colors.transparent,
@@ -36,9 +35,9 @@ class MyApp extends StatelessWidget {
           cardColor: Colors.lightGreen,
         ),
       ),
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
       title: 'BookAPP',
-      home: const LoginScreen(),
     );
   }
 }

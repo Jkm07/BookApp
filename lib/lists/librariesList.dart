@@ -1,8 +1,8 @@
 import 'package:client/globals.dart';
 import 'package:client/models/libraryModel/library.dart';
-import 'package:client/screens/addLibrary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LibrariesList extends StatefulWidget {
   LibrariesList(
@@ -23,11 +23,7 @@ class LibrariesList extends StatefulWidget {
 class _LibrariesListState extends State<LibrariesList> {
   Widget libraryItemList(Library library) {
     return GestureDetector(
-      onTap: () {
-        setScreen(AddLibrary(
-          library: library,
-        ));
-      },
+      onTap: () => context.go("/library/add", extra: library),
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

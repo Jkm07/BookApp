@@ -1,10 +1,9 @@
 import 'package:client/screens/accountScreen/textButton.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../globals.dart';
-import '../addLibrary.dart';
-import '../librariesScreen.dart';
-import '../usersScreen.dart';
 
 Widget adminList(BuildContext context) {
   return Column(
@@ -13,30 +12,22 @@ Widget adminList(BuildContext context) {
         context,
         "Manage users",
         Icons.person_outline_outlined,
-        () => setScreen(
-            UsersScreen(
-              search: "",
-              sort: 'default',
-              userType: 'All',
-              screenType: "view",
-            ),
-            title: "Manage Users"),
+        () => context.go("/user/list/Default/All/view",
+            extra: const Tuple2(null, null)),
       ),
       space(),
       textIconButton(
         context,
         "Manage libraries",
         Icons.holiday_village_outlined,
-        () => setScreen(
-            LibrariesScreen(search: "", sort: "Default", filter: "All"),
-            title: "Manage libraries"),
+        () => context.go("/library"),
       ),
       space(),
       textIconButton(
         context,
         "Add library",
         Icons.home_filled,
-        () => setScreen(const AddLibrary(), title: "Add library"),
+        () => context.go("/library/add"),
       ),
       space(),
     ],

@@ -1,6 +1,7 @@
 import 'package:client/screens/changeUserData/textFormField.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../globals.dart';
 import '../accountScreen/textButton.dart';
@@ -12,19 +13,13 @@ class ChangeUsernameScreen extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
 
   @override
-  void dispose(){
+  void dispose() {
     nameController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(
-          Icons.lock_outline,
-        ),
-        title: const Text("Change password"),
-      ),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
@@ -32,15 +27,25 @@ class ChangeUsernameScreen extends StatelessWidget {
           padding: paddingGlobal,
           child: Column(
             children: [
-              changetextformField(context, nameController, "New username", "Enter new username", Icons.person_outline_outlined, "username"),
+              changetextformField(
+                  context,
+                  nameController,
+                  "New username",
+                  "Enter new username",
+                  Icons.person_outline_outlined,
+                  "username"),
               space(),
-              textIconButton(context, "Change username", Icons.published_with_changes_rounded, () async {
+              textIconButton(context, "Change username",
+                  Icons.published_with_changes_rounded, () async {
                 final isValidForm = formKey.currentState!.validate();
-                if(isValidForm){
+                if (isValidForm) {
                   await userDatabase.changeUsername(nameController.text);
-                  Navigator.pop(context);
-                }else{
-                  dialogTrigger(context, "Operation failed", "Username is incorrect");
+                  if (context.mounted) {
+                    context.go("/settings");
+                  }
+                } else {
+                  dialogTrigger(
+                      context, "Operation failed", "Username is incorrect");
                 }
               }),
             ],

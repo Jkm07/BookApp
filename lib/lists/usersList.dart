@@ -1,6 +1,6 @@
-import 'package:client/screens/userDetails.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../globals.dart' as globals;
 import '../globals.dart';
 import '../models/libraryModel/library.dart';
@@ -33,14 +33,13 @@ class _UsersListState extends State<UsersList> {
 
   @override
   void initState() {
+    super.initState();
     _library = widget.library;
   }
 
   Widget userItemList(UserLibrary user) {
     return GestureDetector(
-      onTap: () {
-        globals.setScreen(UserDetails(user: user));
-      },
+      onTap: () => context.go("/user/details", extra: user),
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -101,11 +100,9 @@ class _UsersListState extends State<UsersList> {
               ] else if (widget.screenType == "add") ...[
                 GestureDetector(
                   onTap: () => widget.callBack!(user.userID),
-                  child: Container(
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.green,
-                    ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.green,
                   ),
                 ),
               ] else if (widget.screenType == "edit") ...[

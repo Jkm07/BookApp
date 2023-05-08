@@ -1,6 +1,7 @@
 import 'package:client/screens/changeUserData/textFormField.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../globals.dart';
 import '../accountScreen/textButton.dart';
@@ -14,12 +15,6 @@ class ChangeEmailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(
-          Icons.lock_outline,
-        ),
-        title: const Text("Change password"),
-      ),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
@@ -27,15 +22,21 @@ class ChangeEmailScreen extends StatelessWidget {
           padding: paddingGlobal,
           child: Column(
             children: [
-              changetextformField(context, emailController, "New email", "Enter new email", Icons.mail_outline_outlined, "email"),
+              changetextformField(context, emailController, "New email",
+                  "Enter new email", Icons.mail_outline_outlined, "email"),
               space(),
-              textIconButton(context, "Change email", Icons.change_circle_outlined, () async {
+              textIconButton(
+                  context, "Change email", Icons.change_circle_outlined,
+                  () async {
                 final isValidForm = formKey.currentState!.validate();
-                if(isValidForm){
+                if (isValidForm) {
                   await userDatabase.changeEmail(emailController.text);
-                  Navigator.pop(context);
-                }else{
-                  dialogTrigger(context, "Operation failed", "This email address is incorrect!");
+                  if (context.mounted) {
+                    context.go("/settings");
+                  }
+                } else {
+                  dialogTrigger(context, "Operation failed",
+                      "This email address is incorrect!");
                 }
               }),
             ],

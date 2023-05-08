@@ -1,14 +1,11 @@
 import 'package:client/screens/accountScreen/textButton.dart';
 import 'package:client/screens/accountScreen/userInfo.dart';
 import 'package:client/screens/accountScreen/userView.dart';
-import 'package:client/screens/loginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../globals.dart';
 import '../../models/userModel/userLibrary.dart';
-import '../changeUserData/changeEmailScreen.dart';
-import '../changeUserData/changePasswordScreen.dart';
-import '../changeUserData/changeUsernameScreen.dart';
 import 'adminView.dart';
 import 'librarianView.dart';
 
@@ -49,25 +46,25 @@ class _AccountScreenState extends State<AccountScreen> {
                 returnUserInfo(user),
                 space(),
                 textIconButton(
-                    context,
-                    "Change username",
-                    Icons.abc_outlined,
-                    () => setScreen(ChangeUsernameScreen(),
-                        title: "Change Username")),
+                  context,
+                  "Change username",
+                  Icons.abc_outlined,
+                  () => context.go("/user/change/username"),
+                ),
                 space(),
                 textIconButton(
-                    context,
-                    "Change password",
-                    Icons.lock_outline,
-                    () => setScreen(ChangePasswordScreen(),
-                        title: "Change Password")),
+                  context,
+                  "Change password",
+                  Icons.lock_outline,
+                  () => context.go("/user/change/password"),
+                ),
                 space(),
                 textIconButton(
-                    context,
-                    "Change email address",
-                    Icons.mail_outline_outlined,
-                    () =>
-                        setScreen(ChangeEmailScreen(), title: "Change E-mail")),
+                  context,
+                  "Change email address",
+                  Icons.mail_outline_outlined,
+                  () => context.go("/user/change/email"),
+                ),
                 space(),
                 if (user.userType == "admin") ...[
                   adminList(context),
@@ -82,10 +79,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   Icons.logout_outlined,
                   () {
                     FirebaseAuth.instance.signOut().then((value) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginScreen()));
+                      context.go("/login");
                     });
                   },
                 )

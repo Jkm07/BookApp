@@ -1,5 +1,6 @@
-import 'package:client/screens/book/book_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tuple/tuple.dart';
 import '../../../globals.dart' as global;
 import '../../../models/loanElement/loan.dart';
 
@@ -69,10 +70,8 @@ class _LoanListElementState extends State<LoanListElement> {
                     title: Text(snapshot.data![1].title),
                     subtitle: Text(
                         '${snapshot.data![0].name}\n${snapshot.data![0].address}'),
-                    onTap: () => global.setScreen(BookDetailsScreen(
-                        book: snapshot.data![1],
-                        authors: snapshot.data![2],
-                        user: snapshot.data![3])),
+                    onTap: () => context.go("book/details",
+                        extra: Tuple2(snapshot.data![1], snapshot.data![2])),
                   ),
                 ),
               ),

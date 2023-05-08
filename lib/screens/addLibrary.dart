@@ -1,8 +1,9 @@
 import 'package:client/menuItems/reusableButton.dart';
 import 'package:client/menuItems/reusableContainer.dart';
 import 'package:client/models/libraryModel/library.dart';
-import 'package:client/screens/usersScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tuple/tuple.dart';
 import 'package:uuid/uuid.dart';
 import '../globals.dart';
 import '../menuItems/reusableTextFormField.dart';
@@ -55,15 +56,6 @@ class _AddLibraryState extends State<AddLibrary> {
   Widget build(BuildContext context) {
     if (widget.library == null || _library != null) {
       return Scaffold(
-        appBar: AppBar(
-          leading: GestureDetector(
-            onTap: () {},
-            child: const Icon(
-              Icons.bookmark_add_outlined,
-            ),
-          ),
-          title: Text(widget.library == null ? "Add library" : "Edit library"),
-        ),
         body: Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           key: formKey,
@@ -83,32 +75,19 @@ class _AddLibraryState extends State<AddLibrary> {
                         ? "Add librarians"
                         : "Edit librarians",
                     widget.library == null
-                        ? () => setScreen(UsersScreen(
-                              callBack: (String value) {
+                        ? () => context.go("/user/list/Default/All/add",
+                            extra: Tuple2((String value) {
+                              librariansID.add(value);
+                            }, null))
+                        : () => context.go("/user/list/Default/librarian/edit",
+                            extra: Tuple2((String value, bool remove) {
+                              if (remove) {
+                                librariansID.remove(value);
+                              } else {
                                 librariansID.add(value);
-                                print(librariansID.length);
-                              },
-                              search: "",
-                              sort: "Default",
-                              userType: "librarian",
-                              screenType: "add",
-                            ))
-                        : () => setScreen(UsersScreen(
-                              library: _library,
-                              callBack: (String value, bool remove) {
-                                if (remove) {
-                                  librariansID.remove(value);
-                                } else {
-                                  librariansID.add(value);
-                                }
-                                print(librariansID.length);
-                                setState(() {});
-                              },
-                              search: "",
-                              sort: "Default",
-                              userType: "librarian",
-                              screenType: "edit",
-                            )),
+                              }
+                              setState(() {});
+                            }, _library)),
                     Theme.of(context).primaryColor),
                 reusableButton(context,
                     widget.library == null ? "Add library" : "Edit library",
@@ -123,7 +102,7 @@ class _AddLibraryState extends State<AddLibrary> {
                           address: addressController.text,
                           librarianList: librariansID,
                           booksAndQuantity: map,
-                          libraryID: Uuid().v4());
+                          libraryID: const Uuid().v4());
                       await libraryDatabase.addLibrary(newLibrary);
                     } else {
                       librariansID = _library!.librarianList;
@@ -135,8 +114,9 @@ class _AddLibraryState extends State<AddLibrary> {
                           booksAndQuantity: widget.library!.booksAndQuantity);
                       await libraryDatabase.updateLibrary(newLibrary);
                     }
-
-                    Navigator.pop(context);
+                    if (context.mounted) {
+                      context.go("/library");
+                    }
                   }
                 }),
               ],

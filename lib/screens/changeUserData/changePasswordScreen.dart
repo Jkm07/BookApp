@@ -2,6 +2,7 @@ import 'package:client/globals.dart';
 import 'package:client/screens/changeUserData/textFormField.dart';
 import 'package:client/screens/loginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../accountScreen/textButton.dart';
 
@@ -13,7 +14,7 @@ class ChangePasswordScreen extends StatelessWidget {
   TextEditingController pass2 = TextEditingController();
 
   @override
-  void dispose(){
+  void dispose() {
     pass1.dispose();
     pass2.dispose();
   }
@@ -21,12 +22,6 @@ class ChangePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(
-          Icons.lock_outline,
-        ),
-        title: const Text("Change password"),
-      ),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
@@ -34,17 +29,23 @@ class ChangePasswordScreen extends StatelessWidget {
           padding: paddingGlobal,
           child: Column(
             children: [
-              changetextformField(context, pass1, "New password", "Enter new password", Icons.lock, "password"),
+              changetextformField(context, pass1, "New password",
+                  "Enter new password", Icons.lock, "password"),
               space(),
-              changetextformField(context, pass2, "Confirm password", "Enter new password", Icons.lock_outline_sharp, "password"),
+              changetextformField(context, pass2, "Confirm password",
+                  "Enter new password", Icons.lock_outline_sharp, "password"),
               space(),
-              textIconButton(context, "Change password", Icons.published_with_changes_outlined, () async {
+              textIconButton(context, "Change password",
+                  Icons.published_with_changes_outlined, () async {
                 final isValidForm = formKey.currentState!.validate();
-                if( isValidForm && pass1.text == pass2.text ){
+                if (isValidForm && pass1.text == pass2.text) {
                   await userDatabase.changePassword(pass1.text);
-                  Navigator.pop(context);
-                }else{
-                  dialogTrigger(context, "Operation failed", "Passwords do not match!");
+                  if(context.mounted) {
+                    context.go("/settings");
+                  }
+                } else {
+                  dialogTrigger(
+                      context, "Operation failed", "Passwords do not match!");
                 }
               }),
             ],

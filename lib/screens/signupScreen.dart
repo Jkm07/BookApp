@@ -1,6 +1,5 @@
-import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/home/main_background.dart';
-import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import '../globals.dart';
 import '../models/userModel/userLibrary.dart';
 import 'loginScreen.dart';
@@ -73,11 +72,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           userType: "user");
                       userDatabase.addUser(newUser);
                       loansDatabase.createLoanRecordForUser();
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyHomePage(user: newUser)));
+                      currentUser = newUser;
+                      if (context.mounted) {
+                        context.go("/loans/history/user");
+                      }
                     }).onError((error, stackTrace) {
                       dialogTrigger(
                           context, "Registration failed", error.toString());

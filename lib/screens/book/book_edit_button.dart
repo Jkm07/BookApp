@@ -1,14 +1,11 @@
 import 'package:client/models/bookModel/book.dart';
-import 'package:client/models/userModel/userLibrary.dart';
 import 'package:client/globals.dart' as global;
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class BookEditButton extends StatefulWidget {
-  final UserLibrary user;
   final Book book;
 
-  const BookEditButton({Key? key, required this.book, required this.user})
-      : super(key: key);
+  const BookEditButton({Key? key, required this.book}) : super(key: key);
 
   @override
   State<BookEditButton> createState() => _BookEditButtonState();
@@ -22,7 +19,8 @@ class _BookEditButtonState extends State<BookEditButton> {
     return Expanded(
       child: Center(
         child: FutureBuilder(
-          future: global.libraryDatabase.getUserLibrary(widget.user.userID),
+          future:
+              global.libraryDatabase.getUserLibrary(global.currentUser.userID),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Listener(

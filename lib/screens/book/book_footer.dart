@@ -1,5 +1,4 @@
 import 'package:client/models/bookModel/book.dart';
-import 'package:client/models/userModel/userLibrary.dart';
 import 'package:flutter/material.dart';
 import 'text_feature_list.dart';
 import 'book_borrow.dart';
@@ -12,9 +11,8 @@ class HorizontalDivider extends SizedBox {
 
 class BookFooter extends StatelessWidget {
   final Book book;
-  final UserLibrary user;
 
-  const BookFooter({super.key, required this.book, required this.user});
+  const BookFooter({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +22,8 @@ class BookFooter extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            global.isLibrarian(user)
-                ? BookEditButton(book: book, user: user)
+            global.isLibrarian(global.currentUser)
+                ? BookEditButton(book: book)
                 : BookBorrow(book: book),
             const VerticalDivider(
               thickness: 1,

@@ -1,10 +1,10 @@
-import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/home/main_background.dart';
-import 'package:client/screens/resetPassword.dart';
-import 'package:client/screens/signupScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/globals.dart' as globals;
+import 'package:go_router/go_router.dart';
+
+import '../globals.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -67,13 +67,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             email: _emailTextController.text,
                             password: _passwordTextController.text)
                         .then((value) async {
-                      var user = await globals.userDatabase.getCurrentUser();
+                      currentUser = await globals.userDatabase.getCurrentUser();
                       if (context.mounted) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    MyHomePage(user: user))));
+                        if (isLibrarian(currentUser)) {
+                          context.go("/loans/history/librarian");
+                        } else {
+                          context.go("/loans/history/user");
+                        }
                       }
                     }).onError((error, stackTrace) {
                       dialogTrigger(context, "Login failed", error.toString());
@@ -162,8 +162,7 @@ Widget forgetPassword(BuildContext context) {
         ),
       ),
       onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ResetPassword()));
+        context.push("/resetPassword");
       },
     ),
   );
@@ -179,8 +178,7 @@ Row signUpOption(BuildContext context) {
       globals.spaceWidth(globals.scaleHeight),
       GestureDetector(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SignUpScreen()));
+          context.push("/signUp");
         },
         child: const Text(
           " Sign Up",

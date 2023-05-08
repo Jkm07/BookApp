@@ -1,4 +1,3 @@
-import 'package:client/models/userModel/userLibrary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,12 +6,10 @@ import '../../models/bookModel/book.dart';
 import 'book_details.dart';
 
 class BookDetailsScreen extends StatefulWidget {
-  const BookDetailsScreen(
-      {Key? key, required this.book, required this.authors, required this.user})
+  const BookDetailsScreen({Key? key, required this.book, required this.authors})
       : super(key: key);
   final Book book;
   final List<Author> authors;
-  final UserLibrary user;
 
   @override
   State<BookDetailsScreen> createState() => _BookDetailsScreenState();
@@ -36,8 +33,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             vertical: kIsWeb ? scaleHeight * 3 : scaleHeight),
         child: Stack(
           children: [
-            BookDetails(
-                book: widget.book, authors: widget.authors, user: widget.user),
+            BookDetails(book: widget.book, authors: widget.authors),
             CarouselSlider(
                 items: widget.book.images
                     .map(
