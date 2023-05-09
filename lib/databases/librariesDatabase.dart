@@ -1,4 +1,5 @@
 import 'package:client/models/libraryModel/library.dart';
+import 'package:client/models/userModel/userLibrary.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../globals.dart';
@@ -38,27 +39,27 @@ class LibraryDatabase {
     return result;
   }
 
-  Future<void> updateBookQuantity(
-      String librarianID, String quantity, String bookID) async {
+  Future<void> updateBookQuantity(String quantity, String bookID) async {
+    UserLibrary user = await userDatabase.getCurrentUser();
     final database = booksDatabase.getFirestore()!.collection("libraries");
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 
     querySnapshot =
-        await database.where("librarianList", arrayContains: librarianID).get();
+    await database.where("librarianList", arrayContains: user.userID).get();
     var libraries =
-        querySnapshot.docs.map((doc) => Library.fromJson(doc.data())).toList();
+    querySnapshot.docs.map((doc) => Library.fromJson(doc.data())).toList();
 
     if (libraries.isNotEmpty) {
       var library = libraries[0];
       Map<String, String> bookQuantity = Map.of(library.booksAndQuantity);
       if (library.booksAndQuantity.containsKey(bookID)) {
-        library.booksAndQuantity[bookID] = quantity;
+        bookQuantity[bookID] = quantity;
         Library updatedLibrary = Library.library(
             libraryID: library.libraryID,
             name: library.name,
             address: library.address,
             librarianList: library.librarianList,
-            booksAndQuantity: library.booksAndQuantity);
+            booksAndQuantity: bookQuantity);
         await updateLibrary(updatedLibrary);
       } else {
         bookQuantity.addAll({bookID: quantity});
@@ -115,12 +116,12 @@ class LibraryDatabase {
     // }
 
     final libraries =
-        querySnapshot!.docs.map((doc) => Library.fromJson(doc.data())).toList();
+    querySnapshot!.docs.map((doc) => Library.fromJson(doc.data())).toList();
 
     //searching
     if (search != "")
       libraries.removeWhere(
-          (item) => !(item.name.toLowerCase()).contains(search.toLowerCase()));
+              (item) => !(item.name.toLowerCase()).contains(search.toLowerCase()));
 
     //sort
     if (sort == "Name: alphabetically") {
@@ -136,10 +137,10 @@ class LibraryDatabase {
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 
     querySnapshot =
-        await database.where("libraryID", isEqualTo: libraryID).get();
+    await database.where("libraryID", isEqualTo: libraryID).get();
 
     final libraries =
-        querySnapshot.docs.map((doc) => Library.fromJson(doc.data())).toList();
+    querySnapshot.docs.map((doc) => Library.fromJson(doc.data())).toList();
 
     return libraries[0];
   }
@@ -149,10 +150,10 @@ class LibraryDatabase {
     QuerySnapshot<Map<String, dynamic>>? querySnapshot;
 
     querySnapshot =
-        await database.where("librarianList", arrayContains: userID).get();
+    await database.where("librarianList", arrayContains: userID).get();
 
     final libraries =
-        querySnapshot.docs.map((doc) => Library.fromJson(doc.data())).toList();
+    querySnapshot.docs.map((doc) => Library.fromJson(doc.data())).toList();
 
     return libraries.isEmpty ? null : libraries[0];
   }

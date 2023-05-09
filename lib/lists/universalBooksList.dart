@@ -11,10 +11,10 @@ import '../models/publisherModel/publisher.dart';
 class UniversalBooksList extends StatefulWidget {
   const UniversalBooksList(
       {Key? key,
-      required this.filterType,
-      required this.value,
-      required this.search,
-      required this.sort})
+        required this.filterType,
+        required this.value,
+        required this.search,
+        required this.sort})
       : super(key: key);
 
   final String filterType;
@@ -122,10 +122,10 @@ class _BookElementState extends State<BookElement> {
                 ),
                 trailing: isLibrarian(user)
                     ? IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {},
-                        color: Theme.of(context).colorScheme.primary,
-                      )
+                  icon: const Icon(Icons.edit),
+                  onPressed: () => context.go('/book/create', extra: widget.book),
+                  color: Theme.of(context).colorScheme.primary,
+                )
                     : null,
                 onTap: () => context.go("/book/details/${widget.book.bookID}"),
               ),

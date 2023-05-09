@@ -54,18 +54,6 @@ class _UsersScreenState extends State<UsersScreen> {
     //print("Users screen");
 
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {},
-          child: const Icon(
-            Icons.search,
-          ),
-        ),
-        title: const Text(
-          "Users",
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
             top: scaleHeight * 2,

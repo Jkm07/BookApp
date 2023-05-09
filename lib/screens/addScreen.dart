@@ -2,6 +2,7 @@ import 'package:client/models/publisherModel/publisher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../globals.dart';
@@ -45,10 +46,13 @@ class BookCreatorState extends State<BookCreator> {
 
   void getData() async{
     publisher = await publisherDatabase.getPublisher(widget.book!.publisherID);
-    authorsList = widget.book == null ? [""] : await authorsDatabase.getAuthorsStringName(widget.book!.authorsID);
-    setState(() {
-      loaded = true;
-    });
+    authorsList = await authorsDatabase.getAuthorsStringName(widget.book!.authorsID);
+    if(publisher != null && authorsList != null){
+      publisherName = TextEditingController(text: publisher?.publisherName);
+      setState(() {
+        loaded = true;
+      });
+    }
   }
 
   @override
@@ -57,6 +61,13 @@ class BookCreatorState extends State<BookCreator> {
 
     if(widget.book != null){
       getData();
+    }else{
+      publisherName = TextEditingController();
+      publisher = null;
+      authorsList = [""];
+      setState(() {
+        loaded = true;
+      });
     }
 
     bookID = widget.book == null ? const Uuid().v4() : widget.book!.bookID;
@@ -68,7 +79,6 @@ class BookCreatorState extends State<BookCreator> {
     ISBN = TextEditingController(text: widget.book?.ISBN);
     language = TextEditingController(text: widget.book?.language);
     publishedDate = TextEditingController(text: widget.book?.publishedDate);
-    publisherName = TextEditingController(text: publisher?.publisherName);
     issueNumber = TextEditingController(text: widget.book?.issueNumber);
     yearPublication = TextEditingController(text: widget.book?.yearPublication);
     quantity = TextEditingController(text: widget.book?.quantity);
@@ -293,12 +303,12 @@ class BookCreatorState extends State<BookCreator> {
                   onPressed: () async {
                     final isValidForm = formKey.currentState!.validate();
 
-                    if (imagesWeb.isEmpty) {
+                    if (imagesWeb.isEmpty && widget.book == null) {
                       return;
                     }
 
                     if (isValidForm) {
-                      imageUrls = await booksDatabase.uploadImages(imagesWeb, bookID);
+                      imageUrls.addAll(await booksDatabase.uploadImages(imagesWeb, bookID));
                       String publisherID = "";
                       List<String> authorsID = [];
 
@@ -309,24 +319,46 @@ class BookCreatorState extends State<BookCreator> {
                       publisherID = await booksDatabase
                           .checkAndAddPublisher(publisherName.text);
 
-                      final book = Book.book(
-                          bookID: bookID,
-                          title: title.text,
-                          authorsID: authorsID,
-                          numberOfPages: numberOfPages.text,
-                          coverType: coverType.text,
-                          category: category.text,
-                          ISBN: ISBN.text,
-                          language: language.text,
-                          publishedDate: publishedDate.text,
-                          publisherID: publisherID,
-                          issueNumber: issueNumber.text,
-                          yearPublication: yearPublication.text,
-                          description: description.text,
-                          quantity: quantity.text,
-                          images: imageUrls);
-                      await booksDatabase.addBook(book);
-                      Navigator.pop(context);
+                      if(widget.book != null){
+                        final book = Book.book(
+                            bookID: bookID,
+                            title: title.text,
+                            authorsID: authorsID,
+                            numberOfPages: numberOfPages.text,
+                            coverType: coverType.text,
+                            category: category.text,
+                            ISBN: ISBN.text,
+                            language: language.text,
+                            publishedDate: publishedDate.text,
+                            publisherID: publisherID,
+                            issueNumber: issueNumber.text,
+                            yearPublication: yearPublication.text,
+                            description: description.text,
+                            quantity: quantity.text,
+                            images: widget.book!.images);
+                        await booksDatabase.updateBook(book);
+                        await libraryDatabase.updateBookQuantity(quantity.text, book.bookID);
+                      }else{
+                        final book = Book.book(
+                            bookID: bookID,
+                            title: title.text,
+                            authorsID: authorsID,
+                            numberOfPages: numberOfPages.text,
+                            coverType: coverType.text,
+                            category: category.text,
+                            ISBN: ISBN.text,
+                            language: language.text,
+                            publishedDate: publishedDate.text,
+                            publisherID: publisherID,
+                            issueNumber: issueNumber.text,
+                            yearPublication: yearPublication.text,
+                            description: description.text,
+                            quantity: quantity.text,
+                            images: imageUrls);
+                        await booksDatabase.addBook(book);
+                        await libraryDatabase.updateBookQuantity(quantity.text, book.bookID);
+                      }
+                      context.go('/settings');
                     }
                   },
                   style: ButtonStyle(

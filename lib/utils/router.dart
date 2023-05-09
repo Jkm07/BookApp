@@ -1,4 +1,3 @@
-import 'package:client/lists/usersList.dart';
 import 'package:client/models/libraryModel/library.dart';
 import 'package:client/models/userModel/userLibrary.dart';
 import 'package:client/screens/accountScreen/accountScreen.dart';
@@ -21,6 +20,9 @@ import 'package:client/screens/userDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tuple/tuple.dart';
+
+import '../models/bookModel/book.dart';
+import '../screens/usersScreen.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/login',
@@ -86,7 +88,8 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: '/book/create',
             builder: (BuildContext context, GoRouterState state) {
-              return BookCreator();
+              var book = state.extra is Book ? state.extra as Book : null;
+              return BookCreator(book: book);
             },
           ),
           GoRoute(
@@ -110,7 +113,7 @@ final GoRouter router = GoRouter(
               var extraParams = state.extra is Tuple2<Function?, Library?>
                   ? state.extra as Tuple2<Function?, Library?>
                   : const Tuple2(null, null);
-              return UsersList(
+              return UsersScreen(
                 search: "",
                 sort: state.pathParameters['sort']!,
                 userType: state.pathParameters['userType']!,
