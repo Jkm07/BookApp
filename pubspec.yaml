@@ -62,6 +62,7 @@ dependencies:
   tuple: ^2.0.1
   provider: ^6.0.5
   flutter_spinkit: ^5.2.0
+  flutter_native_splash: ^2.2.19
 
 dev_dependencies:
   flutter_test:
@@ -114,3 +115,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/image/uj.png
+
+  android_12:
+    image: assets/image/uj.png
+    icon_background_color: "#ffffff"
+
+  web: false
