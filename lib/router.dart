@@ -22,9 +22,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tuple/tuple.dart';
 
-import 'models/authorModel/author.dart';
-import 'models/bookModel/book.dart';
-
 final GoRouter router = GoRouter(
   initialLocation: '/login',
   routes: <RouteBase>[
@@ -79,11 +76,9 @@ final GoRouter router = GoRouter(
             },
           ),
           GoRoute(
-            path: '/book/details',
+            path: '/book/details/:bookID',
             builder: (BuildContext context, GoRouterState state) {
-              var params = state.extra! as Tuple2<Book, List<Author>>;
-              return BookDetailsScreen(
-                  book: params.item1, authors: params.item2);
+              return BookDetailsScreen(bookID: state.pathParameters['bookID']!,);
             },
           ),
           GoRoute(

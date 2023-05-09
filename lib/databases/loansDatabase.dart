@@ -16,7 +16,7 @@ class LoansDatabase {
     querySnapshot = await database.where("loanID", isEqualTo: loanID).get();
 
     final loans =
-        querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
+    querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
     return loans[0];
   }
 
@@ -98,7 +98,7 @@ class LoansDatabase {
 
     querySnapshot = await queryFilters.get();
     final loans =
-        querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
+    querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
     return loans;
   }
 
@@ -112,7 +112,7 @@ class LoansDatabase {
 
       QuerySnapshot<Map<String, dynamic>>? querySnapshot;
       var queryFilters =
-          database.where("libraryID", isEqualTo: library.libraryID);
+      database.where("libraryID", isEqualTo: library.libraryID);
       if (!current && !overdue) {
         queryFilters = queryFilters.where("ended", isEqualTo: true);
       }
@@ -120,7 +120,7 @@ class LoansDatabase {
 
       querySnapshot = await queryFilters.get();
       final loans =
-          querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
+      querySnapshot.docs.map((doc) => Loan.fromJson(doc.data())).toList();
       return loans;
     }
     return [];
@@ -149,6 +149,17 @@ class LoansDatabase {
 
     return loans;
   }
+
+  Stream<List<LoanElement>> get userLoansStream {
+    var documentSnapshot = FirebaseFirestore.instance
+        .collection("loansList")
+        .doc(currentUser.userID);
+    var list = documentSnapshot
+        .snapshots()
+        .map<List<dynamic>>((snapshot) => snapshot.get("loanList"));
+    var listLoan = list.map<List<LoanElement>>((List<dynamic> l) => l.map<LoanElement>((e) => LoanElement.fromJson(e)).toList());
+        return listLoan;
+    }
 
   Future createLoanRecordForUser() async {
     String userID = await userDatabase.getUserID();
@@ -183,7 +194,7 @@ class LoansDatabase {
     List<LoanElement> loans = await getAllUserLoans();
     if (!(await checkBookOnLoanList(bookID, libraryID))) {
       LoanElement newLoan =
-          LoanElement.loan(bookID: bookID, libraryID: libraryID, quantity: "1");
+      LoanElement.loan(bookID: bookID, libraryID: libraryID, quantity: "1");
       loans.add(newLoan);
       updateLoanList(loans);
     }
@@ -224,10 +235,6 @@ class LoansDatabase {
   }
 
   Future<bool> acceptBorrowList(List<LoanElement> loans) async {
-    // for (var loan in loans) {
-    //   if (await validateLoan(loan) <= 0) return false;
-    // }
-
     for (var loan in loans) {
       await createLoan(loan.bookID, loan.libraryID);
     }

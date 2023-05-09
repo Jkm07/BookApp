@@ -2,7 +2,6 @@ import 'package:client/models/libraryModel/library.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../globals.dart';
-import '../models/bookModel/book.dart';
 
 class LibraryDatabase {
   Future<void> updateLibrary(Library library) async {
@@ -156,5 +155,11 @@ class LibraryDatabase {
         querySnapshot.docs.map((doc) => Library.fromJson(doc.data())).toList();
 
     return libraries.isEmpty ? null : libraries[0];
+  }
+
+  Stream<Library> getLibraryStream(String libraryID)
+  {
+    final library = booksDatabase.getFirestore()!.collection("libraries").doc(libraryID);
+    return library.snapshots().map((doc) => Library.fromJson(doc.data()!));
   }
 }

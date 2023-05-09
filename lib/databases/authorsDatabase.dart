@@ -1,8 +1,6 @@
 import 'package:client/models/bookModel/book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'package:uuid/uuid.dart';
-import '../globals.dart';
 import '../models/authorModel/author.dart';
 
 class AuthorsDatabase {
