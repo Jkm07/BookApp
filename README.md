@@ -70,4 +70,4 @@ Aplikacja wykorzystuje baze danych No-SQL wy oparciu o kolekcje i dokumenty. Apl
   - Jan Mrowiec
 
 
-*Uniewersytet Jagielloński 2023*
+*Uniwersytet Jagielloński 2023*
