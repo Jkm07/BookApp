@@ -162,4 +162,10 @@ class LibraryDatabase {
     final library = booksDatabase.getFirestore()!.collection("libraries").doc(libraryID);
     return library.snapshots().map((doc) => Library.fromJson(doc.data()!));
   }
+
+  Stream<Library?> getUserLibraryStream(String userID)
+  {
+    final library = booksDatabase.getFirestore()!.collection("libraries").where("librarianList", arrayContains: userID).limit(1);
+    return library.snapshots().map((event) => event.docs.map((e) => Library.fromJson(e.data())).toList()[0]);
+  }
 }

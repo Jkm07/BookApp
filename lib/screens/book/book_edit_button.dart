@@ -1,6 +1,9 @@
 import 'package:client/models/bookModel/book.dart';
 import 'package:client/globals.dart' as global;
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/libraryModel/library.dart';
 
 class BookEditButton extends StatefulWidget {
   final Book book;
@@ -18,11 +21,13 @@ class _BookEditButtonState extends State<BookEditButton> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Center(
-        child: FutureBuilder(
-          future:
-              global.libraryDatabase.getUserLibrary(global.currentUser.userID),
+        child: StreamProvider<Library?>.value(
+          initialData: null,
+          value: global.libraryDatabase
+              .getUserLibraryStream(global.currentUser.userID),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            Library? library = Provider.of<Library?>(context);
+            if (library != null) {
               return Listener(
                 onPointerUp: (_) => setState(() {
                   isPressed = false;
@@ -42,13 +47,13 @@ class _BookEditButtonState extends State<BookEditButton> {
                   child: ListTile(
                     iconColor: Theme.of(context).colorScheme.primary,
                     title: Text(
-                      snapshot.data!.name,
+                      library.name,
                       style: TextStyle(
                           fontSize: 12,
                           color: Theme.of(context).colorScheme.primary),
                     ),
                     subtitle: Text(
-                        "Quantity: ${snapshot.data!.booksAndQuantity[widget.book.bookID]}",
+                        "Quantity: ${library.booksAndQuantity[widget.book.bookID] ?? "0"}",
                         style: const TextStyle(
                             fontSize: 12, fontStyle: FontStyle.italic)),
                     trailing: const Icon(
