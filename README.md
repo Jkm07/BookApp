@@ -1,16 +1,56 @@
-# client
+# Aplikacja Biblioteczna - aplikacja zaliczeniowa na Projektu Zespołowego
+*Wykonali **Rafał Kowalczyk** i **Jan Mrowiec***
 
-A new Flutter project.
+## Opis programu
 
-## Getting Started
+Program służy do zarządzania siecią bibliotek dla jej pracowników, jak i korzystanie z niej dla zwykłych użytkowników.
+Utworzony został do tego system logowania z różnymi typami kont
 
-This project is a starting point for a Flutter application.
+Opragramowanie rozróżnia trzy typy kont
+- **Admin**
+- **Bibliotekarz**
+- **Czytelnik** 
+---
+## Funkcjanlność dla każdego konta
+### Czytelnik
 
-A few resources to get you started if this is your first Flutter project:
+- Przeglądanie kolekcji książek
+- Dodawanie książek do listy życzeń
+- Wypożyczanie książek
+- Przeglądanie hisorii swoich wypożyczeń
+- Zarządzanie swoim kontem (zmień email, username, password)
+- Usunięcie konta
+---
+### Bibliotekarz
+*Każdy bibliotekarz jest przypisany do jednej biblioteki*
+- Przeglądanie kolekcji książek
+- Dodawanie kolejnych książek do swojej biblioteki
+- Edycja danych o książkach
+- Przedłużanie lub zakończenie wypożyczenia
+- Zarządzanie swoim kontem (zmień email, username, password)
+- Usunięcie konta
+---
+### Admin
+- Wszystkie funkcjonalności czytelnika i bibliotekarza
+- Dodawanie i edycja bibliotek
+- Zmiana typu kont
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Technologie
+### Front-end: Flutter/Dart
+Aplikacja została napisana wykorzystując **Fluttera** w wersji 3.7.5 wraz z językiem **Dart** w wersji 2.19.2. Apliakcja jest głównie przeznaczona na smartphony z system operacyjnym Android, ale była również testowana w wersji Webowej
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+### Back-end: Firabase
+Do zarządzania autoryzacją oraz persystencją aplikacja wykorzystuje zestaw narzędzi firebase w tym **Cloud Firestore** i **Authentication**
+
+---
+### Baza danych: Cloud Firestore
+Aplikaja wykorzystuje baze danych No-SQL wy oparciu o kolekcje i dokumenty. Apliakacja wykorzystuje strumenia firebase - zmiana danych w bazie automatycznie wysyła powiadomienie do klienta o zmianie stanu rekordu.
+
+# Autorzy
+  - Rafał Kowalczyk
+  - Jan Mrowiec
+
+
+*Uniewersytet Jagielloński 2023*
