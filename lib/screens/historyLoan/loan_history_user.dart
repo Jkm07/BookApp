@@ -1,5 +1,6 @@
 import 'package:client/globals.dart';
 import 'package:client/models/loanModel/loan.dart';
+import 'package:lottie/lottie.dart';
 import '../../utils/loading.dart';
 import 'data/loan_monad.dart';
 import 'package:collection/collection.dart';
@@ -98,20 +99,43 @@ class _LoanHistoryUserState extends State<LoanHistoryUser> {
                           borderRadius: BorderRadius.circular(20)),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: GroupedListView<LoanMonad, Library>(
-                          groupSeparatorBuilder: (library) =>
-                              LoanLibraryHeader(library),
-                          elements: snapshot.data!,
-                          groupBy: (element) => element.library,
-                          groupComparator: (l1, l2) =>
-                              l1.libraryID == l2.libraryID ? 0 : 1,
-                          separator: const Divider(
-                            color: Colors.black,
-                            height: 1,
-                            thickness: 1,
-                          ),
-                          itemBuilder: (context, element) =>
-                              LoanHistoryItem(element, null, null),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: GroupedListView<LoanMonad, Library>(
+                                groupSeparatorBuilder: (library) =>
+                                    LoanLibraryHeader(library),
+                                elements: snapshot.data!,
+                                groupBy: (element) => element.library,
+                                groupComparator: (l1, l2) =>
+                                    l1.libraryID == l2.libraryID ? 0 : 1,
+                                separator: const Divider(
+                                  color: Colors.black,
+                                  height: 1,
+                                  thickness: 1,
+                                ),
+                                itemBuilder: (context, element) =>
+                                    LoanHistoryItem(element, null, null),
+                              ),
+                            ),
+                            Visibility(
+                                visible: snapshot.data!.isEmpty,
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      Text("Nothing to do here",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold)),
+                                      Lottie.network(
+                                          "https://assets8.lottiefiles.com/packages/lf20_z9ed2jna.json"),
+                                    ],
+                                  ),
+                                ))
+                          ],
                         ),
                       ),
                     ),

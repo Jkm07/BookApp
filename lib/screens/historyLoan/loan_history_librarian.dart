@@ -3,6 +3,7 @@ import 'package:client/models/loanModel/loan.dart';
 import 'package:client/models/userModel/userLibrary.dart';
 import 'package:client/screens/historyLoan/item/loan_user_header.dart';
 import 'package:client/utils/loading.dart';
+import 'package:lottie/lottie.dart';
 import 'data/loan_monad.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -123,19 +124,44 @@ class _LoanHistoryLibrarianState extends State<LoanHistoryLibrarian> {
                           borderRadius: BorderRadius.circular(20)),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: GroupedListView<LoanMonad, UserLibrary>(
-                          groupSeparatorBuilder: (user) => LoanUserHeader(user),
-                          elements: snapshot.data!,
-                          groupBy: (element) => element.user,
-                          groupComparator: (l1, l2) =>
-                              l1.userID == l2.userID ? 0 : 1,
-                          separator: const Divider(
-                            color: Colors.black,
-                            height: 1,
-                            thickness: 1,
-                          ),
-                          itemBuilder: (context, element) =>
-                              LoanHistoryItem(element, extendLoan, endLoan),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: GroupedListView<LoanMonad, UserLibrary>(
+                                groupSeparatorBuilder: (user) =>
+                                    LoanUserHeader(user),
+                                elements: snapshot.data!,
+                                groupBy: (element) => element.user,
+                                groupComparator: (l1, l2) =>
+                                    l1.userID == l2.userID ? 0 : 1,
+                                separator: const Divider(
+                                  color: Colors.black,
+                                  height: 1,
+                                  thickness: 1,
+                                ),
+                                itemBuilder: (context, element) =>
+                                    LoanHistoryItem(
+                                        element, extendLoan, endLoan),
+                              ),
+                            ),
+                            Visibility(
+                                visible: snapshot.data!.isEmpty,
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      Text("Nothing to do here",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold)),
+                                      Lottie.network(
+                                          "https://assets8.lottiefiles.com/packages/lf20_z9ed2jna.json"),
+                                    ],
+                                  ),
+                                ))
+                          ],
                         ),
                       ),
                     ),

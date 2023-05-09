@@ -78,7 +78,9 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: '/book/details/:bookID',
             builder: (BuildContext context, GoRouterState state) {
-              return BookDetailsScreen(bookID: state.pathParameters['bookID']!,);
+              return BookDetailsScreen(
+                bookID: state.pathParameters['bookID']!,
+              );
             },
           ),
           GoRoute(
@@ -105,7 +107,9 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: '/user/list/:sort/:userType/:screenType',
             builder: (BuildContext context, GoRouterState state) {
-              var extraParams = state.extra! as Tuple2<Function?, Library?>;
+              var extraParams = state.extra is Tuple2<Function?, Library?>
+                  ? state.extra as Tuple2<Function?, Library?>
+                  : const Tuple2(null, null);
               return UsersList(
                 search: "",
                 sort: state.pathParameters['sort']!,
