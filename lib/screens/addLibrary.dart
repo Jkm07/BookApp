@@ -1,6 +1,7 @@
 import 'package:client/menuItems/reusableButton.dart';
 import 'package:client/menuItems/reusableContainer.dart';
 import 'package:client/models/libraryModel/library.dart';
+import 'package:client/utils/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tuple/tuple.dart';
@@ -125,7 +126,7 @@ class _AddLibraryState extends State<AddLibrary> {
         ),
       );
     } else {
-      return const Center(child: CircularProgressIndicator());
+      return const Loading();
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:client/models/userModel/userLibrary.dart';
+import 'package:client/utils/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -41,7 +42,7 @@ class _UniversalBooksListState extends State<UniversalBooksList> {
                   BookElement(book: snapshot.data![index]),
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const Loading();
           }
         });
   }

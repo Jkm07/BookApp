@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../globals.dart';
+import '../utils/loading.dart';
 import '../menuItems/authorTextFormField.dart';
 import '../menuItems/gridItemImage.dart';
 import '../menuItems/reusableTextFormField.dart';
@@ -350,7 +351,7 @@ class BookCreatorState extends State<BookCreator> {
         ),
       );
     }else{
-      return const Center(child: CircularProgressIndicator());
+      return const Loading();
     }
   }
 }

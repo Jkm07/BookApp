@@ -1,5 +1,6 @@
 import 'package:client/globals.dart';
 import 'package:client/models/authorModel/author.dart';
+import 'package:client/utils/loading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -33,7 +34,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           ]),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
+              return const Loading();
             } else {
               var book = snapshot.data![0] as Book;
               var authors = snapshot.data![1] as List<Author>;

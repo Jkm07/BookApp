@@ -1,5 +1,6 @@
 import 'package:client/globals.dart';
 import 'package:client/models/loanModel/loan.dart';
+import '../../utils/loading.dart';
 import 'data/loan_monad.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +120,7 @@ class _LoanHistoryUserState extends State<LoanHistoryUser> {
               ),
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const Loading();
           }
         });
   }

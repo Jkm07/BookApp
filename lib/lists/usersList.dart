@@ -1,3 +1,4 @@
+import 'package:client/utils/loading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -166,7 +167,7 @@ class _UsersListState extends State<UsersList> {
               shrinkWrap: true,
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const Loading();
           }
         });
   }
